@@ -8,6 +8,9 @@ const playlistSchema = new Schema(
             type: String,
             index: {unique: true}
         },
+        description: {
+            type: String
+        },
         tracks: [
             {
                 track_id: {
@@ -47,7 +50,30 @@ const playlistSchema = new Schema(
                     type: String
                 }
             }
-        ]
+        ],
+        visibility: {
+            type: String
+        },
+        reviews: [{
+            comment: {
+                type: String
+            },
+            hidden_flag: {
+                type: String
+            }
+        }],
+        created_by: {
+            type: String
+        },
+        created_at: {
+            type: Date
+        },
+        modified_by: {
+            type: String
+        },
+        modified_at: {
+            type: Date
+        }
     }
 );
 

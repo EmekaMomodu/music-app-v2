@@ -1,4 +1,4 @@
-const messages = require('../util/message');
+const {MESSAGES} = require('../util/constant');
 const Artist = require('../model/artist');
 const ArtistDto = require('../dto/artist');
 
@@ -7,7 +7,7 @@ exports.getArtistById = async (artistId) => {
     const artist = await Artist.findOne({artist_id: artistId}).exec();
 
     if (!artist) {
-        const error = new Error(messages.NO_DATA_FOUND);
+        const error = new Error(MESSAGES.NO_DATA_FOUND);
         error.statusCode = 404;
         throw error;
     }
@@ -27,7 +27,7 @@ exports.getArtistById = async (artistId) => {
 exports.searchArtistsByName = async (searchText) => {
 
     if (!searchText) {
-        const error = new Error(messages.ONE_OR_MORE_REQUIRED_REQUEST_PARAMETERS_ARE_MISSING_OR_INVALID);
+        const error = new Error(MESSAGES.ONE_OR_MORE_REQUIRED_REQUEST_PARAMETERS_ARE_MISSING_OR_INVALID);
         error.statusCode = 400;
         throw error;
     }
@@ -35,7 +35,7 @@ exports.searchArtistsByName = async (searchText) => {
     const artists = await Artist.find({artist_name: {$regex: '.*' + searchText + '.*', $options: 'i'}}).exec();
 
     if (!artists || !artists.length) {
-        const error = new Error(messages.NO_DATA_FOUND);
+        const error = new Error(MESSAGES.NO_DATA_FOUND);
         error.statusCode = 404;
         throw error;
     }

@@ -1,4 +1,4 @@
-const messages = {
+const MESSAGES = {
     DATA_FETCHED_SUCCESSFULLY: 'Data fetched successfully',
     NO_DATA_FOUND: 'No data found',
     ONE_OR_MORE_REQUIRED_REQUEST_PARAMETERS_ARE_MISSING_OR_INVALID: 'One/more required request parameters is/are missing or invalid',
@@ -14,4 +14,14 @@ const messages = {
     INVALID_ID: 'Invalid ID'
 }
 
-module.exports = messages;
+const PLAYLIST_VISIBILITY = {
+    PRIVATE: 'PRIVATE',
+    PUBLIC: 'PUBLIC'
+}
+
+const BINARY_FLAG = {
+    YES: 'Y',
+    NO: 'N'
+}
+
+module.exports = {MESSAGES, PLAYLIST_VISIBILITY, BINARY_FLAG};

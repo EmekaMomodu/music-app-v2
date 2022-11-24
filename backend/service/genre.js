@@ -1,4 +1,4 @@
-const messages = require('../util/message');
+const {MESSAGES} = require('../util/constant');
 const Genre = require('../model/genre');
 const GenreDto = require('../dto/genre');
 
@@ -7,7 +7,7 @@ exports.getAllGenres = async () => {
     const genres = await Genre.find().exec();
 
     if (!genres || !genres.length) {
-        const error = new Error(messages.NO_DATA_FOUND);
+        const error = new Error(MESSAGES.NO_DATA_FOUND);
         error.statusCode = 404;
         throw error;
     }
