@@ -13,10 +13,10 @@ exports.getTrackById = async (req, res, next) => {
     }
 };
 
-exports.searchTracksByTitleOrAlbumOrArtist = async (req, res, next) => {
+exports.searchTracks = async (req, res, next) => {
     const {searchText, maxNoOfRecords} = req.query;
     try {
-        const tracks = await trackService.searchTracksByTitleOrAlbumOrArtist(searchText, maxNoOfRecords);
+        const tracks = await trackService.searchTracks(searchText, maxNoOfRecords);
         const response = new Response(MESSAGES.DATA_FETCHED_SUCCESSFULLY, tracks);
         res.status(200).json(response);
     } catch (error) {

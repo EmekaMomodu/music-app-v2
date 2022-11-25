@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.get('/:id', trackController.getTrackById);
 
-router.get('', trackController.searchTracksByTitleOrAlbumOrArtist);
+router.get('', trackController.searchTracks);
 
 module.exports = router;
