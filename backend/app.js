@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 const mongoose = require('mongoose');
 const Response = require('./dto/response');
 const genreRoutes = require('./route/genre');
@@ -11,6 +13,12 @@ const app = express();
 const pathPrefix = '/api';
 
 app.use(bodyParser.json());
+
+// data sanitization against NoSQL query injection
+app.use(mongoSanitize());
+
+// data sanitization against XSS
+app.use(xss());
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
