@@ -40,9 +40,20 @@ const playlistSchema = new Schema(
                 track_duration: {
                     type: String,
                 },
-                track_genres: {
-                    type: String,
-                },
+                track_genres: [
+                    {
+                        genre_id: {
+                            type: Number
+                        },
+                        genre_title: {
+                            type: String,
+                            index: true
+                        },
+                        genre_url: {
+                            type: String
+                        }
+                    }
+                ],
                 track_number: {
                     type: Number,
                 },
