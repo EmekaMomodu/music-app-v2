@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
-dotenv.config({ path: './config.env' });
+dotenv.config({path: './config.env'});
 const app = require('./app');
 
 const serverPort = process.env.SERVER_PORT;
@@ -17,4 +17,3 @@ mongoose.connect(databaseConnectionUrl)
         console.log('Failed to connect to database');
         console.log(error);
     });
-

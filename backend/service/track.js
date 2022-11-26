@@ -41,7 +41,7 @@ exports.searchTracks = async (searchText, maxNoOfRecords) => {
             {album_title: {$regex: '.*' + searchText + '.*', $options: 'i'}},
             {track_title: {$regex: '.*' + searchText + '.*', $options: 'i'}},
             {artist_name: {$regex: '.*' + searchText + '.*', $options: 'i'}},
-            {'track_genres.genre_title' : {$regex: '.*' + searchText + '.*', $options: 'i'}}
+            {'track_genres.genre_title': {$regex: '.*' + searchText + '.*', $options: 'i'}}
         ]
     }).limit(maxNoOfRecords).exec();
 

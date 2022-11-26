@@ -2,12 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
-const mongoose = require('mongoose');
 const Response = require('./dto/response');
-const genreRoutes = require('./route/genre');
-const artistRoutes = require('./route/artist');
-const trackRoutes = require('./route/track');
-const playlistRoutes = require('./route/playlist');
+const openRoutes = require('./route/open');
+const secureRoutes = require('./route/secure');
+const adminRoutes = require('./route/admin');
 
 const app = express();
 const pathPrefix = '/api';
@@ -27,13 +25,11 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(`${pathPrefix}/genres`, genreRoutes);
+app.use(`${pathPrefix}/open`, openRoutes);
 
-app.use(`${pathPrefix}/artists`, artistRoutes);
+app.use(`${pathPrefix}/secure`, secureRoutes);
 
-app.use(`${pathPrefix}/tracks`, trackRoutes);
-
-app.use(`${pathPrefix}/playlists`, playlistRoutes);
+app.use(`${pathPrefix}/admin`, adminRoutes);
 
 // Error handling middleware
 app.use((error, req, res, next) => {
