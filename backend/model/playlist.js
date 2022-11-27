@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const {BINARY_FLAG, PLAYLIST_VISIBILITY} = require('../util/constant');
 
 const Schema = mongoose.Schema;
 
@@ -63,21 +64,24 @@ const playlistSchema = new Schema(
             }
         ],
         visibility: {
-            type: String
+            type: String,
+            default: PLAYLIST_VISIBILITY.PRIVATE
         },
         reviews: [{
             comment: {
                 type: String
             },
             hidden_flag: {
-                type: String
+                type: String,
+                default: BINARY_FLAG.NO
             }
         }],
         created_by: {
             type: String
         },
         created_at: {
-            type: Date
+            type: Date,
+            default: Date.now
         },
         modified_by: {
             type: String

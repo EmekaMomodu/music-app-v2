@@ -6,9 +6,13 @@ const Response = require('./dto/response');
 const openRoutes = require('./route/open');
 const secureRoutes = require('./route/secure');
 const adminRoutes = require('./route/admin');
+const helmet = require('helmet');
 
 const app = express();
 const pathPrefix = '/api';
+
+// Set security HTTP headers
+app.use(helmet());
 
 app.use(bodyParser.json());
 

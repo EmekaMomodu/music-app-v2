@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const {USER_ROLE, BINARY_FLAG, USER_TYPE, USER_STATUS} = require('../util/constant');
 
 const Schema = mongoose.Schema;
 
@@ -9,28 +10,32 @@ const userSchema = new Schema(
             index: {unique: true}
         },
         password: {
-            type: String,
+            type: String
         },
         salt: {
-            type: String,
+            type: String
         },
         firstname: {
-            type: String,
+            type: String
         },
         lastname: {
-            type: String,
+            type: String
         },
         role: {
             type: String,
+            default: USER_ROLE.USER
         },
         email_verified_flag: {
             type: String,
+            default: BINARY_FLAG.NO
         },
         type: {
             type: String,
+            default: USER_TYPE.LOCAL
         },
         status: {
             type: String,
+            default: USER_STATUS.ACTIVE
         },
     }
 );
