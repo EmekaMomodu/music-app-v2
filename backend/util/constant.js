@@ -12,7 +12,12 @@ const MESSAGES = {
     UNABLE_TO_UPDATE_DATA: 'Unable to update data',
     DATA_DELETED_SUCCESSFULLY: 'Data deleted successfully',
     PLAYLIST_DOES_NOT_EXIST: 'Playlist does NOT exists',
-    INVALID_ID: 'Invalid ID'
+    INVALID_ID: 'Invalid ID',
+    AUTHENTICATION_SUCCESSFUL: 'Authentication Successful',
+    INVALID_CREDENTIALS: 'Invalid credentials',
+    USER_DOES_NOT_EXIST: 'User does not exist, kindly sign up',
+    ATTEMPT_A_DIFFERENT_LOGIN_MECHANISM: 'Invalid credentials, attempt a different login mechanism',
+    ACCOUNT_DEACTIVATED: 'Account deactivated, kindly contact admin'
 }
 
 const PLAYLIST_VISIBILITY = {
