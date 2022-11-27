@@ -12,21 +12,24 @@ exports.authenticate = async (user) => {
         error.statusCode = 404;
         throw error;
     }
-    // verify provided password
-    const passwordVerified = bcrypt.compareSync(user.password, existingUser.password);
+    // prepend salt to provided password
+    const saltPrependedPassword = existingUser.salt + user.password;
+    // verify saltPrependedPassword with hash
+    const hashedPassword = existingUser.password;
+    const passwordVerified = bcrypt.compareSync(saltPrependedPassword, hashedPassword);
     if (!passwordVerified) {
         const error = new Error(MESSAGES.INVALID_CREDENTIALS);
         error.statusCode = 401;
         throw error;
     }
     // ensure user type is local
-    if(existingUser.type !== USER_TYPE.LOCAL){
+    if (existingUser.type !== USER_TYPE.LOCAL) {
         const error = new Error(MESSAGES.ATTEMPT_A_DIFFERENT_LOGIN_MECHANISM);
         error.statusCode = 401;
         throw error;
     }
     // ensure user status is active
-    if(existingUser.status === USER_STATUS.DEACTIVATED){
+    if (existingUser.status === USER_STATUS.DEACTIVATED) {
         const error = new Error(MESSAGES.ACCOUNT_DEACTIVATED);
         error.statusCode = 401;
         throw error;

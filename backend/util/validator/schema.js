@@ -3,7 +3,7 @@ const Joi = require('joi');
 const schemas = {
     USER_CREATE: Joi.object().keys({
         email: Joi.string()
-            .email({ minDomainSegments: 2, tlds: { allow: ['com', 'ca'] } })
+            .email({minDomainSegments: 2, tlds: {allow: ['com', 'ca']}})
             .min(6)
             .max(30)
             .trim()
@@ -28,7 +28,7 @@ const schemas = {
     }),
     AUTH: Joi.object().keys({
         email: Joi.string()
-            .email({ minDomainSegments: 2, tlds: { allow: ['com', 'ca'] } })
+            .email({minDomainSegments: 2, tlds: {allow: ['com', 'ca']}})
             .min(6)
             .max(30)
             .trim()

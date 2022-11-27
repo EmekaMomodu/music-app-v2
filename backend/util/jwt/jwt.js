@@ -8,7 +8,7 @@ const publicKey = fs.readFileSync(path.join(__dirname, 'keys', 'rsa.key.pub'), '
 exports.generateToken = (userId) => {
     try {
         return jwt.sign({userId: userId}, privateKey,
-            { expiresIn: process.env.JWT_EXPIRES_IN, algorithm: 'RS256' }, undefined);
+            {expiresIn: process.env.JWT_EXPIRES_IN, algorithm: 'RS256'}, undefined);
     } catch (error) {
         if (!error.statusCode) error.statusCode = 500;
         throw error;
@@ -17,7 +17,7 @@ exports.generateToken = (userId) => {
 
 exports.verifyToken = (token) => {
     try {
-        return jwt.verify(token, publicKey, { algorithm: 'RS256' }, undefined);
+        return jwt.verify(token, publicKey, {algorithm: 'RS256'}, undefined);
     } catch (error) {
         if (!error.statusCode) error.statusCode = 500;
         throw error;

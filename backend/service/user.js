@@ -2,6 +2,7 @@ const {MESSAGES} = require('../util/constant');
 const User = require('../model/user');
 const UserDto = require("../dto/user");
 const bcrypt = require('bcrypt');
+const rand = require('csprng');
 
 exports.createUser = async (user) => {
     // find user by email to check if email exists already
@@ -11,11 +12,13 @@ exports.createUser = async (user) => {
         error.statusCode = 409;
         throw error;
     }
-    // generate salt and add to user object
-    const salt = bcrypt.genSaltSync(10);
+    // generate cryptographically secure salt and add to user object
+    const salt = rand(160, 36);
     user.salt = salt;
-    // hash password with salt prepended and replace in user object
-    user.password = bcrypt.hashSync(user.password, salt);
+    // prepend salt to provided password
+    const saltPrependedPassword = salt + user.password;
+    // hash saltPrependedPassword replace password in user object
+    user.password = bcrypt.hashSync(saltPrependedPassword, bcrypt.genSaltSync(10));
     // save user to database
     const savedUser = await new User(user).save();
     // return user object dto
