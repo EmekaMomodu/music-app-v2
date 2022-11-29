@@ -19,7 +19,7 @@ exports.verifyToken = (token) => {
     try {
         return jwt.verify(token, publicKey, {algorithm: 'RS256'}, undefined);
     } catch (error) {
-        if (!error.statusCode) error.statusCode = 500;
+        if (!error.statusCode) error.statusCode = 401;
         throw error;
     }
 }
