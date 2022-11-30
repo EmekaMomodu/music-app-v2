@@ -12,3 +12,25 @@ exports.createUser = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.updateUserRoleOrStatus = async (req, res, next) => {
+    try {
+        const user = await userService.updateUserRoleOrStatus(req.body);
+        const response = new Response(MESSAGES.DATA_UPDATED_SUCCESSFULLY, user);
+        res.status(200).json(response);
+    } catch (error) {
+        if (!error.statusCode) error.statusCode = 500;
+        next(error);
+    }
+};
+
+exports.getAllUsers = async (req, res, next) => {
+    try {
+        const users = await userService.getAllUsers();
+        const response = new Response(MESSAGES.DATA_FETCHED_SUCCESSFULLY, users);
+        res.status(200).json(response);
+    } catch (error) {
+        if (!error.statusCode) error.statusCode = 500;
+        next(error);
+    }
+};

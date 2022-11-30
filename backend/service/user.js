@@ -24,3 +24,48 @@ exports.createUser = async (user) => {
     // return user object dto
     return new UserDto(savedUser);
 };
+
+exports.getUserById = async (id) => {
+    // find user by id
+    const user = await User.findById(id).exec();
+    // throw an exception if user does not exist
+    if (!user) {
+        const error = new Error(MESSAGES.NO_DATA_FOUND);
+        error.statusCode = 404;
+        throw error;
+    }
+    // return user object dto
+    return new UserDto(user);
+};
+
+exports.getAllUsers = async () => {
+    // find all users
+    const users = await User.find().exec();
+    // throw an exception if no user exists
+    if (!users || !users.length) {
+        const error = new Error(MESSAGES.NO_DATA_FOUND);
+        error.statusCode = 404;
+        throw error;
+    }
+    // return users object dto
+    return users.map((user) => {
+        return new UserDto(user);
+    })
+};
+
+exports.updateUserRoleOrStatus = async (user) => {
+    // find user by id
+    const existingUser = await User.findById(user.id).exec();
+    // throw an exception if user does not exist
+    if (!existingUser) {
+        const error = new Error(MESSAGES.NO_DATA_FOUND);
+        error.statusCode = 404;
+        throw error;
+    }
+    if (user.role) existingUser.role = user.role;
+    if (user.status) existingUser.status = user.status;
+    // update existingUser on database
+    const updatedUser = await existingUser.save();
+    // return user object dto
+    return new UserDto(updatedUser);
+};

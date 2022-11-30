@@ -2,10 +2,10 @@ class User {
     constructor(user) {
         this.id = user._id;
         this.email = user.email;
-        this.firstname = user.firstname;
-        this.lastname = user.lastname;
+        this.name = user.name;
         this.role = user.role;
         this.status = user.status;
+        this.emailVerifiedFlag = user.email_verified_flag
     }
 }
 

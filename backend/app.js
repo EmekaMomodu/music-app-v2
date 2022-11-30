@@ -30,7 +30,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(validateJwtForSecureRoutes());
+app.use(validateJwtForSecureRoutes);
 
 app.use(`${pathPrefix}/open`, openRoutes);
 
