@@ -30,12 +30,6 @@ exports.getTrackById = async (trackId) => {
 
 exports.searchTracks = async (searchText, maxNoOfRecords) => {
 
-    if (!searchText || !maxNoOfRecords || !/^\+?([1-9]\d*)$/.test(maxNoOfRecords)) {
-        const error = new Error(MESSAGES.ONE_OR_MORE_REQUIRED_REQUEST_PARAMETERS_ARE_MISSING_OR_INVALID);
-        error.statusCode = 400;
-        throw error;
-    }
-
     const tracks = await Track.find({
         $or: [
             {album_title: {$regex: '.*' + searchText + '.*', $options: 'i'}},

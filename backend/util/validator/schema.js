@@ -21,6 +21,7 @@ const schemas = {
             .uppercase()
             .required()
     }),
+
     AUTH: Joi.object().keys({
         email: Joi.string()
             .email({minDomainSegments: 2, tlds: {allow: ['com', 'ca']}})
@@ -34,6 +35,7 @@ const schemas = {
             .max(30)
             .required()
     }),
+
     USER_UPDATE_ROLE_STATUS: Joi.object().keys({
         id: Joi.string()
             .min(1)
@@ -46,6 +48,23 @@ const schemas = {
             .valid(USER_STATUS.ACTIVE, USER_STATUS.DEACTIVATED)
             .optional()
     }).min(2),
+
+    TRACK_SEARCH: Joi.object().keys({
+        searchText: Joi.string()
+            .min(1)
+            .max(20)
+            .required(),
+        maxNoOfRecords: Joi.number()
+            .min(1)
+            .max(50)
+            .required()
+    }),
+
+    TRACK_GET_BY_ID: Joi.object().keys({
+        id: Joi.number()
+            .min(1)
+            .required()
+    })
 };
 
 module.exports = schemas;
