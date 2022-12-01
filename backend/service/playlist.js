@@ -40,31 +40,39 @@ exports.createPlaylist = async (playlist, userId) => {
     return new PlaylistDto(savedPlaylist);
 };
 
-exports.updatePlaylistByName = async (playlist) => {
-
-    let {name, trackIds} = playlist;
-
-    if (!name || !trackIds || !trackIds.length) {
-        const error = new Error(MESSAGES.ONE_OR_MORE_REQUIRED_REQUEST_PARAMETERS_ARE_MISSING_OR_INVALID);
+exports.updatePlaylist = async (playlist, userId) => {
+    // find playlist by id
+    const playlistToUpdate = await Playlist.findById(playlist.id).exec();
+    // throw exception if playlist does not exist
+    if (!playlistToUpdate) {
+        const error = new Error(MESSAGES.PLAYLIST_DOES_NOT_EXIST);
         error.statusCode = 400;
         throw error;
     }
-
-    name = name.trim();
-
-    // find if name does not exist and throw error if yes
-    const existingPlaylist = await Playlist.findOne({name: {$regex: '^' + name + '$', $options: 'i'}}).exec();
-
-    if (!existingPlaylist) {
-        const error = new Error(MESSAGES.PLAYLIST_NAME_DOES_NOT_EXIST);
-        error.statusCode = 400;
+    // ensure user is owner of the playlist
+    if (playlistToUpdate.creator.id !== userId) {
+        const error = new Error(MESSAGES.UNAUTHORIZED_ONLY_PLAYLIST_CREATOR_CAN_PERFORM_THIS_ACTION);
+        error.statusCode = 401;
         throw error;
     }
-
+    // check if new name is different from old name
+    if (playlistToUpdate.name !== playlist.name) {
+        // find if name already exists throw error if yes
+        const foundPlaylist = await Playlist.findOne({name: {$regex: '^' + playlist.name + '$', $options: 'i'}}).exec();
+        // throw exception if playlist exists
+        if (foundPlaylist) {
+            const error = new Error(MESSAGES.PLAYLIST_NAME_ALREADY_EXISTS);
+            error.statusCode = 400;
+            throw error;
+        }
+        playlistToUpdate.name = playlist.name;
+    }
+    // update description
+    playlistToUpdate.description = playlist.description;
     // traverse track list and find if trackIds exist in track collection and get full track details, append to new list
     let existingTrack;
     let tracks = [];
-    for (let trackId of trackIds) {
+    for (let trackId of playlist.trackIds) {
         existingTrack = await Track.findOne({track_id: trackId}).exec();
         if (!existingTrack) {
             const error = new Error(MESSAGES.ONE_OR_MORE_IDS_ARE_INVALID);
@@ -73,36 +81,21 @@ exports.updatePlaylistByName = async (playlist) => {
         }
         tracks.push(existingTrack);
     }
-
-    existingPlaylist.tracks = tracks;
-
-    const updatedPlaylist = await existingPlaylist.save();
-
+    // update tracks
+    playlistToUpdate.tracks = tracks;
+    // update visibility
+    playlistToUpdate.visibility = playlist.visibility;
+    // update last_modified_at
+    playlistToUpdate.last_modified_at = new Date();
+    // save to database
+    const updatedPlaylist = await playlistToUpdate.save();
     if (!updatedPlaylist) {
         const error = new Error(MESSAGES.UNABLE_TO_UPDATE_DATA);
         error.statusCode = 500;
         throw error;
     }
-
-    const tracksDto = updatedPlaylist.tracks.map((track) => {
-        return new TrackDto(
-            track.track_id || null,
-            track.album_id || null,
-            track.album_title || null,
-            track.artist_id || null,
-            track.artist_name || null,
-            track.tags || null,
-            track.track_date_created || null,
-            track.track_date_recorded || null,
-            track.track_duration || null,
-            track.track_genres || null,
-            track.track_number || null,
-            track.track_title || null
-        );
-    });
-
-    return new PlaylistDto(updatedPlaylist._id, updatedPlaylist.name, tracksDto);
-
+    // return updatedPlaylist
+    return new PlaylistDto(updatedPlaylist);
 };
 
 exports.getPlaylistById = async (id) => {

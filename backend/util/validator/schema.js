@@ -80,7 +80,34 @@ const schemas = {
             .min(1)
             .max(100)
             .trim()
+            .optional(),
+        trackIds: Joi.array().items(
+            Joi.number()
+                .min(1)
+                .max(1000000))
+            .min(1)
+            .required(),
+        visibility: Joi.string()
+            .valid(PLAYLIST_VISIBILITY.PRIVATE, PLAYLIST_VISIBILITY.PUBLIC)
+            .optional(),
+    }),
+
+    PLAYLIST_UPDATE: Joi.object().keys({
+        id: Joi.string()
+            .min(1)
+            .max(50)
+            .trim()
+            .required(),
+        name: Joi.string()
+            .min(1)
+            .max(30)
+            .trim()
             .uppercase()
+            .required(),
+        description: Joi.string()
+            .min(1)
+            .max(100)
+            .trim()
             .optional(),
         trackIds: Joi.array().items(
             Joi.number()

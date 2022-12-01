@@ -19,7 +19,8 @@ const MESSAGES = {
     ATTEMPT_A_DIFFERENT_LOGIN_MECHANISM: 'Invalid credentials, attempt a different login mechanism',
     ACCOUNT_DEACTIVATED: 'Account deactivated, kindly contact admin',
     ACCESS_TOKEN_REQUIRED: 'Access token required',
-    ONLY_ADMINS_ARE_ALLOWED: 'Only ADMINS are allowed to perform this action'
+    ONLY_ADMINS_ARE_ALLOWED: 'Only ADMINS are allowed to perform this action',
+    UNAUTHORIZED_ONLY_PLAYLIST_CREATOR_CAN_PERFORM_THIS_ACTION: "Unauthorized ! Only playlist creator can perform this action"
 }
 
 const PLAYLIST_VISIBILITY = {

@@ -11,6 +11,7 @@ const params = 'params';
 
 /** playlist routes */
 router.post('/playlists', validator(schemas.PLAYLIST_CREATE, body), playlistController.createPlaylist);
+router.put('/playlists', validator(schemas.PLAYLIST_UPDATE, body), playlistController.updatePlaylist);
 
 
 module.exports = router;
