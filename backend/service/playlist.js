@@ -3,33 +3,21 @@ const Playlist = require('../model/playlist');
 const Track = require('../model/track');
 const TrackDto = require("../dto/track");
 const PlaylistDto = require('../dto/playlist');
-const ObjectId = require('mongoose').Types.ObjectId;
+const userService = require("./user");
 
-exports.createPlaylist = async (playlist) => {
-
-    let {name, trackIds} = playlist;
-
-    if (!name || !trackIds || !trackIds.length) {
-        const error = new Error(MESSAGES.ONE_OR_MORE_REQUIRED_REQUEST_PARAMETERS_ARE_MISSING_OR_INVALID);
-        error.statusCode = 400;
-        throw error;
-    }
-
-    name = name.trim();
-
+exports.createPlaylist = async (playlist, userId) => {
     // find if name already exists throw error if yes
-    const existingPlaylist = await Playlist.findOne({name: {$regex: '^' + name + '$', $options: 'i'}}).exec();
-
+    const existingPlaylist = await Playlist.findOne({name: {$regex: '^' + playlist.name + '$', $options: 'i'}}).exec();
+    // throw exception if playlist exists
     if (existingPlaylist) {
         const error = new Error(MESSAGES.PLAYLIST_NAME_ALREADY_EXISTS);
         error.statusCode = 400;
         throw error;
     }
-
     // traverse track list and find if trackIds exist in track collection and get full track details, append to new list
     let existingTrack;
     let tracks = [];
-    for (let trackId of trackIds) {
+    for (let trackId of playlist.trackIds) {
         existingTrack = await Track.findOne({track_id: trackId}).exec();
         if (!existingTrack) {
             const error = new Error(MESSAGES.ONE_OR_MORE_IDS_ARE_INVALID);
@@ -38,34 +26,18 @@ exports.createPlaylist = async (playlist) => {
         }
         tracks.push(existingTrack);
     }
-
-    const savedPlaylist = await new Playlist({name: name, tracks: tracks}).save();
-
+    playlist.tracks = tracks;
+    // get user creating the playlist and set as playlist creator
+    playlist.creator = await userService.getUserById(userId);
+    // save playlist to database
+    const savedPlaylist = await new Playlist(playlist).save();
     if (!savedPlaylist) {
         const error = new Error(MESSAGES.UNABLE_TO_SAVE_DATA);
         error.statusCode = 500;
         throw error;
     }
-
-    const tracksDto = savedPlaylist.tracks.map((track) => {
-        return new TrackDto(
-            track.track_id || null,
-            track.album_id || null,
-            track.album_title || null,
-            track.artist_id || null,
-            track.artist_name || null,
-            track.tags || null,
-            track.track_date_created || null,
-            track.track_date_recorded || null,
-            track.track_duration || null,
-            track.track_genres || null,
-            track.track_number || null,
-            track.track_title || null
-        );
-    });
-
-    return new PlaylistDto(savedPlaylist._id, savedPlaylist.name, tracksDto);
-
+    // return savedPlaylist
+    return new PlaylistDto(savedPlaylist);
 };
 
 exports.updatePlaylistByName = async (playlist) => {
@@ -134,13 +106,6 @@ exports.updatePlaylistByName = async (playlist) => {
 };
 
 exports.getPlaylistById = async (id) => {
-
-    if (!ObjectId.isValid(id)) {
-        const error = new Error(MESSAGES.INVALID_ID);
-        error.statusCode = 400;
-        throw error;
-    }
-
     const playlist = await Playlist.findById(id).exec();
 
     if (!playlist) {
@@ -171,13 +136,6 @@ exports.getPlaylistById = async (id) => {
 };
 
 exports.deletePlaylistById = async (id) => {
-
-    if (!ObjectId.isValid(id)) {
-        const error = new Error(MESSAGES.INVALID_ID);
-        error.statusCode = 400;
-        throw error;
-    }
-
     // find if id does not exist and throw error if yes
     const existingPlaylist = await Playlist.findById(id).exec();
 

@@ -4,7 +4,7 @@ const playlistService = require('../service/playlist');
 
 exports.createPlaylist = async (req, res, next) => {
     try {
-        const playlist = await playlistService.createPlaylist(req.body);
+        const playlist = await playlistService.createPlaylist(req.body, req.userId);
         const response = new Response(MESSAGES.DATA_CREATED_SUCCESSFULLY, playlist);
         res.status(201).json(response);
     } catch (error) {

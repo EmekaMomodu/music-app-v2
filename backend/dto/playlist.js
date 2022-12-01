@@ -1,8 +1,20 @@
+const TrackDto = require("../dto/track");
+const ReviewDto = require('../dto/review');
+
 class Playlist {
-    constructor(id, name, tracks) {
-        this.id = id;
-        this.name = name;
-        this.tracks = tracks;
+    constructor(playlist) {
+        this.id = playlist._id;
+        this.name = playlist.name;
+        this.description = playlist.description || null;
+        this.tracks = playlist.tracks.map((track) => {
+            return new TrackDto(track);
+        });
+        this.visibility = playlist.visibility;
+        this.reviews = (playlist.reviews && playlist.reviews.map((review) => {
+            return new ReviewDto(review);
+        })) || [];
+        this.creator = playlist.creator;
+        this.lastModifiedAt = playlist.last_modified_at;
     }
 }
 

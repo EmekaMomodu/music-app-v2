@@ -71,23 +71,40 @@ const playlistSchema = new Schema(
             comment: {
                 type: String
             },
+            creator: {
+                id: {
+                    type: String
+                },
+                email: {
+                    type: String
+                },
+                name: {
+                    type: String
+                }
+            },
+            created_at: {
+                type: Date,
+                default: Date.now
+            },
             hidden_flag: {
                 type: String,
                 default: BINARY_FLAG.NO
             }
         }],
-        created_by: {
-            type: String
+        creator: {
+            id: {
+                type: String
+            },
+            email: {
+                type: String
+            },
+            name: {
+                type: String
+            }
         },
-        created_at: {
+        last_modified_at: {
             type: Date,
             default: Date.now
-        },
-        modified_by: {
-            type: String
-        },
-        modified_at: {
-            type: Date
         }
     }
 );

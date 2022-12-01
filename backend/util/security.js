@@ -13,25 +13,31 @@ const validateJwtForSecureRoutes = async (req, res, next) => {
     if (requestUrl.includes(securePath) || requestUrl.includes(adminPath)) {
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
-        if (token == null) {
+        if (!token) {
             const error = new Error(MESSAGES.ACCESS_TOKEN_REQUIRED);
             error.statusCode = 401;
-            throw error;
+            next(error);
         }
         let jwtClaims;
         try {
             jwtClaims = jwt.verifyToken(token);
         } catch (error) {
             if (!error.statusCode) error.statusCode = 401;
-            throw error;
+            next(error);
         }
         // if route contains /admin, verify that user is an admin
         if (requestUrl.includes(adminPath)) {
-            const user = await userService.getUserById(jwtClaims.userId);
+            let user;
+            try {
+                user = await userService.getUserById(jwtClaims.userId);
+            } catch (error) {
+                error.statusCode = 401;
+                next(error);
+            }
             if (user.role !== USER_ROLE.ADMIN) {
                 const error = new Error(MESSAGES.ONLY_ADMINS_ARE_ALLOWED);
                 error.statusCode = 403;
-                throw error;
+                next(error);
             }
         }
         req.userId = jwtClaims.userId;
