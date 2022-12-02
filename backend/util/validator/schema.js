@@ -126,8 +126,20 @@ const schemas = {
             .max(1000000)
             .trim()
             .required()
-    })
+    }),
 
+    REVIEW_CREATE: Joi.object().keys({
+        playlistId: Joi.string()
+            .min(1)
+            .max(50)
+            .trim()
+            .required(),
+        comment: Joi.string()
+            .min(1)
+            .max(1000000)
+            .trim()
+            .required(),
+    })
 };
 
 module.exports = schemas;

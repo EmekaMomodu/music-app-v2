@@ -23,5 +23,6 @@ router.get('/tracks/:id', validator(schemas.NUMBER_ID, params), trackController.
 
 /** playlist routes */
 router.get('/playlists', playlistController.getAllPublicPlaylistInfo);
+router.get('/playlists/:id', validator(schemas.OBJECT_ID, params), playlistController.getPublicPlaylistById);
 
 module.exports = router;
