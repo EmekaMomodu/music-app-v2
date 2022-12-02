@@ -62,7 +62,7 @@ const schemas = {
             .required()
     }),
 
-    TRACK_GET_BY_ID: Joi.object().keys({
+    NUMBER_ID: Joi.object().keys({
         id: Joi.number()
             .min(1)
             .max(1000000)
@@ -119,6 +119,14 @@ const schemas = {
             .valid(PLAYLIST_VISIBILITY.PRIVATE, PLAYLIST_VISIBILITY.PUBLIC)
             .optional(),
     }),
+
+    OBJECT_ID: Joi.object().keys({
+        id: Joi.string()
+            .min(1)
+            .max(1000000)
+            .trim()
+            .required()
+    })
 
 };
 

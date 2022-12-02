@@ -4,9 +4,9 @@ const authController = require('../controller/auth');
 const trackController = require('../controller/track');
 const schemas = require('../util/validator/schema');
 const validator = require('../util/validator/validator');
+const playlistController = require("../controller/playlist");
 
 const router = express.Router();
-
 const body = 'body';
 const query = 'query';
 const params = 'params';
@@ -19,6 +19,9 @@ router.post('/users', validator(schemas.USER_CREATE, body), userController.creat
 
 /** track routes */
 router.get('/tracks', validator(schemas.TRACK_SEARCH, query), trackController.searchTracks);
-router.get('/tracks/:id', validator(schemas.TRACK_GET_BY_ID, params), trackController.getTrackById);
+router.get('/tracks/:id', validator(schemas.NUMBER_ID, params), trackController.getTrackById);
+
+/** playlist routes */
+router.get('/playlists', playlistController.getAllPublicPlaylistInfo);
 
 module.exports = router;
