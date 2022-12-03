@@ -83,6 +83,17 @@ exports.createReviewForPublicPlaylist = async (req, res, next) => {
     try {
         const playlist = await playlistService.createReviewForPublicPlaylist(req.body, req.userId);
         const response = new Response(MESSAGES.DATA_CREATED_SUCCESSFULLY, playlist);
+        res.status(201).json(response);
+    } catch (error) {
+        if (!error.statusCode) error.statusCode = 500;
+        next(error);
+    }
+};
+
+exports.updatePlaylistReviewHiddenFlag = async (req, res, next) => {
+    try {
+        const playlist = await playlistService.updatePlaylistReviewHiddenFlag(req.body);
+        const response = new Response(MESSAGES.DATA_UPDATED_SUCCESSFULLY, playlist);
         res.status(200).json(response);
     } catch (error) {
         if (!error.statusCode) error.statusCode = 500;
