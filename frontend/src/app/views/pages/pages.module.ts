@@ -8,7 +8,9 @@ import {Page404Component} from './page404/page404.component';
 import {Page500Component} from './page500/page500.component';
 import {ButtonModule, CardModule, FormModule, GridModule} from '@coreui/angular';
 import {IconModule} from '@coreui/icons-angular';
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {LandingComponent} from "./landing/landing.component";
+import {AppModule} from "../../app.module";
 
 
 @NgModule({
@@ -26,7 +28,9 @@ import {LandingComponent} from "./landing/landing.component";
         ButtonModule,
         GridModule,
         IconModule,
-        FormModule
+        FormModule,
+        FontAwesomeModule,
+        AppModule
     ]
 })
 export class PagesModule {

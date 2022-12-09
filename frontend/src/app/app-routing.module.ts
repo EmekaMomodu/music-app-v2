@@ -6,6 +6,7 @@ import {Page404Component} from './views/pages/page404/page404.component';
 import {Page500Component} from './views/pages/page500/page500.component';
 import {LoginComponent} from './views/pages/login/login.component';
 import {RegisterComponent} from './views/pages/register/register.component';
+import {LandingComponent} from "./views/pages/landing/landing.component";
 
 const routes: Routes = [
     {
@@ -70,6 +71,13 @@ const routes: Routes = [
                 loadChildren: () =>
                     import('./views/pages/pages.module').then((m) => m.PagesModule)
             },
+            {
+                path: 'landing',
+                component: LandingComponent,
+                data: {
+                    title: 'Landing Page'
+                }
+            },
         ]
     },
     {
@@ -100,6 +108,13 @@ const routes: Routes = [
             title: 'Register Page'
         }
     },
+    // {
+    //     path: 'landing',
+    //     component: LandingComponent,
+    //     data: {
+    //         title: 'Landing Page'
+    //     }
+    // },
     {path: '**', redirectTo: 'dashboard'}
 ];
 
