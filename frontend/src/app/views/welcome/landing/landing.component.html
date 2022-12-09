@@ -1,5 +1,5 @@
 <div class="bg-light p-5 d-flex flex-row align-items-center">
-    <c-container>
+    <c-container class="mt-5">
         <c-row class="justify-content-center">
             <c-col md="6">
                 <div class="clearfix">
@@ -10,8 +10,8 @@
                         personalized choice of playlist and much more.
                     </p>
                 </div>
-                <a class="d-grid gap-2 col-12 mx-auto" [routerLink]="'/login'">
-                    <button cButton color="primary">
+                <a class="d-grid gap-2 col-12 mx-auto" [routerLink]="'/welcome/login'">
+                    <button cButton color="primary" [disabled]="isLoggedIn">
                         <span class="p-2"><fa-icon [icon]="faRightToBracket"></fa-icon></span>
                         LOGIN AND EXPERIENCE MUCH MORE
                     </button>

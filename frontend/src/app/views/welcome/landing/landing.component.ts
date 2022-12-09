@@ -9,6 +9,7 @@ import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 export class LandingComponent {
 
     faRightToBracket = faRightToBracket;
+    isLoggedIn: boolean = false;
 
     constructor() {
     }
