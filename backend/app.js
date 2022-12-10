@@ -43,7 +43,7 @@ app.use((error, req, res, next) => {
     console.log(error);
     const status = error.statusCode || 500;
     const message = error.message;
-    const response = new Response(message, null);
+    const response = new Response(false, message, null);
     res.status(status).json(response);
 });
 

@@ -5,7 +5,7 @@ const userService = require("../service/user");
 exports.createUser = async (req, res, next) => {
     try {
         const user = await userService.createUser(req.body);
-        const response = new Response(MESSAGES.DATA_CREATED_SUCCESSFULLY, user);
+        const response = new Response(true, MESSAGES.DATA_CREATED_SUCCESSFULLY, user);
         res.status(201).json(response);
     } catch (error) {
         if (!error.statusCode) error.statusCode = 500;
@@ -16,7 +16,7 @@ exports.createUser = async (req, res, next) => {
 exports.updateUserRoleOrStatus = async (req, res, next) => {
     try {
         const user = await userService.updateUserRoleOrStatus(req.body);
-        const response = new Response(MESSAGES.DATA_UPDATED_SUCCESSFULLY, user);
+        const response = new Response(true, MESSAGES.DATA_UPDATED_SUCCESSFULLY, user);
         res.status(200).json(response);
     } catch (error) {
         if (!error.statusCode) error.statusCode = 500;
@@ -27,7 +27,7 @@ exports.updateUserRoleOrStatus = async (req, res, next) => {
 exports.getAllUsers = async (req, res, next) => {
     try {
         const users = await userService.getAllUsers();
-        const response = new Response(MESSAGES.DATA_FETCHED_SUCCESSFULLY, users);
+        const response = new Response(true, MESSAGES.DATA_FETCHED_SUCCESSFULLY, users);
         res.status(200).json(response);
     } catch (error) {
         if (!error.statusCode) error.statusCode = 500;

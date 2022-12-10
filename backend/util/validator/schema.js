@@ -53,7 +53,7 @@ const schemas = {
     TRACK_SEARCH: Joi.object().keys({
         searchText: Joi.string()
             .min(1)
-            .max(20)
+            .max(50)
             .trim()
             .required(),
         maxNoOfRecords: Joi.number()
