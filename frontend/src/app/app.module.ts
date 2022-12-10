@@ -42,6 +42,7 @@ import {
 
 import {IconModule, IconSetService} from '@coreui/icons-angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true,
@@ -83,6 +84,7 @@ const APP_CONTAINERS = [
         ListGroupModule,
         CardModule,
         FontAwesomeModule,
+        NgbModule,
     ],
     providers: [
         {

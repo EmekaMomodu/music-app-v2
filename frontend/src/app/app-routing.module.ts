@@ -21,6 +21,13 @@ const routes: Routes = [
                     import('./views/welcome/welcome.module').then((m) => m.WelcomeModule)
             },
             {
+                path: 'tracks',
+                loadChildren: () =>
+                    import('./views/tracks/tracks.module').then((m) => m.TracksModule)
+            },
+
+
+            {
                 path: 'dashboard',
                 loadChildren: () =>
                     import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule)
