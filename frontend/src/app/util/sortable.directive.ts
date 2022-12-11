@@ -1,6 +1,6 @@
+/** code source: https://ng-bootstrap.github.io/releases/13.x/#/components/table/examples#pagination */
 import { Directive, EventEmitter, Input, Output } from '@angular/core';
 
-// code source: https://ng-bootstrap.github.io/releases/13.x/#/components/table/examples#pagination
 export type SortColumn = keyof any | '';
 export type SortDirection = 'asc' | 'desc' | '';
 const rotate: { [key: string]: SortDirection } = { asc: 'desc', desc: '', '': 'asc' };

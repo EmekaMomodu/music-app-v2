@@ -7,8 +7,8 @@ export interface Track {
     tags?: any;
     dateCreated?: Date;
     dateRecorded?: Date;
-    duration: string;
-    genres: string[];
-    number: number;
-    title: string;
+    duration?: string;
+    genres?: string[];
+    number?: number;
+    title?: string;
 }

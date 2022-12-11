@@ -3,7 +3,7 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 import {ButtonModule, ProgressModule, ToastModule} from '@coreui/angular';
 import {IconSetService} from '@coreui/icons-angular';
-import {iconSubset} from '../../../../icons/icon-subset';
+import {iconSubset} from '../../../../util/icons/icon-subset';
 import {AppToastComponent} from './toast.component';
 
 describe('ToastComponent', () => {

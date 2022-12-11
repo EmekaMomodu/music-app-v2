@@ -43,6 +43,10 @@ import {
 import {IconModule, IconSetService} from '@coreui/icons-angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {AuthInterceptorService} from "./service/interceptor.service";
+import {UtilModule} from "./util/util.module";
+import {ToastsContainer} from "./util/toast/toast-container.component";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true,
@@ -85,6 +89,9 @@ const APP_CONTAINERS = [
         CardModule,
         FontAwesomeModule,
         NgbModule,
+        HttpClientModule,
+        UtilModule,
+        ToastsContainer
     ],
     providers: [
         {
@@ -96,7 +103,12 @@ const APP_CONTAINERS = [
             useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
         },
         IconSetService,
-        Title
+        Title,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptorService,
+            multi: true
+        }
     ],
     bootstrap: [AppComponent],
 })

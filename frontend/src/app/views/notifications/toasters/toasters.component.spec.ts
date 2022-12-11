@@ -4,7 +4,7 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 import {ButtonModule, CardModule, FormModule, GridModule, ProgressModule, ToastModule} from '@coreui/angular';
 import {IconSetService} from '@coreui/icons-angular';
-import {iconSubset} from '../../../icons/icon-subset';
+import {iconSubset} from '../../../util/icons/icon-subset';
 import {DocsComponentsModule} from '../../../../components';
 import {ToastersComponent} from './toasters.component';
 import {AppToastComponent} from './toast-simple/toast.component';

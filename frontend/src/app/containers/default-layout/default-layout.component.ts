@@ -1,12 +1,14 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {navItems} from './_nav';
+import {Observable} from "rxjs";
+import {SpinnerService} from "../../util/spinner/spinner.service";
 
 @Component({
     selector: 'app-landing',
     templateUrl: './default-layout.component.html',
 })
-export class DefaultLayoutComponent {
+export class DefaultLayoutComponent implements OnInit{
 
     public navItems = navItems;
 
@@ -14,6 +16,12 @@ export class DefaultLayoutComponent {
         suppressScrollX: true,
     };
 
-    constructor() {
+    showSpinner$: Observable<boolean> | undefined;
+
+    constructor(private spinnerService: SpinnerService) {
+    }
+
+    ngOnInit(): void {
+        this.showSpinner$ = this.spinnerService.observeShowSpinner;
     }
 }

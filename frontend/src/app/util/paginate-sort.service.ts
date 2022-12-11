@@ -1,16 +1,15 @@
+/** code source: https://ng-bootstrap.github.io/releases/13.x/#/components/table/examples#pagination */
 /* eslint-disable @typescript-eslint/adjacent-overload-signatures */
 import { Injectable, PipeTransform } from '@angular/core';
 
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 
-import { Country } from '../model/country.model';
-import { COUNTRIES } from '../model/country.model';
 import { DecimalPipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
-import { SortColumn, SortDirection } from '../util/sortable.directive';
+import { SortColumn, SortDirection } from './sortable.directive';
 
-interface SearchResult {
-    countries: Country[];
+interface SortPaginateResult {
+    data: any[];
     total: number;
 }
 
@@ -20,63 +19,65 @@ interface State {
     searchTerm: string;
     sortColumn: SortColumn;
     sortDirection: SortDirection;
+    data: any[];
 }
 
 const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
 
-function sort(countries: any[], column: SortColumn, direction: string): any[] {
+function sort(data: any[], column: SortColumn, direction: string): any[] {
     if (direction === '' || column === '') {
-        return countries;
+        return data;
     } else {
-        return [...countries].sort((a, b) => {
+        return [...data].sort((a, b) => {
             const res = compare(a[column], b[column]);
             return direction === 'asc' ? res : -res;
         });
     }
 }
 
-function matches(country: Country, term: string, pipe: PipeTransform) {
-    return (
-        country.name.toLowerCase().includes(term.toLowerCase()) ||
-        pipe.transform(country.area).includes(term) ||
-        pipe.transform(country.population).includes(term)
-    );
-}
+// function matches(country: Country, term: string, pipe: PipeTransform) {
+//     return (
+//         country.name.toLowerCase().includes(term.toLowerCase()) ||
+//         pipe.transform(country.area).includes(term) ||
+//         pipe.transform(country.population).includes(term)
+//     );
+// }
 
 @Injectable({ providedIn: 'root' })
 export class PaginateSortService {
     private _loading$ = new BehaviorSubject<boolean>(true);
-    private _search$ = new Subject<void>();
-    private _countries$ = new BehaviorSubject<Country[]>([]);
+    private _sortAndPaginate$ = new Subject<void>();
+    private _data$ = new BehaviorSubject<any[]>([]);
     private _total$ = new BehaviorSubject<number>(0);
 
     private _state: State = {
         page: 1,
-        pageSize: 4,
+        pageSize: 5,
         searchTerm: '',
         sortColumn: '',
         sortDirection: '',
+        data: []
     };
 
     constructor(private pipe: DecimalPipe) {
-        this._search$
+        this._sortAndPaginate$
             .pipe(
                 tap(() => this._loading$.next(true)),
-                debounceTime(200),
-                switchMap(() => this._search()),
-                delay(200),
+                // debounceTime(200),
+                switchMap(() => this._sortAndPaginate()),
+                // delay(200),
                 tap(() => this._loading$.next(false)),
             )
             .subscribe((result) => {
-                this._countries$.next(result.countries);
+                this._data$.next(result.data);
                 this._total$.next(result.total);
             });
 
-        this._search$.next();
+        this._sortAndPaginate$.next();
     }
 
-    get countries$() {
-        return this._countries$.asObservable();
+    get data$() {
+        return this._data$.asObservable();
     }
     get total$() {
         return this._total$.asObservable();
@@ -110,23 +111,27 @@ export class PaginateSortService {
         this._set({ sortDirection });
     }
 
-    private _set(patch: Partial<State>) {
-        Object.assign(this._state, patch);
-        this._search$.next();
+    set data(data: any[]) {
+        this._set({ data });
     }
 
-    private _search(): Observable<SearchResult> {
-        const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
+    private _set(patch: Partial<State>) {
+        Object.assign(this._state, patch);
+        this._sortAndPaginate$.next();
+    }
+
+    private _sortAndPaginate(): Observable<SortPaginateResult> {
+        const { sortColumn, sortDirection, pageSize, page, searchTerm, data} = this._state;
 
         // 1. sort
-        let countries = sort(COUNTRIES, sortColumn, sortDirection);
+        let dataResult = sort(data, sortColumn, sortDirection);
 
         // 2. filter
-        countries = countries.filter((country) => matches(country, searchTerm, this.pipe));
-        const total = countries.length;
+        // countries = countries.filter((country) => matches(country, searchTerm, this.pipe));
+        const total = dataResult.length;
 
         // 3. paginate
-        countries = countries.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-        return of({ countries, total });
+        dataResult = dataResult.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
+        return of({ data: dataResult, total });
     }
 }
