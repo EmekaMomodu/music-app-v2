@@ -14,63 +14,87 @@
                 </label>
                 <c-input-group>
                     <span cInputGroupText><fa-icon [icon]="faMagnifyingGlass"></fa-icon></span>
-                    <input cFormControl id="searchText" autocomplete="off" placeholder="Search value" [(ngModel)]="searchText" name="searchText"/>
+                    <input [(ngModel)]="searchText" autocomplete="off" cFormControl id="searchText"
+                           name="searchText" placeholder="Search value"/>
                 </c-input-group>
             </c-col>
             <c-col xs="12">
-                <button cButton type="button" (click)="searchTracks()" [disabled]="!searchText.trim()">Search</button>
+                <button (click)="searchTracks()" [disabled]="!searchText.trim()" cButton type="button">Search</button>
             </c-col>
             <c-col xs="12">
-                <button cButton type="button" color="secondary" (click)="reset()" >Reset</button>
+                <button (click)="reset()" cButton color="secondary" type="button">Reset</button>
             </c-col>
         </form>
-        <span class="col col-form-label mt-3" *ngIf="paginateSortService.loading$ | async"> <c-spinner size="sm"></c-spinner> Loading...</span>
-        <table class="table table-striped mt-3">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col" sortable="title" (sort)="onSort($event)">Title</th>
-                <th scope="col" sortable="artistName" (sort)="onSort($event)">Artist</th>
-                <th scope="col" sortable="albumTitle" (sort)="onSort($event)">Album</th>
-                <th scope="col" >Genre(s)</th>
-                <th scope="col" >Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let track of trackList$ | async; let index = index;">
-                <th scope="row">{{ index + 1 }}</th>
-                <td>
-                    <ngb-highlight [result]="track.title" [term]="paginateSortService.searchTerm"></ngb-highlight>
-                </td>
-                <td>
-                    <ngb-highlight [result]="track.artistName" [term]="paginateSortService.searchTerm"></ngb-highlight>
-                </td>
-                <td>
-                    <ngb-highlight [result]="track.albumTitle " [term]="paginateSortService.searchTerm"></ngb-highlight>
-                </td>
-                <td>{{ track.genres | join:', ' }}</td>
-                <td>
-                    <button
-                        [active]="false"
-                        [color]="'info'"
-                        cButton
-                        class="me-1"
-                        variant="outline"
-                    >
-                        View
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <span *ngIf="paginateSortService.loading$ | async" class="col col-form-label mt-3"> <c-spinner
+                size="sm"></c-spinner> Loading...</span>
 
-        <p *ngIf="!trackList || !trackList.length" class="mt-3 center bg-light py-2">No data</p>
+        <div class="table-responsive">
+            <table class="table table-striped mt-3">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th (sort)="onSort($event)" scope="col" sortable="title">
+                        <span class="px-1"><fa-icon [icon]="faSort"></fa-icon></span>Title
+                    </th>
+                    <th (sort)="onSort($event)" scope="col" sortable="artistName">
+                        <span class="px-1"><fa-icon [icon]="faSort"></fa-icon></span>Artist
+                    </th>
+                    <th (sort)="onSort($event)" scope="col" sortable="albumTitle">
+                        <span class="px-1"><fa-icon [icon]="faSort"></fa-icon></span>Album
+                    </th>
+                    <th scope="col">Genre(s)</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let track of trackList$ | async; let index = index;">
+                    <th scope="row">{{ (index + 1) + ((paginateSortService.page - 1) * paginateSortService.pageSize) }}</th>
+                    <td>
+                        <ngb-highlight [result]="track.title" [term]="paginateSortService.searchTerm"></ngb-highlight>
+                    </td>
+                    <td>
+                        <ngb-highlight [result]="track.artistName"
+                                       [term]="paginateSortService.searchTerm"></ngb-highlight>
+                    </td>
+                    <td>
+                        <ngb-highlight [result]="track.albumTitle "
+                                       [term]="paginateSortService.searchTerm"></ngb-highlight>
+                    </td>
+                    <td>
+                        <ngb-highlight [result]="track.genres | join:', '"
+                                       [term]="paginateSortService.searchTerm"></ngb-highlight>
+                    </td>
+                    <td>
+                        <button
+                                [active]="false"
+                                [color]="'info'"
+                                cButton
+                                class="me-1"
+                                variant="outline"
+                                (click) = "openTrackModal(track)"
+                        >
+                            View
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-        <div class="d-flex justify-content-between p-2">
-            <ngb-pagination [collectionSize]="(total$ | async)!" [(page)]="paginateSortService.page" [pageSize]="paginateSortService.pageSize">
-            </ngb-pagination>
+        <p *ngIf="!trackList || !trackList.length" class="mt-2 center bg-light py-2">No data</p>
 
-            <select class="form-select" style="width: auto" name="pageSize" [(ngModel)]="paginateSortService.pageSize">
+        <div class="flex-column flex-sm-row d-flex justify-content-between p-2">
+            <ngb-pagination
+                    [(page)]="paginateSortService.page"
+                    [boundaryLinks]="true"
+                    [collectionSize]="(total$ | async)!"
+                    [ellipses]="false"
+                    [maxSize]="4"
+                    [pageSize]="paginateSortService.pageSize"
+                    [rotate]="true"
+            ></ngb-pagination>
+
+            <select [(ngModel)]="paginateSortService.pageSize" class="form-select" name="pageSize" style="width: auto">
                 <option [ngValue]="5">5 items per page</option>
                 <option [ngValue]="10">10 items per page</option>
                 <option [ngValue]="15">15 items per page</option>

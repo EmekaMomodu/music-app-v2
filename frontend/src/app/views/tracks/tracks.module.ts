@@ -8,9 +8,10 @@ import {
     ButtonModule,
     CardModule,
     FormModule,
-    GridModule,
+    GridModule, ListGroupModule,
     NavModule,
-    ProgressModule, SpinnerModule,
+    ProgressModule,
+    SpinnerModule,
     TableModule,
     TabsModule
 } from '@coreui/angular';
@@ -25,6 +26,7 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {NgbPaginationModule, NgbTypeaheadModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgbdSortableHeader} from "../../util/sortable.directive";
 import {UtilModule} from "../../util/util.module";
+import {TrackModalComponent} from "./track-modal/track-modal.component";
 
 @NgModule({
     imports: [
@@ -50,9 +52,10 @@ import {UtilModule} from "../../util/util.module";
         NgbTypeaheadModule,
         FormsModule,
         SpinnerModule,
-        UtilModule
+        UtilModule,
+        ListGroupModule
     ],
-    declarations: [TracksComponent, NgbdSortableHeader]
+    declarations: [TracksComponent, NgbdSortableHeader, TrackModalComponent]
 })
 export class TracksModule {
 }

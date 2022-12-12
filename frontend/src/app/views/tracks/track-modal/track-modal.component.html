@@ -1,0 +1,93 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-primary-title">Title: <strong>{{track.title}}</strong> </h4>
+    <button
+            (click)="activeModal.dismiss('Cross click')" aria-label="Close" class="btn-close" type="button">
+    </button>
+</div>
+<div class="modal-body centered">
+    <form>
+        <c-row class="mb-3">
+            <label cLabel class="col-sm-2 col-form-label" for="artist">
+                Artist:
+            </label>
+            <c-col sm="10">
+                <input cFormControl id="artist" type="text"
+                       readonly
+                       [plaintext]="true"
+                       [value]="track.artistName"
+                />
+            </c-col>
+        </c-row>
+        <c-row class="mb-3">
+            <label cLabel class="col-sm-2 col-form-label" for="album">
+                Album:
+            </label>
+            <c-col sm="10">
+                <input cFormControl id="album" type="text"
+                       readonly
+                       [plaintext]="true"
+                       [value]="track.albumTitle"
+                />
+            </c-col>
+        </c-row>
+        <fieldset class="row mb-3">
+            <legend class="col-form-label col-sm-2 pt-0">Genre(s):</legend>
+            <c-col sm="10">
+                <ul cListGroup>
+                    <li cListGroupItem *ngFor="let genre of track.genres">{{genre}}</li>
+                </ul>
+            </c-col>
+        </fieldset>
+        <c-row class="mb-3">
+            <label cLabel class="col-sm-2 col-form-label" for="duration">
+                Duration:
+            </label>
+            <c-col sm="10">
+                <input cFormControl id="duration" type="text"
+                       readonly
+                       [plaintext]="true"
+                       [value]="track.duration"
+                />
+            </c-col>
+        </c-row>
+        <c-row class="mb-3">
+            <label cLabel class="col-sm-2 col-form-label" for="numberOnAlbum">
+                Number:
+            </label>
+            <c-col sm="10">
+                <input cFormControl id="numberOnAlbum" type="text"
+                       readonly
+                       [plaintext]="true"
+                       [value]="track.number"
+                />
+            </c-col>
+        </c-row>
+        <c-row class="mb-3">
+            <label cLabel class="col-sm-2 col-form-label" for="dateCreated">
+                Date created:
+            </label>
+            <c-col sm="10">
+                <input cFormControl id="dateCreated" type="text"
+                       readonly
+                       [plaintext]="true"
+                       [value]="track.dateCreated"
+                />
+            </c-col>
+        </c-row>
+        <a cButton
+           target="_blank"
+           type="button"
+           href="https://www.youtube.com/results?search_query={{track.title}}"
+           [color]="'info'"
+        >
+            <fa-icon [icon]="faSquareArrowUpRight"></fa-icon>
+            Play on Youtube
+            <fa-icon [icon]="faYoutube"></fa-icon>
+        </a>
+    </form>
+</div>
+<div class="modal-footer">
+    <button
+            (click)="activeModal.close('Close click')" class="btn btn-outline-dark" type="button">Close
+    </button>
+</div>
