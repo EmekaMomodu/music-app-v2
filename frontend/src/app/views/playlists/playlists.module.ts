@@ -24,7 +24,6 @@ import {WidgetsModule} from '../ui-templates/widgets/widgets.module';
 import {DocsComponentsModule} from "../../../components";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {NgbPaginationModule, NgbTypeaheadModule} from "@ng-bootstrap/ng-bootstrap";
-import {NgbdSortableHeader} from "../../util/sortable.directive";
 import {UtilModule} from "../../util/util.module";
 import {PlaylistModalComponent} from "./playlist-modal/playlist-modal.component";
 
@@ -55,7 +54,7 @@ import {PlaylistModalComponent} from "./playlist-modal/playlist-modal.component"
         UtilModule,
         ListGroupModule
     ],
-    declarations: [PlaylistsComponent, NgbdSortableHeader, PlaylistModalComponent]
+    declarations: [PlaylistsComponent, PlaylistModalComponent]
 })
 export class PlaylistsModule {
 }

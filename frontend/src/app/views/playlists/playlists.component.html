@@ -34,8 +34,8 @@
                 <tbody>
                 <tr *ngFor="let playlist of playlists$ | async; let index = index;">
                     <th scope="row">{{ (index + 1) + ((paginateSortService.page - 1) * paginateSortService.pageSize) }}</th>
-                    <td>{{playlist.name | capitalize}}</td>
-                    <td>{{playlist.creator.name | capitalize}}</td>
+                    <td>{{playlist?.name | capitalize}}</td>
+                    <td>{{playlist?.creator?.name | capitalize}}</td>
                     <td>{{playlist.totalPlayTime}}</td>
                     <td>{{playlist.numberOfTracks}}</td>
                     <td>
