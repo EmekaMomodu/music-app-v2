@@ -12,6 +12,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {TrackModalComponent} from "./track-modal/track-modal.component";
 
 @Component({
+    selector: 'app-tracks',
     templateUrl: 'tracks.component.html',
     styleUrls: ['tracks.component.scss'],
     providers: [DecimalPipe, PaginateSortService]
@@ -71,9 +72,9 @@ export class TracksComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: (error) => {
-                    console.error("error::: " + JSON.stringify(error));
                     this.spinnerService.hide();
-                    this.toastService.showError(error.name + ": " + error.error.message);
+                    console.error("error::: " + JSON.stringify(error));
+                    this.toastService.showError(error.error?.message || error.message);
                 }
             }
         );

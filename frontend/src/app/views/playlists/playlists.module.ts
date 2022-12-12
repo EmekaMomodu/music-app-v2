@@ -17,8 +17,8 @@ import {
 } from '@coreui/angular';
 import {IconModule} from '@coreui/icons-angular';
 
-import {TracksRoutingModule} from './tracks-routing.module';
-import {TracksComponent} from './tracks.component';
+import {PlaylistsRoutingModule} from './playlists-routing.module';
+import {PlaylistsComponent} from './playlists.component';
 
 import {WidgetsModule} from '../ui-templates/widgets/widgets.module';
 import {DocsComponentsModule} from "../../../components";
@@ -26,11 +26,11 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {NgbPaginationModule, NgbTypeaheadModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgbdSortableHeader} from "../../util/sortable.directive";
 import {UtilModule} from "../../util/util.module";
-import {TrackModalComponent} from "./track-modal/track-modal.component";
+import {PlaylistModalComponent} from "./playlist-modal/playlist-modal.component";
 
 @NgModule({
     imports: [
-        TracksRoutingModule,
+        PlaylistsRoutingModule,
         CardModule,
         NavModule,
         IconModule,
@@ -55,7 +55,7 @@ import {TrackModalComponent} from "./track-modal/track-modal.component";
         UtilModule,
         ListGroupModule
     ],
-    declarations: [TracksComponent, NgbdSortableHeader, TrackModalComponent]
+    declarations: [PlaylistsComponent, NgbdSortableHeader, PlaylistModalComponent]
 })
-export class TracksModule {
+export class PlaylistsModule {
 }
