@@ -3,7 +3,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {ButtonModule, DropdownModule, GridModule, WidgetModule} from '@coreui/angular';
 import {IconModule, IconSetService} from '@coreui/icons-angular';
 import {ChartjsModule} from '@coreui/angular-chartjs';
-import {iconSubset} from '../../../icons/icon-subset';
+import {iconSubset} from '../../../util/icons/icon-subset';
 import {WidgetsDropdownComponent} from './widgets-dropdown.component';
 
 describe('WidgetsDropdownComponent', () => {

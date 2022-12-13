@@ -24,6 +24,7 @@ import {DocsComponentsModule} from "../../../components";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {NgbPaginationModule, NgbTypeaheadModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgbdSortableHeader} from "../../util/sortable.directive";
+import {UtilModule} from "../../util/util.module";
 
 @NgModule({
     imports: [
@@ -48,7 +49,8 @@ import {NgbdSortableHeader} from "../../util/sortable.directive";
         NgbPaginationModule,
         NgbTypeaheadModule,
         FormsModule,
-        SpinnerModule
+        SpinnerModule,
+        UtilModule
     ],
     declarations: [TracksComponent, NgbdSortableHeader]
 })

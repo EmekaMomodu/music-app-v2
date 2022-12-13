@@ -12,3 +12,5 @@
     <!--app footer-->
     <app-default-footer></app-default-footer>
 </div>
+<app-spinner-overlay *ngIf="showSpinner$ | async "></app-spinner-overlay>
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

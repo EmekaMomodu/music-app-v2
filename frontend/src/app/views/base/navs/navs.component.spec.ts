@@ -3,7 +3,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 
 import {CardModule, DropdownModule, GridModule, NavModule} from '@coreui/angular';
 import {IconSetService} from '@coreui/icons-angular';
-import {iconSubset} from '../../../icons/icon-subset';
+import {iconSubset} from '../../../util/icons/icon-subset';
 import {NavsComponent} from './navs.component';
 import {DocsComponentsModule} from '../../../../components';
 

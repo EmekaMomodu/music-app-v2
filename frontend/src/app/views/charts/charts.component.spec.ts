@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CardModule, GridModule } from '@coreui/angular';
 import { ChartjsModule } from '@coreui/angular-chartjs';
 import { IconSetService } from '@coreui/icons-angular';
-import { iconSubset } from '../../icons/icon-subset';
+import { iconSubset } from '../../util/icons/icon-subset';
 import { DocsComponentsModule } from '../../../components';
 import { ChartsComponent } from './charts.component';
 
