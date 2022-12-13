@@ -13,9 +13,9 @@ exports.createPlaylist = async (req, res, next) => {
     }
 };
 
-exports.updatePlaylistByName = async (req, res, next) => {
+exports.updatePlaylist = async (req, res, next) => {
     try {
-        const playlist = await playlistService.updatePlaylistByName(req.body);
+        const playlist = await playlistService.updatePlaylist(req.body, req.userId);
         const response = new Response(MESSAGES.DATA_UPDATED_SUCCESSFULLY, playlist);
         res.status(200).json(response);
     } catch (error) {
