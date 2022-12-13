@@ -41,8 +41,8 @@ import {
 } from '@coreui/angular';
 
 import {IconModule, IconSetService} from '@coreui/icons-angular';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptorService} from "./service/interceptor.service";
 import {UtilModule} from "./util/util.module";

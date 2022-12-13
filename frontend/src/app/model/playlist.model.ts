@@ -1,3 +1,7 @@
+import {Creator} from "./creator.model";
+import {Track} from "./track.model";
+import {Review} from "./review.model";
+
 export interface Playlist {
     id?: string;
     name?: string;
@@ -5,10 +9,9 @@ export interface Playlist {
     numberOfTracks?: number;
     totalPlayTime?: string;
     visibility?: string;
-    creator?: {
-        id?: string;
-        email?: string;
-        name?: string
-    };
+    creator?: Creator;
     lastModifiedAt?: Date;
+    averageRating?: number;
+    tracks?: Track[];
+    reviews?: Review[];
 }

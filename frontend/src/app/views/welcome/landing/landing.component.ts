@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
+import {faRightToBracket} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-landing',

@@ -19,7 +19,10 @@
                 </c-input-group>
             </c-col>
             <c-col xs="12">
-                <button (click)="searchTracks()" [disabled]="!searchText.trim()" cButton type="button">Search</button>
+                <button (click)="searchTracks()"
+                        [color]="'info'"
+                        [disabled]="!searchText.trim()" cButton type="button">Search
+                </button>
             </c-col>
             <c-col xs="12">
                 <button (click)="reset()" cButton color="secondary" type="button">Reset</button>
@@ -66,12 +69,12 @@
                     </td>
                     <td>
                         <button
+                                (click)="openTrackModal(track)"
                                 [active]="false"
                                 [color]="'info'"
                                 cButton
                                 class="me-1"
                                 variant="outline"
-                                (click) = "openTrackModal(track)"
                         >
                             View
                         </button>

@@ -1,18 +1,18 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-spinner-overlay',
-  templateUrl: './spinner-overlay.component.html',
-  styleUrls: ['./spinner-overlay.component.scss']
+    selector: 'app-spinner-overlay',
+    templateUrl: './spinner-overlay.component.html',
+    styleUrls: ['./spinner-overlay.component.scss']
 })
 export class SpinnerOverlayComponent implements OnInit {
 
-  @Input() public message: any;
+    @Input() public message: any;
 
-  constructor() {
-  }
+    constructor() {
+    }
 
-  public ngOnInit(): void {
-  }
+    public ngOnInit(): void {
+    }
 
 }

@@ -3,12 +3,13 @@ import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {
-    AvatarModule,
+    AvatarModule, BadgeModule,
     ButtonGroupModule,
     ButtonModule,
-    CardModule,
+    CardModule, CollapseModule,
     FormModule,
-    GridModule, ListGroupModule,
+    GridModule,
+    ListGroupModule,
     NavModule,
     ProgressModule,
     SpinnerModule,
@@ -52,7 +53,9 @@ import {PlaylistModalComponent} from "./playlist-modal/playlist-modal.component"
         FormsModule,
         SpinnerModule,
         UtilModule,
-        ListGroupModule
+        ListGroupModule,
+        CollapseModule,
+        BadgeModule
     ],
     declarations: [PlaylistsComponent, PlaylistModalComponent]
 })
