@@ -1,4 +1,4 @@
-const {MESSAGES, PLAYLIST_VISIBILITY} = require('../util/constant');
+const {MESSAGES, PLAYLIST_VISIBILITY, BINARY_FLAG} = require('../util/constant');
 const Playlist = require('../model/playlist');
 const Track = require('../model/track');
 const PlaylistDto = require('../dto/playlist');
@@ -107,16 +107,21 @@ exports.getPlaylistById = async (playlistId, userId, visibility) => {
         'creator.id': userId
     }).exec();
     // else if visibility is public get public playlist
-    else if (visibility === PLAYLIST_VISIBILITY.PUBLIC) playlist = await Playlist.findOne({
-        _id: playlistId,
-        visibility: PLAYLIST_VISIBILITY.PUBLIC
-    }).exec();
+    else playlist = await Playlist.findOne({_id: playlistId, visibility: PLAYLIST_VISIBILITY.PUBLIC}).exec();
     // throw exception if no playlist found
     if (!playlist) {
         const error = new Error(MESSAGES.NO_DATA_FOUND);
         error.statusCode = 404;
         throw error;
     }
+    // remove all hidden reviews from playlist if visibility is not admin
+    if (visibility !== PLAYLIST_VISIBILITY.ADMIN){
+        playlist.reviews = playlist.reviews.filter((review) => review.hidden_flag === BINARY_FLAG.NO);
+    }
+    // sort playlist reviews by created date desc
+    playlist.reviews = playlist.reviews.sort((a, b) => {
+        return b.created_at - a.created_at;
+    });
     // return found playlist
     return new PlaylistDto(playlist);
 };
@@ -206,6 +211,12 @@ exports.createReviewForPublicPlaylist = async (requestBody, userId) => {
     if (playlist.visibility !== PLAYLIST_VISIBILITY.PUBLIC) {
         const error = new Error(MESSAGES.PLAYLIST_VISIBILITY_IS_NOT_PUBLIC);
         error.statusCode = 400;
+        throw error;
+    }
+    // throw exception if user is creator of playlist
+    if (playlist.creator.id === userId) {
+        const error = new Error(MESSAGES.NOT_ALLOWED_TO_REVIEW_SELF_PLAYLIST);
+        error.statusCode = 403;
         throw error;
     }
     let user;
