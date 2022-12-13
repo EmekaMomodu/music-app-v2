@@ -10,7 +10,7 @@ const validateJwtForSecureRoutes = async (req, res, next) => {
     // validate jwt, throw exception if invalid
     // call next
     const requestUrl = req.originalUrl.toLowerCase();
-    if (requestUrl.includes(securePath) || requestUrl.includes(adminPath)) {
+    if (req.method !== 'OPTIONS' && (requestUrl.includes(securePath) || requestUrl.includes(adminPath))) {
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
         if (!token) {
