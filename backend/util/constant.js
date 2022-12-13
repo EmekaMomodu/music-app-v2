@@ -20,7 +20,8 @@ const MESSAGES = {
     ACCOUNT_DEACTIVATED: 'Account deactivated, kindly contact admin',
     ACCESS_TOKEN_REQUIRED: 'Access token required',
     ONLY_ADMINS_ARE_ALLOWED: 'Only ADMINS are allowed to perform this action',
-    UNAUTHORIZED_ONLY_PLAYLIST_CREATOR_CAN_PERFORM_THIS_ACTION: "Unauthorized ! Only playlist creator can perform this action"
+    UNAUTHORIZED_ONLY_PLAYLIST_CREATOR_CAN_PERFORM_THIS_ACTION: "Unauthorized ! Only playlist creator can perform this action",
+    PLAYLIST_VISIBILITY_IS_NOT_PUBLIC: "Playlist visibility is not public"
 }
 
 const PLAYLIST_VISIBILITY = {

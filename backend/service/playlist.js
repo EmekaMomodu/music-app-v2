@@ -23,7 +23,7 @@ exports.createPlaylist = async (playlist, userId) => {
             error.statusCode = 400;
             throw error;
         }
-        tracks.push(existingTrack);``
+        tracks.push(existingTrack);
     }
     playlist.tracks = tracks;
     // get user creating the playlist and set as playlist creator
@@ -97,9 +97,14 @@ exports.updatePlaylist = async (playlist, userId) => {
     return new PlaylistDto(updatedPlaylist);
 };
 
-exports.getPlaylistById = async (playlistId, userId) => {
-    // find playlist with provided ID that matches userId as the creator
-    const playlist = await Playlist.findOne({_id: playlistId, 'creator.id': userId}).exec();
+exports.getPlaylistById = async (playlistId, userId, visibility) => {
+    // initialise playlist
+    let playlist;
+    // check visibility to determine query
+    // if private, find playlist with provided ID that matches userId as the creator
+    if (visibility === PLAYLIST_VISIBILITY.PRIVATE) playlist = await Playlist.findOne({_id: playlistId, 'creator.id': userId}).exec();
+    // else if visibility is public get public playlist
+    else if (visibility === PLAYLIST_VISIBILITY.PUBLIC) playlist = await Playlist.findOne({_id: playlistId, visibility: PLAYLIST_VISIBILITY.PUBLIC }).exec();
     // throw exception if no playlist found
     if (!playlist) {
         const error = new Error(MESSAGES.NO_DATA_FOUND);
@@ -132,8 +137,8 @@ exports.getAllPlaylistInfo = async (userId, visibility) => {
     let playlists;
     // check visibility to determine query
     // if private, find all playlists created by currently logged-in user
-    if (visibility === PLAYLIST_VISIBILITY.PRIVATE)  playlists = await Playlist.find({'creator.id': userId}).exec();
-    // else if visibility is public
+    if (visibility === PLAYLIST_VISIBILITY.PRIVATE) playlists = await Playlist.find({'creator.id': userId}).exec();
+    // else if visibility is public get public playlist
     else if (visibility === PLAYLIST_VISIBILITY.PUBLIC) playlists = await Playlist.find({visibility: PLAYLIST_VISIBILITY.PUBLIC}).exec();
     // throw exception if no playlist was found
     if (!playlists || !playlists.length) {
@@ -169,6 +174,52 @@ exports.getAllPlaylistInfo = async (userId, visibility) => {
         result.push(item);
     }
     return result;
+};
+
+exports.createReviewForPublicPlaylist = async (requestBody, userId) => {
+    const {comment, playlistId} = requestBody;
+    // find playlist with provided ID
+    const playlist = await Playlist.findById(playlistId).exec();
+    // throw exception if no playlist found
+    if (!playlist) {
+        const error = new Error(MESSAGES.NO_DATA_FOUND);
+        error.statusCode = 404;
+        throw error;
+    }
+    // throw exception if playlist visibility is not public
+    if (playlist.visibility !== PLAYLIST_VISIBILITY.PUBLIC) {
+        const error = new Error(MESSAGES.PLAYLIST_VISIBILITY_IS_NOT_PUBLIC);
+        error.statusCode = 400;
+        throw error;
+    }
+    let user;
+    // get user by id
+    try {
+        user = await userService.getUserById(userId);
+    } catch (error) {
+        if (!error.statusCode) error.statusCode = 500;
+        throw error;
+    }
+    // create a new review object having fields => comment and creator {id, email, name}
+    const review = {
+        comment: comment,
+        creator: {
+            id: user.id,
+            email: user.email,
+            name: user.name
+        }
+    }
+    // push new review to reviews of playlist
+    playlist.reviews.push(review);
+    // save to database
+    const updatedPlaylist = await playlist.save();
+    if (!updatedPlaylist) {
+        const error = new Error(MESSAGES.UNABLE_TO_UPDATE_DATA);
+        error.statusCode = 500;
+        throw error;
+    }
+    // return updatedPlaylist
+    return new PlaylistDto(updatedPlaylist);
 };
 
 const stringPadLeft = (string, pad, length) => {
