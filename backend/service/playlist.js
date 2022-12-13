@@ -180,7 +180,10 @@ exports.getAllPlaylistInfo = async (userId, visibility) => {
         item.lastModifiedAt = playlist.last_modified_at;
         result.push(item);
     }
-    return result;
+    //sort by lastModifiedAt
+    return result.sort((a, b) => {
+        return b.lastModifiedAt - a.lastModifiedAt;
+    });
 };
 
 exports.createReviewForPublicPlaylist = async (requestBody, userId) => {
