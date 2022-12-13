@@ -1,0 +1,78 @@
+<!--<c-header class="mb-4 d-print-none" position="sticky">-->
+<ng-container>
+    <c-container [fluid]="true">
+        <c-header-nav class="d-none d-lg-flex me-auto">
+            <c-nav-item>
+                <div class="container-fluid">
+                    <a class="navbar-brand " routerLink="/">
+                        <img src="/assets/img/brand/coreui-signet.svg" alt="" width="44" height="48" class="d-inline-block">
+                        <b>PAC</b>
+                    </a>
+                </div>
+            </c-nav-item>
+        </c-header-nav>
+
+        <c-header-nav class="d-none d-lg-flex">
+            <c-nav-item>
+                <a cNavLink routerLink="/tracks" routerLinkActive="active">
+                    TRACKS
+                </a>
+            </c-nav-item>
+            <c-nav-item>
+                <a cNavLink routerLink="/playlists" routerLinkActive="active">
+                    PLAYLISTS
+                </a>
+            </c-nav-item>
+            <c-nav-item *ngIf="!isLoggedIn">
+                <a cNavLink routerLink="/my-playlists" routerLinkActive="active">
+                    MY PLAYLISTS
+                </a>
+            </c-nav-item>
+            <c-nav-item *ngIf="isAdmin">
+                <a cNavLink routerLink="/users" routerLinkActive="active">
+                    USERS
+                </a>
+            </c-nav-item>
+            <c-nav-item *ngIf="!isLoggedIn">
+                <a cNavLink routerLink="/login" routerLinkActive="active">
+                    LOGIN
+                </a>
+            </c-nav-item>
+        </c-header-nav>
+        <c-header-nav class="ms-3" *ngIf="!isLoggedIn">
+            <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
+        </c-header-nav>
+
+    </c-container>
+    <c-header-divider></c-header-divider>
+    <c-container [fluid]="true">
+        <c-breadcrumb-router class="ms-2"></c-breadcrumb-router>
+    </c-container>
+</ng-container>
+<!--</c-header>-->
+
+<ng-template #userDropdown>
+    <c-dropdown alignment="end" variant="nav-item">
+        <button
+                [caret]="false"
+                cButton
+                cDropdownToggle
+                class="py-0"
+                color="" >
+            <fa-icon [icon]="faUser" size="xl"></fa-icon>
+        </button>
+        <ul cDropdownMenu class="pt-0 pr-5 w-auto">
+            <li>
+                <h6 cDropdownHeader class="bg-light fw-semibold py-2">Hi {{username}}</h6>
+            </li>
+            <li>
+                <a cDropdownItem routerLink="/logout">
+                    <fa-icon [icon]="faRightFromBracket"></fa-icon>
+                    Logout
+                </a>
+            </li>
+            <li></li>
+        </ul>
+    </c-dropdown>
+</ng-template>
+

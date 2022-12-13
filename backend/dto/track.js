@@ -1,28 +1,19 @@
 class Track {
-    constructor(id,
-                albumId,
-                albumTitle,
-                artistId,
-                artistName,
-                tags,
-                dateCreated,
-                dateRecorded,
-                duration,
-                genres,
-                number,
-                title) {
-        this.id = id;
-        this.albumId = albumId;
-        this.albumTitle = albumTitle;
-        this.artistId = artistId;
-        this.artistName = artistName;
-        this.tags = tags;
-        this.dateCreated = dateCreated;
-        this.dateRecorded = dateRecorded;
-        this.duration = duration;
-        this.genres = genres;
-        this.number = number;
-        this.title = title;
+    constructor(track) {
+        this.id = track.track_id || null;
+        this.albumId = track.album_id || null;
+        this.albumTitle = track.album_title || null;
+        this.artistId = track.artist_id || null;
+        this.artistName = track.artist_name || null;
+        this.tags = track.tags || null;
+        this.dateCreated = track.track_date_created || null;
+        this.dateRecorded = track.track_date_recorded || null;
+        this.duration = track.track_duration || null;
+        this.genres = (track.track_genres && track.track_genres.map((genre) => {
+            return genre.genre_title || null
+        })) || null;
+        this.number = track.track_number || null;
+        this.title = track.track_title || null;
     }
 }
 

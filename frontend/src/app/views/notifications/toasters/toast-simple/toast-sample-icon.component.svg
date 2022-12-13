@@ -1,0 +1,11 @@
+<svg
+        class="rounded me-2"
+        focusable="false"
+        height="20"
+        preserveAspectRatio="xMidYMid slice"
+        role="img"
+        width="20"
+        xmlns="http://www.w3.org/2000/svg"
+>
+    <rect fill="#007aff" height="100%" width="100%"></rect>
+</svg>

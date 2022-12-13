@@ -1,18 +1,27 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 const Response = require('./dto/response');
-const genreRoutes = require('./route/genre');
-const artistRoutes = require('./route/artist');
-const trackRoutes = require('./route/track');
-const playlistRoutes = require('./route/playlist');
+const openRoutes = require('./route/open');
+const secureRoutes = require('./route/secure');
+const adminRoutes = require('./route/admin');
+const helmet = require('helmet');
+const validateJwtForSecureRoutes = require('./util/security');
 
 const app = express();
-const port = 3001;
-const databaseConnectionUrl = 'mongodb+srv://ece9065:ece9065@cluster0.zry6vyf.mongodb.net/?retryWrites=true&w=majority';
 const pathPrefix = '/api';
 
 app.use(bodyParser.json());
+
+// data sanitization against NoSQL query injection
+app.use(mongoSanitize());
+
+// data sanitization against XSS
+app.use(xss());
+
+// Set security HTTP headers
+app.use(helmet());
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -21,14 +30,15 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(`${pathPrefix}/genres`, genreRoutes);
+app.use(validateJwtForSecureRoutes);
 
-app.use(`${pathPrefix}/artists`, artistRoutes);
+app.use(`${pathPrefix}/open`, openRoutes);
 
-app.use(`${pathPrefix}/tracks`, trackRoutes);
+app.use(`${pathPrefix}/secure`, secureRoutes);
 
-app.use(`${pathPrefix}/playlists`, playlistRoutes);
+app.use(`${pathPrefix}/admin`, adminRoutes);
 
+// Error handling middleware
 app.use((error, req, res, next) => {
     console.log(error);
     const status = error.statusCode || 500;
@@ -37,11 +47,4 @@ app.use((error, req, res, next) => {
     res.status(status).json(response);
 });
 
-mongoose.connect(databaseConnectionUrl)
-    .then(result => {
-        app.listen(port, () => {
-            console.log(`App listening on port ${port}`)
-        });
-    })
-    .catch(err => console.log(err));
-
+module.exports = app;
