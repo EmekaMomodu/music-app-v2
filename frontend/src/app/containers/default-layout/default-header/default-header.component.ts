@@ -1,26 +1,37 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {faRightFromBracket, faUser} from '@fortawesome/free-solid-svg-icons';
 
 import {ClassToggleService, HeaderComponent} from '@coreui/angular';
+import {Observable, of} from "rxjs";
+import {AuthService} from "../../../service/auth.service";
 
 @Component({
     selector: 'app-default-header',
     templateUrl: './default-header.component.html',
 })
-export class DefaultHeaderComponent extends HeaderComponent {
+export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
 
     @Input() sidebarId: string = "sidebar";
 
-    public newMessages = new Array(4)
-    public newTasks = new Array(5)
-    public newNotifications = new Array(5)
-    isLoggedIn: boolean = false;
-    username: any = 'Emeka';
-    isAdmin: boolean = true;
+    isLoggedIn$: Observable<boolean> = of(false);
+    isAdmin$: Observable<boolean> = of(false);
+    loggedInUser: any;
     faUser: any = faUser;
     faRightFromBracket: any = faRightFromBracket;
 
-    constructor(private classToggler: ClassToggleService) {
+    constructor(private classToggler: ClassToggleService,
+                private authService: AuthService) {
         super();
+        this.isLoggedIn$ = this.authService.isLoggedIn;
+        this.isAdmin$ = this.authService.isAdmin;
+        this.loggedInUser = this.authService.user.value;
+    }
+
+    ngOnInit(): void {
+    }
+
+
+    logout() {
+        this.authService.logout();
     }
 }

@@ -16,16 +16,16 @@
             <a cNavLink routerLink="/playlists" routerLinkActive="active">
                 PLAYLISTS
             </a>
-            <a *ngIf="!isLoggedIn" cNavLink routerLink="/my-playlists" routerLinkActive="active">
+            <a *ngIf="isLoggedIn$ | async" cNavLink routerLink="/my-playlists" routerLinkActive="active">
                 MY PLAYLISTS
             </a>
-            <a *ngIf="isAdmin" cNavLink routerLink="/users" routerLinkActive="active">
+            <a *ngIf="isAdmin$ | async" cNavLink routerLink="/users" routerLinkActive="active">
                 USERS
             </a>
-            <a *ngIf="!isLoggedIn" cNavLink routerLink="/welcome/login" routerLinkActive="active">
+            <a *ngIf="!(isLoggedIn$ | async)"  cNavLink routerLink="/welcome/login" routerLinkActive="active">
                 LOGIN
             </a>
-            <c-header-nav *ngIf="!isLoggedIn" class="ms-3">
+            <c-header-nav *ngIf="isLoggedIn$ | async" class="ms-3">
                 <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
             </c-header-nav>
         </c-nav>
@@ -49,10 +49,10 @@
         </button>
         <ul cDropdownMenu class="pt-0 pr-5 w-auto">
             <li>
-                <h6 cDropdownHeader class="bg-light fw-semibold py-2">Hi {{username}}</h6>
+                <h6 cDropdownHeader class="bg-light fw-semibold py-2">Hi {{loggedInUser?.name | capitalize}}</h6>
             </li>
             <li>
-                <a cDropdownItem routerLink="/logout">
+                <a cDropdownItem (click)="logout()" class="pointer">
                     <fa-icon [icon]="faRightFromBracket"></fa-icon>
                     Logout
                 </a>

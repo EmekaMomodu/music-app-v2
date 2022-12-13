@@ -5,6 +5,7 @@ import {CapitalizePipe} from "./pipes/capitalize.pipe";
 import {LoadingSpinnerComponent} from "./spinner/loading-spinner/loading-spinner.component";
 import {SpinnerOverlayComponent} from "./spinner/spinner-overlay/spinner-overlay.component";
 import {JoinPipe} from "./pipes/array-to-cs-string.pipe";
+import {NgbdSortableHeader} from "./sortable.directive";
 
 @NgModule({
     declarations: [
@@ -12,7 +13,8 @@ import {JoinPipe} from "./pipes/array-to-cs-string.pipe";
         SpinnerOverlayComponent,
         OrderByPipe,
         CapitalizePipe,
-        JoinPipe
+        JoinPipe,
+        NgbdSortableHeader
     ],
     imports: [
         CommonModule,
@@ -23,7 +25,8 @@ import {JoinPipe} from "./pipes/array-to-cs-string.pipe";
         CommonModule,
         OrderByPipe,
         CapitalizePipe,
-        JoinPipe
+        JoinPipe,
+        NgbdSortableHeader
     ],
     entryComponents: [SpinnerOverlayComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]

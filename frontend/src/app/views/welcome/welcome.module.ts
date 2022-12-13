@@ -7,6 +7,7 @@ import {WelcomeRoutingModule} from "./welcome-routing.module";
 import {LandingComponent} from "./landing/landing.component";
 import {LoginComponent} from "./login/login.component";
 import {RegisterComponent} from "./register/register.component";
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import {RegisterComponent} from "./register/register.component";
         GridModule,
         IconModule,
         FormModule,
-        FontAwesomeModule
+        FontAwesomeModule,
+        FormsModule
     ]
 })
 export class WelcomeModule {

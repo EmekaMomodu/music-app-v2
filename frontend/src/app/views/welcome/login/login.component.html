@@ -9,25 +9,37 @@
                                 <h1>Login</h1>
                                 <p class="text-medium-emphasis">Sign In to your account</p>
                                 <c-input-group class="mb-3">
-                  <span cInputGroupText>
-                    <svg cIcon name="cilUser"></svg>
-                  </span>
-                                    <input autoComplete="username" cFormControl placeholder="Username"/>
+                                      <span cInputGroupText>
+                                        <svg cIcon name="cilUser"></svg>
+                                      </span>
+                                    <input [(ngModel)]="authRequest.email"
+                                           autoComplete="email"
+                                           cFormControl
+                                           type="email"
+                                           name="email"
+                                           placeholder="email"/>
                                 </c-input-group>
                                 <c-input-group class="mb-4">
-                  <span cInputGroupText>
-                    <svg cIcon name="cilLockLocked"></svg>
-                  </span>
+                                      <span cInputGroupText>
+                                        <svg cIcon name="cilLockLocked"></svg>
+                                      </span>
                                     <input
                                             autoComplete="current-password"
                                             cFormControl
                                             placeholder="Password"
                                             type="password"
+                                            name="password"
+                                            [(ngModel)]="authRequest.password"
                                     />
                                 </c-input-group>
                                 <c-row>
                                     <c-col xs="6">
-                                        <button cButton class="px-4" color="primary">
+                                        <button
+                                                cButton
+                                                class="px-4"
+                                                type="button"
+                                                (click)="login()"
+                                                color="primary">
                                             Login
                                         </button>
                                     </c-col>

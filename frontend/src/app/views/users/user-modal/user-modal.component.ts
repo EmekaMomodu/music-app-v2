@@ -5,11 +5,11 @@ import {faSquareArrowUpRight} from '@fortawesome/free-solid-svg-icons';
 import {faYoutube} from '@fortawesome/free-brands-svg-icons';
 
 @Component({
-    selector: 'app-my-playlist-modal',
-    templateUrl: './track-modal.component.html',
-    styleUrls: ['./track-modal.component.scss']
+    selector: 'app-user-modal',
+    templateUrl: './user-modal.component.html',
+    styleUrls: ['./user-modal.component.scss']
 })
-export class TrackModalComponent implements OnInit {
+export class UserModalComponent implements OnInit {
 
     @Input() track: Track = {};
 

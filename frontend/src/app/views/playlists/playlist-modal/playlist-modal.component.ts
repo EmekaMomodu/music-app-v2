@@ -3,6 +3,8 @@ import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {faAngleUp, faSquareArrowUpRight, faAngleDown} from '@fortawesome/free-solid-svg-icons';
 import {Playlist} from "../../../model/playlist.model";
 import {TrackModalComponent} from "../../tracks/track-modal/track-modal.component";
+import {AuthService} from "../../../service/auth.service";
+import {Observable, of} from "rxjs";
 
 @Component({
     selector: 'app-playlist-modal',
@@ -19,11 +21,19 @@ export class PlaylistModalComponent implements OnInit {
     expandOrCollapseReviews: string = 'Expand';
     countToggleTracksButtonClicks: number = 0;
     countToggleReviewsButtonClicks: number = 0;
+    isLoggedIn$: Observable<boolean> = of(false);
+    isAdmin$: Observable<boolean> = of(false);
+    loggedInUser: any;
+
 
     collapses = [false, false];
 
     constructor(public activeModal: NgbActiveModal,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private authService: AuthService) {
+        this.isLoggedIn$ = this.authService.isLoggedIn;
+        this.isAdmin$ = this.authService.isAdmin;
+        this.loggedInUser = this.authService.user.value;
     }
 
     ngOnInit(): void {
