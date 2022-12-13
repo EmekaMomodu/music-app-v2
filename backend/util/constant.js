@@ -21,12 +21,14 @@ const MESSAGES = {
     ACCESS_TOKEN_REQUIRED: 'Access token required',
     ONLY_ADMINS_ARE_ALLOWED: 'Only ADMINS are allowed to perform this action',
     UNAUTHORIZED_ONLY_PLAYLIST_CREATOR_CAN_PERFORM_THIS_ACTION: "Unauthorized ! Only playlist creator can perform this action",
-    PLAYLIST_VISIBILITY_IS_NOT_PUBLIC: "Playlist visibility is not public"
+    PLAYLIST_VISIBILITY_IS_NOT_PUBLIC: "Playlist visibility is not public",
+    NOT_ALLOWED_TO_REVIEW_SELF_PLAYLIST: "Not allowed to review the playlist you created"
 }
 
 const PLAYLIST_VISIBILITY = {
     PRIVATE: 'PRIVATE',
-    PUBLIC: 'PUBLIC'
+    PUBLIC: 'PUBLIC',
+    ADMIN: 'ADMIN'
 }
 
 const BINARY_FLAG = {
