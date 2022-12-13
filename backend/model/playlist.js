@@ -75,9 +75,9 @@ const playlistSchema = new Schema(
                 id: {
                     type: String
                 },
-                email: {
-                    type: String
-                },
+                // email: {
+                //     type: String
+                // },
                 name: {
                     type: String
                 }
@@ -96,9 +96,9 @@ const playlistSchema = new Schema(
                 type: String,
                 index: true
             },
-            email: {
-                type: String
-            },
+            // email: {
+            //     type: String
+            // },
             name: {
                 type: String
             }
