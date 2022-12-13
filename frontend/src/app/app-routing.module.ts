@@ -30,6 +30,18 @@ const routes: Routes = [
                 loadChildren: () =>
                     import('./views/playlists/playlists.module').then((m) => m.PlaylistsModule)
             },
+            {
+                path: 'my-playlists',
+                loadChildren: () =>
+                    import('./views/my-playlists/my-playlists.module').then((m) => m.MyPlaylistsModule)
+            },
+            {
+                path: 'users',
+                loadChildren: () =>
+                    import('./views/users/users.module').then((m) => m.UsersModule)
+            },
+
+
 
 
             {

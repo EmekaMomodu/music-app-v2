@@ -76,8 +76,7 @@
                 <ul cListGroup [visible]="collapses[1]" cCollapse>
                     <li *ngFor="let review of playlist.reviews; let index = index;"
                        cListGroupItem>
-<!--                        TODO change ngIf to is admin check-->
-                        <div *ngIf="true" class="d-flex w-100 justify-content-start mb-2">
+                        <div *ngIf="isAdmin$ | async" class="d-flex w-100 justify-content-start mb-2">
                             <button
                                     [color]="review.hiddenFlag === 'N'? 'danger' : 'success'"
                                     cButton
@@ -110,7 +109,7 @@
     >
         Close
     </button>
-    <div *ngIf="true">
+    <div *ngIf="(isLoggedIn$ | async) && loggedInUser?.id !== playlist.creator?.id">
         <button
                 [color]="'info'"
                 cButton

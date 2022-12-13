@@ -10,7 +10,9 @@
                         personalized choice of playlist and much more.
                     </p>
                 </div>
-                <a [routerLink]="'/welcome/login'" class="d-grid gap-2 col-12 mx-auto">
+                <a *ngIf="!(isLoggedIn$ | async)"
+                   [routerLink]="'/welcome/login'"
+                   class="d-grid gap-2 col-12 mx-auto">
                     <button [disabled]="isLoggedIn" cButton color="primary">
                         <span class="p-2"><fa-icon [icon]="faRightToBracket"></fa-icon></span>
                         LOGIN AND EXPERIENCE MUCH MORE

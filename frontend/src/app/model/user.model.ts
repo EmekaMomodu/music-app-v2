@@ -4,6 +4,8 @@ export class User {
         public name: string,
         public email: string,
         public role: string,
+        public status: string,
+        public emailVerifiedFlag: string,
         private _token: string,
         private _tokenExpirationDate: Date
     ) {

@@ -6,10 +6,10 @@ import {faYoutube} from '@fortawesome/free-brands-svg-icons';
 
 @Component({
     selector: 'app-my-playlist-modal',
-    templateUrl: './track-modal.component.html',
-    styleUrls: ['./track-modal.component.scss']
+    templateUrl: './my-playlist-modal.component.html',
+    styleUrls: ['./my-playlist-modal.component.scss']
 })
-export class TrackModalComponent implements OnInit {
+export class MyPlaylistModalComponent implements OnInit {
 
     @Input() track: Track = {};
 
