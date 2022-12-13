@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const {USER_ROLE, USER_STATUS, PLAYLIST_VISIBILITY} = require("../constant");
+const {USER_ROLE, USER_STATUS, PLAYLIST_VISIBILITY, BINARY_FLAG} = require("../constant");
 
 const schemas = {
     USER_CREATE: Joi.object().keys({
@@ -138,6 +138,22 @@ const schemas = {
             .min(1)
             .max(1000000)
             .trim()
+            .required(),
+    }),
+
+    REVIEW_UPDATE: Joi.object().keys({
+        playlistId: Joi.string()
+            .min(1)
+            .max(50)
+            .trim()
+            .required(),
+        reviewId: Joi.string()
+            .min(1)
+            .max(50)
+            .trim()
+            .required(),
+        hiddenFlag: Joi.string()
+            .valid(BINARY_FLAG.NO, BINARY_FLAG.YES)
             .required(),
     })
 };

@@ -222,6 +222,37 @@ exports.createReviewForPublicPlaylist = async (requestBody, userId) => {
     return new PlaylistDto(updatedPlaylist);
 };
 
+exports.updatePlaylistReviewHiddenFlag = async (requestBody) => {
+    const {playlistId, reviewId, hiddenFlag} = requestBody;
+    // find playlist by id
+    const playlist = await Playlist.findById(playlistId);
+    // throw exception if playlist not found
+    if (!playlist) {
+        const error = new Error(MESSAGES.NO_DATA_FOUND);
+        error.statusCode = 404;
+        throw error;
+    }
+    let reviewNotfound = true;
+    // traverse reviews on playlist and update hidden flag for review matching review id
+    for(let review of playlist.reviews) {
+        if(review._id.toString() === reviewId) {
+            review.hidden_flag = hiddenFlag;
+            reviewNotfound = false;
+            break;
+        }
+    }
+    // throw exception if review not found
+    if (reviewNotfound) {
+        const error = new Error(MESSAGES.NO_DATA_FOUND);
+        error.statusCode = 404;
+        throw error;
+    }
+    // save playlist
+    const updatedPlaylist = await playlist.save();
+    // return playlist
+    return new PlaylistDto(updatedPlaylist);
+};
+
 const stringPadLeft = (string, pad, length) => {
     return (new Array(length + 1).join(pad) + string).slice(-length);
 }

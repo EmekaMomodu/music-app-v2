@@ -13,6 +13,6 @@ router.put('/playlists', validator(schemas.PLAYLIST_UPDATE, body), playlistContr
 router.get('/playlists/:id', validator(schemas.OBJECT_ID, params), playlistController.getPlaylistById);
 router.delete('/playlists/:id', validator(schemas.OBJECT_ID, params), playlistController.deletePlaylistById);
 router.get('/playlists', playlistController.getAllPlaylistInfo);
-router.patch('/playlists/reviews', validator(schemas.REVIEW_CREATE, body), playlistController.createReviewForPublicPlaylist);
+router.post('/playlists/reviews', validator(schemas.REVIEW_CREATE, body), playlistController.createReviewForPublicPlaylist);
 
 module.exports = router;
