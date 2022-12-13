@@ -100,3 +100,14 @@ exports.updatePlaylistReviewHiddenFlag = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.getPublicPlaylistByIdForAdmin = async (req, res, next) => {
+    try {
+        const playlist = await playlistService.getPlaylistById(req.params.id, undefined, PLAYLIST_VISIBILITY.ADMIN);
+        const response = new Response(true, MESSAGES.DATA_FETCHED_SUCCESSFULLY, playlist);
+        res.status(200).json(response);
+    } catch (error) {
+        if (!error.statusCode) error.statusCode = 500;
+        next(error);
+    }
+};
