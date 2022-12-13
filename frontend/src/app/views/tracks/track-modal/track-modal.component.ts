@@ -5,7 +5,7 @@ import {faSquareArrowUpRight} from '@fortawesome/free-solid-svg-icons';
 import {faYoutube} from '@fortawesome/free-brands-svg-icons';
 
 @Component({
-    selector: 'app-view-sub-segment-for-entity-modal',
+    selector: 'app-track-modal',
     templateUrl: './track-modal.component.html',
     styleUrls: ['./track-modal.component.scss']
 })

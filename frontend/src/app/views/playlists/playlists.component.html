@@ -1,0 +1,79 @@
+<c-card class="mb-4">
+    <c-card-header ngPreserveWhitespaces>
+        <strong>Public Playlists</strong>
+    </c-card-header>
+    <c-card-body>
+        <p class="text-medium-emphasis small">
+            All playlists made <code>Public</code> by PAC users are displayed here.
+            You can sign in and start creating your own playlists.
+        </p>
+
+        <form cForm class="row row-cols-lg-auto g-3 align-items-end">
+            <c-col xs="12">
+                <button (click)="refresh()" cButton color="secondary" type="button">
+                    <fa-icon [icon]="faArrowsRotate"></fa-icon>
+                </button>
+            </c-col>
+        </form>
+
+        <span *ngIf="paginateSortService.loading$ | async" class="col col-form-label mt-3"> <c-spinner
+                size="sm"></c-spinner> Loading...</span>
+
+        <div class="table-responsive">
+            <table class="table table-striped mt-3">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Playlist Name</th>
+                    <th scope="col">Creator</th>
+                    <th scope="col">Total Playtime</th>
+                    <th scope="col">Number of tracks</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let playlist of playlists$ | async; let index = index;">
+                    <th scope="row">{{ (index + 1) + ((paginateSortService.page - 1) * paginateSortService.pageSize) }}</th>
+                    <td>{{playlist.name | capitalize}}</td>
+                    <td>{{playlist.creator.name | capitalize}}</td>
+                    <td>{{playlist.totalPlayTime}}</td>
+                    <td>{{playlist.numberOfTracks}}</td>
+                    <td>
+                        <button
+                                [active]="false"
+                                [color]="'info'"
+                                cButton
+                                class="me-1"
+                                variant="outline"
+                                (click) = "openPlaylistModal(playlist)"
+                        >
+                            View
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p *ngIf="!playlists || !playlists.length" class="mt-2 center bg-light py-2">No data</p>
+
+        <div class="flex-column flex-sm-row d-flex justify-content-between p-2">
+            <ngb-pagination
+                    [(page)]="paginateSortService.page"
+                    [boundaryLinks]="true"
+                    [collectionSize]="(total$ | async)!"
+                    [ellipses]="false"
+                    [maxSize]="4"
+                    [pageSize]="paginateSortService.pageSize"
+                    [rotate]="true"
+            ></ngb-pagination>
+
+            <select [(ngModel)]="paginateSortService.pageSize" class="form-select" name="pageSize" style="width: auto">
+                <option [ngValue]="5">5 items per page</option>
+                <option [ngValue]="10">10 items per page</option>
+                <option [ngValue]="15">15 items per page</option>
+            </select>
+        </div>
+
+    </c-card-body>
+</c-card>
