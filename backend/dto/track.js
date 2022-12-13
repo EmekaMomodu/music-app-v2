@@ -20,7 +20,9 @@ class Track {
         this.dateCreated = dateCreated;
         this.dateRecorded = dateRecorded;
         this.duration = duration;
-        this.genres = genres;
+        this.genres = genres.map((genre) => {
+            return genre.genre_title || null
+        });
         this.number = number;
         this.title = title;
     }

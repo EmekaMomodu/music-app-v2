@@ -1,4 +1,4 @@
-const messages = require('../util/message');
+const {MESSAGES} = require('../util/constant');
 const Playlist = require('../model/playlist');
 const Track = require('../model/track');
 const TrackDto = require("../dto/track");
@@ -10,7 +10,7 @@ exports.createPlaylist = async (playlist) => {
     let {name, trackIds} = playlist;
 
     if (!name || !trackIds || !trackIds.length) {
-        const error = new Error(messages.ONE_OR_MORE_REQUIRED_REQUEST_PARAMETERS_ARE_MISSING_OR_INVALID);
+        const error = new Error(MESSAGES.ONE_OR_MORE_REQUIRED_REQUEST_PARAMETERS_ARE_MISSING_OR_INVALID);
         error.statusCode = 400;
         throw error;
     }
@@ -21,7 +21,7 @@ exports.createPlaylist = async (playlist) => {
     const existingPlaylist = await Playlist.findOne({name: {$regex: '^' + name + '$', $options: 'i'}}).exec();
 
     if (existingPlaylist) {
-        const error = new Error(messages.PLAYLIST_NAME_ALREADY_EXISTS);
+        const error = new Error(MESSAGES.PLAYLIST_NAME_ALREADY_EXISTS);
         error.statusCode = 400;
         throw error;
     }
@@ -32,7 +32,7 @@ exports.createPlaylist = async (playlist) => {
     for (let trackId of trackIds) {
         existingTrack = await Track.findOne({track_id: trackId}).exec();
         if (!existingTrack) {
-            const error = new Error(messages.ONE_OR_MORE_IDS_ARE_INVALID);
+            const error = new Error(MESSAGES.ONE_OR_MORE_IDS_ARE_INVALID);
             error.statusCode = 400;
             throw error;
         }
@@ -42,7 +42,7 @@ exports.createPlaylist = async (playlist) => {
     const savedPlaylist = await new Playlist({name: name, tracks: tracks}).save();
 
     if (!savedPlaylist) {
-        const error = new Error(messages.UNABLE_TO_SAVE_DATA);
+        const error = new Error(MESSAGES.UNABLE_TO_SAVE_DATA);
         error.statusCode = 500;
         throw error;
     }
@@ -73,7 +73,7 @@ exports.updatePlaylistByName = async (playlist) => {
     let {name, trackIds} = playlist;
 
     if (!name || !trackIds || !trackIds.length) {
-        const error = new Error(messages.ONE_OR_MORE_REQUIRED_REQUEST_PARAMETERS_ARE_MISSING_OR_INVALID);
+        const error = new Error(MESSAGES.ONE_OR_MORE_REQUIRED_REQUEST_PARAMETERS_ARE_MISSING_OR_INVALID);
         error.statusCode = 400;
         throw error;
     }
@@ -84,7 +84,7 @@ exports.updatePlaylistByName = async (playlist) => {
     const existingPlaylist = await Playlist.findOne({name: {$regex: '^' + name + '$', $options: 'i'}}).exec();
 
     if (!existingPlaylist) {
-        const error = new Error(messages.PLAYLIST_NAME_DOES_NOT_EXIST);
+        const error = new Error(MESSAGES.PLAYLIST_NAME_DOES_NOT_EXIST);
         error.statusCode = 400;
         throw error;
     }
@@ -95,7 +95,7 @@ exports.updatePlaylistByName = async (playlist) => {
     for (let trackId of trackIds) {
         existingTrack = await Track.findOne({track_id: trackId}).exec();
         if (!existingTrack) {
-            const error = new Error(messages.ONE_OR_MORE_IDS_ARE_INVALID);
+            const error = new Error(MESSAGES.ONE_OR_MORE_IDS_ARE_INVALID);
             error.statusCode = 400;
             throw error;
         }
@@ -107,7 +107,7 @@ exports.updatePlaylistByName = async (playlist) => {
     const updatedPlaylist = await existingPlaylist.save();
 
     if (!updatedPlaylist) {
-        const error = new Error(messages.UNABLE_TO_UPDATE_DATA);
+        const error = new Error(MESSAGES.UNABLE_TO_UPDATE_DATA);
         error.statusCode = 500;
         throw error;
     }
@@ -136,7 +136,7 @@ exports.updatePlaylistByName = async (playlist) => {
 exports.getPlaylistById = async (id) => {
 
     if (!ObjectId.isValid(id)) {
-        const error = new Error(messages.INVALID_ID);
+        const error = new Error(MESSAGES.INVALID_ID);
         error.statusCode = 400;
         throw error;
     }
@@ -144,7 +144,7 @@ exports.getPlaylistById = async (id) => {
     const playlist = await Playlist.findById(id).exec();
 
     if (!playlist) {
-        const error = new Error(messages.NO_DATA_FOUND);
+        const error = new Error(MESSAGES.NO_DATA_FOUND);
         error.statusCode = 404;
         throw error;
     }
@@ -173,7 +173,7 @@ exports.getPlaylistById = async (id) => {
 exports.deletePlaylistById = async (id) => {
 
     if (!ObjectId.isValid(id)) {
-        const error = new Error(messages.INVALID_ID);
+        const error = new Error(MESSAGES.INVALID_ID);
         error.statusCode = 400;
         throw error;
     }
@@ -182,7 +182,7 @@ exports.deletePlaylistById = async (id) => {
     const existingPlaylist = await Playlist.findById(id).exec();
 
     if (!existingPlaylist) {
-        const error = new Error(messages.PLAYLIST_DOES_NOT_EXIST);
+        const error = new Error(MESSAGES.PLAYLIST_DOES_NOT_EXIST);
         error.statusCode = 404;
         throw error;
     }
@@ -197,7 +197,7 @@ exports.getAllPlaylistInfo = async () => {
     console.log("playlists ::: " + playlists);
 
     if (!playlists || !playlists.length) {
-        const error = new Error(messages.NO_DATA_FOUND);
+        const error = new Error(MESSAGES.NO_DATA_FOUND);
         error.statusCode = 404;
         throw error;
     }

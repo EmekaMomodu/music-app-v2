@@ -1,4 +1,4 @@
-const messages = require('../util/message');
+const {MESSAGES} = require('../util/constant');
 const Track = require('../model/track');
 const TrackDto = require('../dto/track');
 
@@ -7,7 +7,7 @@ exports.getTrackById = async (trackId) => {
     const track = await Track.findOne({track_id: trackId}).exec();
 
     if (!track) {
-        const error = new Error(messages.NO_DATA_FOUND);
+        const error = new Error(MESSAGES.NO_DATA_FOUND);
         error.statusCode = 404;
         throw error;
     }
@@ -28,10 +28,10 @@ exports.getTrackById = async (trackId) => {
     );
 };
 
-exports.searchTracksByTitleOrAlbumOrArtist = async (searchText, maxNoOfRecords) => {
+exports.searchTracks = async (searchText, maxNoOfRecords) => {
 
     if (!searchText || !maxNoOfRecords || !/^\+?([1-9]\d*)$/.test(maxNoOfRecords)) {
-        const error = new Error(messages.ONE_OR_MORE_REQUIRED_REQUEST_PARAMETERS_ARE_MISSING_OR_INVALID);
+        const error = new Error(MESSAGES.ONE_OR_MORE_REQUIRED_REQUEST_PARAMETERS_ARE_MISSING_OR_INVALID);
         error.statusCode = 400;
         throw error;
     }
@@ -40,12 +40,13 @@ exports.searchTracksByTitleOrAlbumOrArtist = async (searchText, maxNoOfRecords) 
         $or: [
             {album_title: {$regex: '.*' + searchText + '.*', $options: 'i'}},
             {track_title: {$regex: '.*' + searchText + '.*', $options: 'i'}},
-            {artist_name: {$regex: '.*' + searchText + '.*', $options: 'i'}}
+            {artist_name: {$regex: '.*' + searchText + '.*', $options: 'i'}},
+            {'track_genres.genre_title': {$regex: '.*' + searchText + '.*', $options: 'i'}}
         ]
     }).limit(maxNoOfRecords).exec();
 
     if (!tracks || !tracks.length) {
-        const error = new Error(messages.NO_DATA_FOUND);
+        const error = new Error(MESSAGES.NO_DATA_FOUND);
         error.statusCode = 404;
         throw error;
     }
