@@ -4,7 +4,7 @@ const MESSAGES = {
     ONE_OR_MORE_REQUIRED_REQUEST_PARAMETERS_ARE_MISSING_OR_INVALID: 'One/more required request parameters is/are missing or invalid',
     PLAYLIST_NAME_ALREADY_EXISTS: 'Playlist name already exists',
     USER_WITH_EMAIL_ALREADY_EXISTS: 'User with email already exists',
-    ONE_OR_MORE_IDS_ARE_INVALID: 'One/more IDs are invalid',
+    ONE_OR_MORE_IDS_ARE_INVALID: 'One/more track IDs are invalid',
     UNABLE_TO_SAVE_DATA: 'Unable to save data',
     DATA_CREATED_SUCCESSFULLY: 'Data created successfully',
     DATA_UPDATED_SUCCESSFULLY: 'Data updated successfully',

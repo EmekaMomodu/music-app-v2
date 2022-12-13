@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const {USER_ROLE, USER_STATUS} = require("../constant");
+const {USER_ROLE, USER_STATUS, PLAYLIST_VISIBILITY} = require("../constant");
 
 const schemas = {
     USER_CREATE: Joi.object().keys({
@@ -40,6 +40,7 @@ const schemas = {
         id: Joi.string()
             .min(1)
             .max(50)
+            .trim()
             .required(),
         role: Joi.string()
             .valid(USER_ROLE.USER, USER_ROLE.ADMIN)
@@ -53,6 +54,7 @@ const schemas = {
         searchText: Joi.string()
             .min(1)
             .max(20)
+            .trim()
             .required(),
         maxNoOfRecords: Joi.number()
             .min(1)
@@ -63,8 +65,34 @@ const schemas = {
     TRACK_GET_BY_ID: Joi.object().keys({
         id: Joi.number()
             .min(1)
+            .max(1000000)
             .required()
-    })
+    }),
+
+    PLAYLIST_CREATE: Joi.object().keys({
+        name: Joi.string()
+            .min(1)
+            .max(30)
+            .trim()
+            .uppercase()
+            .required(),
+        description: Joi.string()
+            .min(1)
+            .max(100)
+            .trim()
+            .uppercase()
+            .optional(),
+        trackIds: Joi.array().items(
+            Joi.number()
+                .min(1)
+                .max(1000000))
+            .min(1)
+            .required(),
+        visibility: Joi.string()
+            .valid(PLAYLIST_VISIBILITY.PRIVATE, PLAYLIST_VISIBILITY.PUBLIC)
+            .optional(),
+    }),
+
 };
 
 module.exports = schemas;
