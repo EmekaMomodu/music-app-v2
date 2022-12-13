@@ -16,7 +16,8 @@ const userSchema = new Schema(
             type: String
         },
         name: {
-            type: String
+            type: String,
+            index: {unique: true}
         },
         role: {
             type: String,

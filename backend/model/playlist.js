@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const {BINARY_FLAG, PLAYLIST_VISIBILITY} = require('../util/constant');
+const {number} = require("joi");
 
 const Schema = mongoose.Schema;
 
@@ -70,6 +71,10 @@ const playlistSchema = new Schema(
         reviews: [{
             comment: {
                 type: String
+            },
+            rating: {
+                type: Number,
+                default: 0
             },
             creator: {
                 id: {

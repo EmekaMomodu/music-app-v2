@@ -134,6 +134,10 @@ const schemas = {
             .max(50)
             .trim()
             .required(),
+        rating: Joi.number()
+            .min(0)
+            .max(5)
+            .required(),
         comment: Joi.string()
             .min(1)
             .max(1000000)

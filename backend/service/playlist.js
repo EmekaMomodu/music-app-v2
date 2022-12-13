@@ -175,6 +175,12 @@ exports.getAllPlaylistInfo = async (userId, visibility) => {
         // beautify minutes and seconds with zero padding to the left
         item.totalPlayTime =
             stringPadLeft(totalMinutes, '0', 2) + ':' + stringPadLeft(totalSeconds, '0', 2);
+        // calculate average rating: sum up all ratings and divide by reviews length
+        let totalRating = 0;
+        playlist.reviews.forEach((review) => {
+            totalRating += review.rating;
+        });
+        item.averageRating = totalRating / playlist.reviews.length || 0;
         item.visibility = playlist.visibility;
         item.creator = playlist.creator;
         item.lastModifiedAt = playlist.last_modified_at;
@@ -187,7 +193,7 @@ exports.getAllPlaylistInfo = async (userId, visibility) => {
 };
 
 exports.createReviewForPublicPlaylist = async (requestBody, userId) => {
-    const {comment, playlistId} = requestBody;
+    const {comment, rating, playlistId} = requestBody;
     // find playlist with provided ID
     const playlist = await Playlist.findById(playlistId).exec();
     // throw exception if no playlist found
@@ -213,6 +219,7 @@ exports.createReviewForPublicPlaylist = async (requestBody, userId) => {
     // create a new review object having fields => comment and creator {id, email, name}
     const review = {
         comment: comment,
+        rating: rating,
         creator: {
             id: user.id,
             // email: user.email,
