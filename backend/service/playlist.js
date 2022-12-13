@@ -102,9 +102,15 @@ exports.getPlaylistById = async (playlistId, userId, visibility) => {
     let playlist;
     // check visibility to determine query
     // if private, find playlist with provided ID that matches userId as the creator
-    if (visibility === PLAYLIST_VISIBILITY.PRIVATE) playlist = await Playlist.findOne({_id: playlistId, 'creator.id': userId}).exec();
+    if (visibility === PLAYLIST_VISIBILITY.PRIVATE) playlist = await Playlist.findOne({
+        _id: playlistId,
+        'creator.id': userId
+    }).exec();
     // else if visibility is public get public playlist
-    else if (visibility === PLAYLIST_VISIBILITY.PUBLIC) playlist = await Playlist.findOne({_id: playlistId, visibility: PLAYLIST_VISIBILITY.PUBLIC }).exec();
+    else if (visibility === PLAYLIST_VISIBILITY.PUBLIC) playlist = await Playlist.findOne({
+        _id: playlistId,
+        visibility: PLAYLIST_VISIBILITY.PUBLIC
+    }).exec();
     // throw exception if no playlist found
     if (!playlist) {
         const error = new Error(MESSAGES.NO_DATA_FOUND);
@@ -167,7 +173,8 @@ exports.getAllPlaylistInfo = async (userId, visibility) => {
         let totalMinutes = Math.floor(totalPlayTime / 60);
         let totalSeconds = totalPlayTime - (totalMinutes * 60);
         // beautify minutes and seconds with zero padding to the left
-        item.totalPlayTime = stringPadLeft(totalMinutes, '0', 2) + ':' + stringPadLeft(totalSeconds, '0', 2);
+        item.totalPlayTime =
+            stringPadLeft(totalMinutes, '0', 2) + ':' + stringPadLeft(totalSeconds, '0', 2);
         item.visibility = playlist.visibility;
         item.creator = playlist.creator;
         item.lastModifiedAt = playlist.last_modified_at;
@@ -234,8 +241,8 @@ exports.updatePlaylistReviewHiddenFlag = async (requestBody) => {
     }
     let reviewNotfound = true;
     // traverse reviews on playlist and update hidden flag for review matching review id
-    for(let review of playlist.reviews) {
-        if(review._id.toString() === reviewId) {
+    for (let review of playlist.reviews) {
+        if (review._id.toString() === reviewId) {
             review.hidden_flag = hiddenFlag;
             reviewNotfound = false;
             break;
