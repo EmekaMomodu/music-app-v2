@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import {faMagnifyingGlass, faSort} from '@fortawesome/free-solid-svg-icons';
 import {Observable} from "rxjs";
 import {NgbdSortableHeader, SortEvent} from "../../util/sortable.directive";
 import {PaginateSortService} from "../../util/paginate-sort.service";
@@ -8,6 +8,8 @@ import {TrackService} from "../../service/track.service";
 import {Track} from "../../model/track.model";
 import {SpinnerService} from "../../util/spinner/spinner.service";
 import {ToastService} from "../../util/toast/toast.service";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {TrackModalComponent} from "./track-modal/track-modal.component";
 
 @Component({
     templateUrl: 'tracks.component.html',
@@ -16,6 +18,7 @@ import {ToastService} from "../../util/toast/toast.service";
 })
 export class TracksComponent implements OnInit, OnDestroy {
     faMagnifyingGlass: any = faMagnifyingGlass;
+    faSort: any = faSort;
 
     trackList$: Observable<Track[]>;
     total$: Observable<number>;
@@ -29,7 +32,8 @@ export class TracksComponent implements OnInit, OnDestroy {
     constructor(public paginateSortService: PaginateSortService,
                 private trackService: TrackService,
                 private spinnerService: SpinnerService,
-                private toastService: ToastService) {
+                private toastService: ToastService,
+                private modalService: NgbModal) {
         this.trackList$ = paginateSortService.data$;
         this.total$ = paginateSortService.total$;
     }
@@ -37,7 +41,7 @@ export class TracksComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
     }
 
-    onSort({ column, direction }: SortEvent) {
+    onSort({column, direction}: SortEvent) {
         // resetting other headers
         this.headers?.forEach((header) => {
             if (header.sortable !== column) {
@@ -51,31 +55,40 @@ export class TracksComponent implements OnInit, OnDestroy {
 
     searchTracks() {
         this.spinnerService.show();
-        this.trackService.searchTracks(this.searchText).subscribe({
-            next: (response) => {
-                // console.log("response::: " + JSON.stringify(response));
-                if (response.success && response.data && response.data.length) {
-                    this.trackList = <Track[]>response.data;
-                    this.paginateSortService.data = this.trackList;
+        const trimmedSearchText = this.searchText.trim();
+        this.trackService.searchTracks(trimmedSearchText).subscribe({
+                next: (response) => {
+                    // console.log("response::: " + JSON.stringify(response));
+                    if (response.success && response.data && response.data.length) {
+                        this.trackList = <Track[]>response.data;
+                        this.paginateSortService.data = this.trackList;
+                        this.paginateSortService.searchTerm = trimmedSearchText;
+                        this.spinnerService.hide();
+                        this.toastService.showSuccess(response.message);
+                    } else {
+                        this.spinnerService.hide();
+                        this.toastService.showError(response.message);
+                    }
+                },
+                error: (error) => {
+                    console.error("error::: " + JSON.stringify(error));
                     this.spinnerService.hide();
-                    this.toastService.showSuccess(response.message);
-                } else {
-                    this.spinnerService.hide();
-                    this.toastService.showError(response.message);
+                    this.toastService.showError(error.name + ": " + error.error.message);
                 }
-            },
-            error: (error) => {
-                console.error("error::: " + JSON.stringify(error));
-                this.spinnerService.hide();
-                this.toastService.showError(error.name + ": " + error.error.message);
-            }}
+            }
         );
+    }
+
+    openTrackModal(track: any) {
+        const modalRef = this.modalService.open(TrackModalComponent, {centered: true});
+        modalRef.componentInstance.track = track;
     }
 
     reset() {
         this.searchText = '';
         this.trackList = [];
         this.paginateSortService.data = [];
+        this.paginateSortService.searchTerm = '';
     }
 
     ngOnDestroy(): void {
