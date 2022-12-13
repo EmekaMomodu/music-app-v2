@@ -20,4 +20,8 @@ export class PlaylistService {
         return this.httpClient.get<Response>(URLS.OPEN_PLAYLISTS + '/' + id);
     }
 
+    getPublicPlaylistByIdForAdmin(id: string): Observable<Response> {
+        return this.httpClient.get<Response>(URLS.ADMIN_PLAYLISTS + '/' + id);
+    }
+
 }

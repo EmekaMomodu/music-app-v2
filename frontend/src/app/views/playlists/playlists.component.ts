@@ -9,6 +9,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Playlist} from "../../model/playlist.model";
 import {PlaylistService} from "../../service/playlist.service";
 import {PlaylistModalComponent} from "./playlist-modal/playlist-modal.component";
+import {AuthService} from "../../service/auth.service";
 
 @Component({
     selector: 'app-playlists',
@@ -27,15 +28,18 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
     playlist: Playlist = {};
 
     isError: boolean = false;
+    loggedInUser: any;
 
     constructor(public paginateSortService: PaginateSortService,
                 private playlistService: PlaylistService,
                 private spinnerService: SpinnerService,
                 private toastService: ToastService,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private authService: AuthService) {
         this.getAllPublicPlaylistInfo(true, false);
         this.playlists$ = paginateSortService.data$;
         this.total$ = paginateSortService.total$;
+        this.loggedInUser = this.authService.user.value;
     }
 
     ngOnInit(): void {
@@ -68,35 +72,67 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
 
     openPlaylistModal(playlistId: any) {
         this.spinnerService.show();
-        this.playlistService.getPublicPlaylistById(playlistId).subscribe({
-                next: (response) => {
-                    // console.log("response::: " + JSON.stringify(response));
-                    if (response.success && response.data) {
-                        this.playlist = <Playlist>response.data;
+        if(this.loggedInUser && this.loggedInUser?.role === 'ADMIN'){
+            this.playlistService.getPublicPlaylistByIdForAdmin(playlistId).subscribe({
+                    next: (response) => {
+                        // console.log("response::: " + JSON.stringify(response));
+                        if (response.success && response.data) {
+                            this.playlist = <Playlist>response.data;
+                            this.spinnerService.hide();
+                        } else {
+                            this.isError = true;
+                            this.spinnerService.hide();
+                            this.toastService.showError(response.message);
+                        }
+                    },
+                    error: (error) => {
                         this.spinnerService.hide();
-                    } else {
-                        this.isError = true;
-                        this.spinnerService.hide();
-                        this.toastService.showError(response.message);
+                        console.error("error::: " + JSON.stringify(error));
+                        this.toastService.showError(error.error?.message || error.message);
+                    },
+                    complete: () => {
+                        if(!this.isError) {
+                            const modalRef = this.modalService.open(PlaylistModalComponent, {centered: true,
+                                size: 'xl',
+                                // scrollable: true
+                            });
+                            modalRef.componentInstance.playlist = this.playlist;
+                        }
+                        this.isError = false;
                     }
-                },
-                error: (error) => {
-                    this.spinnerService.hide();
-                    console.error("error::: " + JSON.stringify(error));
-                    this.toastService.showError(error.error?.message || error.message);
-                },
-                complete: () => {
-                    if(!this.isError) {
-                        const modalRef = this.modalService.open(PlaylistModalComponent, {centered: true,
-                            size: 'xl',
-                            // scrollable: true
-                        });
-                        modalRef.componentInstance.playlist = this.playlist;
-                    }
-                    this.isError = false;
                 }
-            }
-        );
+            );
+        } else {
+            this.playlistService.getPublicPlaylistById(playlistId).subscribe({
+                    next: (response) => {
+                        // console.log("response::: " + JSON.stringify(response));
+                        if (response.success && response.data) {
+                            this.playlist = <Playlist>response.data;
+                            this.spinnerService.hide();
+                        } else {
+                            this.isError = true;
+                            this.spinnerService.hide();
+                            this.toastService.showError(response.message);
+                        }
+                    },
+                    error: (error) => {
+                        this.spinnerService.hide();
+                        console.error("error::: " + JSON.stringify(error));
+                        this.toastService.showError(error.error?.message || error.message);
+                    },
+                    complete: () => {
+                        if(!this.isError) {
+                            const modalRef = this.modalService.open(PlaylistModalComponent, {centered: true,
+                                size: 'xl',
+                                // scrollable: true
+                            });
+                            modalRef.componentInstance.playlist = this.playlist;
+                        }
+                        this.isError = false;
+                    }
+                }
+            );
+        }
     }
 
     refresh() {
