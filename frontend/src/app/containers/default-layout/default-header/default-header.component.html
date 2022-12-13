@@ -4,7 +4,7 @@
         <c-nav class="flex-column flex-sm-row justify-content-start" role="navigation">
             <div class="container-fluid">
                 <a class="navbar-brand " routerLink="/">
-                    <img src="/assets/img/brand/coreui-signet.svg" alt="" width="44" height="48" class="d-inline-block">
+                    <img alt="" class="d-inline-block" height="48" src="/assets/img/brand/coreui-signet.svg" width="44">
                     <b>PAC</b>
                 </a>
             </div>
@@ -16,7 +16,7 @@
             <a cNavLink routerLink="/playlists" routerLinkActive="active">
                 PLAYLISTS
             </a>
-            <a *ngIf="!isLoggedIn" cNavLink routerLink="/my-playlists" routerLinkActive="active" >
+            <a *ngIf="!isLoggedIn" cNavLink routerLink="/my-playlists" routerLinkActive="active">
                 MY PLAYLISTS
             </a>
             <a *ngIf="isAdmin" cNavLink routerLink="/users" routerLinkActive="active">
@@ -25,7 +25,7 @@
             <a *ngIf="!isLoggedIn" cNavLink routerLink="/welcome/login" routerLinkActive="active">
                 LOGIN
             </a>
-            <c-header-nav class="ms-3" *ngIf="!isLoggedIn">
+            <c-header-nav *ngIf="!isLoggedIn" class="ms-3">
                 <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
             </c-header-nav>
         </c-nav>
@@ -44,7 +44,7 @@
                 cButton
                 cDropdownToggle
                 class="py-0"
-                color="" >
+                color="">
             <fa-icon [icon]="faUser" size="2xl"></fa-icon>
         </button>
         <ul cDropdownMenu class="pt-0 pr-5 w-auto">

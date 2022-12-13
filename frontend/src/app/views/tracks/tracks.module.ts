@@ -8,7 +8,8 @@ import {
     ButtonModule,
     CardModule,
     FormModule,
-    GridModule, ListGroupModule,
+    GridModule,
+    ListGroupModule,
     NavModule,
     ProgressModule,
     SpinnerModule,
@@ -55,7 +56,8 @@ import {TrackModalComponent} from "./track-modal/track-modal.component";
         UtilModule,
         ListGroupModule
     ],
-    declarations: [TracksComponent, NgbdSortableHeader, TrackModalComponent]
+    declarations: [TracksComponent, NgbdSortableHeader, TrackModalComponent],
+    exports: [TrackModalComponent]
 })
 export class TracksModule {
 }

@@ -5,7 +5,7 @@ import {Pipe, PipeTransform} from "@angular/core";
 })
 export class JoinPipe implements PipeTransform {
     transform(input: any, sep = ', '): string {
-        if(input && input.length){
+        if (input && input.length) {
             return input.join(sep);
         }
         return input;

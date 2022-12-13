@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import { faUser, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import {faRightFromBracket, faUser} from '@fortawesome/free-solid-svg-icons';
 
 import {ClassToggleService, HeaderComponent} from '@coreui/angular';
 

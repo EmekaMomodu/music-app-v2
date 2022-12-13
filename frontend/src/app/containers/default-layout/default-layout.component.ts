@@ -8,7 +8,7 @@ import {SpinnerService} from "../../util/spinner/spinner.service";
     selector: 'app-landing',
     templateUrl: './default-layout.component.html',
 })
-export class DefaultLayoutComponent implements OnInit{
+export class DefaultLayoutComponent implements OnInit {
 
     public navItems = navItems;
 

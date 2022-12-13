@@ -28,6 +28,7 @@
                     <th scope="col">Creator</th>
                     <th scope="col">Total Playtime</th>
                     <th scope="col">Number of tracks</th>
+                    <th scope="col">Average Rating</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
@@ -38,14 +39,15 @@
                     <td>{{playlist?.creator?.name | capitalize}}</td>
                     <td>{{playlist.totalPlayTime}}</td>
                     <td>{{playlist.numberOfTracks}}</td>
+                    <td>{{playlist.averageRating}}</td>
                     <td>
                         <button
+                                (click)="openPlaylistModal(playlist.id)"
                                 [active]="false"
                                 [color]="'info'"
                                 cButton
                                 class="me-1"
                                 variant="outline"
-                                (click) = "openPlaylistModal(playlist)"
                         >
                             View
                         </button>

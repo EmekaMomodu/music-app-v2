@@ -1,14 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {faArrowsRotate} from '@fortawesome/free-solid-svg-icons';
-import {Observable} from "rxjs";
+import {faArrowsRotate, faAngleDown, faAngleUp} from '@fortawesome/free-solid-svg-icons';
+import {Observable, throwError} from "rxjs";
 import {PaginateSortService} from "../../util/paginate-sort.service";
 import {DecimalPipe} from "@angular/common";
 import {SpinnerService} from "../../util/spinner/spinner.service";
 import {ToastService} from "../../util/toast/toast.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {PlaylistModalComponent} from "./playlist-modal/playlist-modal.component";
 import {Playlist} from "../../model/playlist.model";
 import {PlaylistService} from "../../service/playlist.service";
+import {PlaylistModalComponent} from "./playlist-modal/playlist-modal.component";
 
 @Component({
     selector: 'app-playlists',
@@ -24,22 +24,25 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
     total$: Observable<number>;
 
     playlists: Playlist[] = [];
+    playlist: Playlist = {};
+
+    isError: boolean = false;
 
     constructor(public paginateSortService: PaginateSortService,
                 private playlistService: PlaylistService,
                 private spinnerService: SpinnerService,
                 private toastService: ToastService,
                 private modalService: NgbModal) {
+        this.getAllPublicPlaylistInfo(true, false);
         this.playlists$ = paginateSortService.data$;
         this.total$ = paginateSortService.total$;
     }
 
     ngOnInit(): void {
-        this.getAllPublicPlaylistInfo();
     }
 
-    getAllPublicPlaylistInfo() {
-        this.spinnerService.show();
+    getAllPublicPlaylistInfo(showSpinner: boolean, showSuccessToast: boolean) {
+        if (showSpinner) this.spinnerService.show();
         this.playlistService.getAllPublicPlaylistInfo().subscribe({
                 next: (response) => {
                     // console.log("response::: " + JSON.stringify(response));
@@ -47,9 +50,32 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
                         this.playlists = <Playlist[]>response.data;
                         this.paginateSortService.pageSize = 10;
                         this.paginateSortService.data = this.playlists;
-                        this.spinnerService.hide();
-                        this.toastService.showSuccess(response.message);
+                        if (showSpinner) this.spinnerService.hide();
+                        if (showSuccessToast) this.toastService.showSuccess(response.message);
                     } else {
+                        if (showSpinner) this.spinnerService.hide();
+                        this.toastService.showError(response.message);
+                    }
+                },
+                error: (error) => {
+                    if (showSpinner) this.spinnerService.hide();
+                    console.error("error::: " + JSON.stringify(error));
+                    this.toastService.showError(error.error?.message || error.message);
+                }
+            }
+        );
+    }
+
+    openPlaylistModal(playlistId: any) {
+        this.spinnerService.show();
+        this.playlistService.getPublicPlaylistById(playlistId).subscribe({
+                next: (response) => {
+                    // console.log("response::: " + JSON.stringify(response));
+                    if (response.success && response.data) {
+                        this.playlist = <Playlist>response.data;
+                        this.spinnerService.hide();
+                    } else {
+                        this.isError = true;
                         this.spinnerService.hide();
                         this.toastService.showError(response.message);
                     }
@@ -58,18 +84,23 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
                     this.spinnerService.hide();
                     console.error("error::: " + JSON.stringify(error));
                     this.toastService.showError(error.error?.message || error.message);
+                },
+                complete: () => {
+                    if(!this.isError) {
+                        const modalRef = this.modalService.open(PlaylistModalComponent, {centered: true,
+                            size: 'xl',
+                            // scrollable: true
+                        });
+                        modalRef.componentInstance.playlist = this.playlist;
+                    }
+                    this.isError = false;
                 }
             }
         );
     }
 
-    openPlaylistModal(track: any) {
-        const modalRef = this.modalService.open(PlaylistModalComponent, {centered: true});
-        modalRef.componentInstance.track = track;
-    }
-
     refresh() {
-        this.getAllPublicPlaylistInfo();
+        this.getAllPublicPlaylistInfo(true, true);
     }
 
     ngOnDestroy(): void {

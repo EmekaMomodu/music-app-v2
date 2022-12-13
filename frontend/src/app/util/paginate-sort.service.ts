@@ -1,12 +1,12 @@
 /** code source: https://ng-bootstrap.github.io/releases/13.x/#/components/table/examples#pagination */
 /* eslint-disable @typescript-eslint/adjacent-overload-signatures */
-import { Injectable, PipeTransform } from '@angular/core';
+import {Injectable} from '@angular/core';
 
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 
-import { DecimalPipe } from '@angular/common';
-import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
-import { SortColumn, SortDirection } from './sortable.directive';
+import {DecimalPipe} from '@angular/common';
+import {switchMap, tap} from 'rxjs/operators';
+import {SortColumn, SortDirection} from './sortable.directive';
 
 interface SortPaginateResult {
     data: any[];
@@ -43,13 +43,9 @@ function sort(data: any[], column: SortColumn, direction: string): any[] {
 //     );
 // }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class PaginateSortService {
-    private _loading$ = new BehaviorSubject<boolean>(true);
     private _sortAndPaginate$ = new Subject<void>();
-    private _data$ = new BehaviorSubject<any[]>([]);
-    private _total$ = new BehaviorSubject<number>(0);
-
     private _state: State = {
         page: 1,
         pageSize: 5,
@@ -76,43 +72,58 @@ export class PaginateSortService {
         this._sortAndPaginate$.next();
     }
 
-    get data$() {
-        return this._data$.asObservable();
-    }
-    get total$() {
-        return this._total$.asObservable();
-    }
+    private _loading$ = new BehaviorSubject<boolean>(true);
+
     get loading$() {
         return this._loading$.asObservable();
     }
+
+    private _data$ = new BehaviorSubject<any[]>([]);
+
+    get data$() {
+        return this._data$.asObservable();
+    }
+
+    private _total$ = new BehaviorSubject<number>(0);
+
+    get total$() {
+        return this._total$.asObservable();
+    }
+
     get page() {
         return this._state.page;
     }
+
+    set page(page: number) {
+        this._set({page});
+    }
+
     get pageSize() {
         return this._state.pageSize;
     }
+
+    set pageSize(pageSize: number) {
+        this._set({pageSize});
+    }
+
     get searchTerm() {
         return this._state.searchTerm;
     }
 
-    set page(page: number) {
-        this._set({ page });
-    }
-    set pageSize(pageSize: number) {
-        this._set({ pageSize });
-    }
     set searchTerm(searchTerm: string) {
-        this._set({ searchTerm });
+        this._set({searchTerm});
     }
+
     set sortColumn(sortColumn: SortColumn) {
-        this._set({ sortColumn });
+        this._set({sortColumn});
     }
+
     set sortDirection(sortDirection: SortDirection) {
-        this._set({ sortDirection });
+        this._set({sortDirection});
     }
 
     set data(data: any[]) {
-        this._set({ data });
+        this._set({data});
     }
 
     private _set(patch: Partial<State>) {
@@ -121,7 +132,7 @@ export class PaginateSortService {
     }
 
     private _sortAndPaginate(): Observable<SortPaginateResult> {
-        const { sortColumn, sortDirection, pageSize, page, searchTerm, data} = this._state;
+        const {sortColumn, sortDirection, pageSize, page, searchTerm, data} = this._state;
 
         // 1. sort
         let dataResult = sort(data, sortColumn, sortDirection);
@@ -132,6 +143,6 @@ export class PaginateSortService {
 
         // 3. paginate
         dataResult = dataResult.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-        return of({ data: dataResult, total });
+        return of({data: dataResult, total});
     }
 }

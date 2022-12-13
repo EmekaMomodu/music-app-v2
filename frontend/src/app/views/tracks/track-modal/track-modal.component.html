@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="modal-primary-title">Title: <strong>{{track.title}}</strong> </h4>
+    <h4 class="modal-title" id="modal-primary-title">Track Details</h4>
     <button
             (click)="activeModal.dismiss('Cross click')" aria-label="Close" class="btn-close" type="button">
     </button>
@@ -7,14 +7,24 @@
 <div class="modal-body centered">
     <form>
         <c-row class="mb-3">
+            <label cLabel class="col-sm-2 col-form-label" for="title">
+                Title:
+            </label>
+            <c-col sm="10">
+                <input [value]="track.title" cFormControl id="title"
+                       readonly
+                       type="text"
+                />
+            </c-col>
+        </c-row>
+        <c-row class="mb-3">
             <label cLabel class="col-sm-2 col-form-label" for="artist">
                 Artist:
             </label>
             <c-col sm="10">
-                <input cFormControl id="artist" type="text"
+                <input [value]="track.artistName" cFormControl id="artist"
                        readonly
-                       [plaintext]="true"
-                       [value]="track.artistName"
+                       type="text"
                 />
             </c-col>
         </c-row>
@@ -23,10 +33,9 @@
                 Album:
             </label>
             <c-col sm="10">
-                <input cFormControl id="album" type="text"
+                <input [value]="track.albumTitle" cFormControl id="album"
                        readonly
-                       [plaintext]="true"
-                       [value]="track.albumTitle"
+                       type="text"
                 />
             </c-col>
         </c-row>
@@ -42,23 +51,20 @@
             <label cLabel class="col-sm-2 col-form-label" for="duration">
                 Duration:
             </label>
-            <c-col sm="10">
-                <input cFormControl id="duration" type="text"
+            <c-col sm="4">
+                <input [value]="track.duration" cFormControl id="duration"
                        readonly
-                       [plaintext]="true"
-                       [value]="track.duration"
+                       type="text"
                 />
             </c-col>
-        </c-row>
-        <c-row class="mb-3">
+
             <label cLabel class="col-sm-2 col-form-label" for="numberOnAlbum">
                 Number:
             </label>
-            <c-col sm="10">
-                <input cFormControl id="numberOnAlbum" type="text"
+            <c-col sm="4">
+                <input [value]="track.number" cFormControl id="numberOnAlbum"
                        readonly
-                       [plaintext]="true"
-                       [value]="track.number"
+                       type="text"
                 />
             </c-col>
         </c-row>
@@ -67,27 +73,30 @@
                 Date created:
             </label>
             <c-col sm="10">
-                <input cFormControl id="dateCreated" type="text"
+                <input [value]="track.dateCreated" cFormControl id="dateCreated"
                        readonly
-                       [plaintext]="true"
-                       [value]="track.dateCreated"
+                       type="text"
                 />
             </c-col>
         </c-row>
-        <a cButton
-           target="_blank"
-           type="button"
-           href="https://www.youtube.com/results?search_query={{track.title}}"
-           [color]="'info'"
-        >
-            <fa-icon [icon]="faSquareArrowUpRight"></fa-icon>
-            Play on Youtube
-            <fa-icon [icon]="faYoutube"></fa-icon>
-        </a>
     </form>
 </div>
 <div class="modal-footer">
     <button
-            (click)="activeModal.close('Close click')" class="btn btn-outline-dark" type="button">Close
+            (click)="activeModal.close('Close click')"
+            [color]="'secondary'"
+            cButton
+            type="button"
+    >
+        Close
     </button>
+    <a [color]="'info'"
+       cButton
+       href="https://www.youtube.com/results?search_query={{track.title + ' song by ' + track.artistName}}"
+       target="_blank"
+       type="button"
+    >
+        Play on Youtube
+        <fa-icon [icon]="faYoutube"></fa-icon>
+    </a>
 </div>

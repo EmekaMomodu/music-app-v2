@@ -11,7 +11,7 @@ import {RegisterComponent} from "./register/register.component";
 
 @NgModule({
     declarations: [
-       LandingComponent,
+        LandingComponent,
         LoginComponent,
         RegisterComponent
     ],
