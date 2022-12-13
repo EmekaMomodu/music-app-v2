@@ -1,0 +1,68 @@
+<c-card class="mb-4">
+    <c-card-header ngPreserveWhitespaces>
+        <strong>Search for Track(s)</strong>
+    </c-card-header>
+    <c-card-body>
+        <p class="text-medium-emphasis small">
+            Enter a search value below to search for track(s) by
+            <code>&lt;Title&gt;</code> or <code>&lt;Album&gt;</code> or <code>&lt;Artist&gt;</code> or <code>&lt;Genre&gt;</code>
+        </p>
+        <form cForm class="row row-cols-lg-auto g-3 align-items-center">
+            <c-col xs="12">
+                <label cLabel class="visually-hidden" for="inlineFormInputGroupUsername">
+                    Username
+                </label>
+                <c-input-group>
+                    <span cInputGroupText><fa-icon [icon]="faMagnifyingGlass"></fa-icon></span>
+                    <input cFormControl id="inlineFormInputGroupUsername" placeholder="Search value" />
+                </c-input-group>
+            </c-col>
+            <c-col xs="12">
+                <button cButton type="button">Search</button>
+            </c-col>
+            <c-col xs="12">
+                <button cButton type="button" color="secondary">Reset</button>
+            </c-col>
+        </form>
+        <span class="col col-form-label mt-3" *ngIf="paginateSortService.loading$ | async"> <c-spinner size="sm"></c-spinner> Loading...</span>
+        <table class="table table-striped mt-3">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col" sortable="name" (sort)="onSort($event)">Country</th>
+                <th scope="col" sortable="area" (sort)="onSort($event)">Area</th>
+                <th scope="col" sortable="population" (sort)="onSort($event)">Population</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let country of countries$ | async">
+                <th scope="row">{{ country.id }}</th>
+                <td>
+                    <img
+                            [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag"
+                            class="me-2"
+                            style="width: 20px"
+                    />
+                    <ngb-highlight [result]="country.name" [term]="paginateSortService.searchTerm"></ngb-highlight>
+                </td>
+                <td><ngb-highlight [result]="country.area | number" [term]="paginateSortService.searchTerm"></ngb-highlight></td>
+                <td><ngb-highlight [result]="country.population | number" [term]="paginateSortService.searchTerm"></ngb-highlight></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p class="mt-3 center bg-light py-2">No data</p>
+
+        <div class="d-flex justify-content-between p-2">
+            <ngb-pagination [collectionSize]="(total$ | async)!" [(page)]="paginateSortService.page" [pageSize]="paginateSortService.pageSize">
+            </ngb-pagination>
+
+            <select class="form-select" style="width: auto" name="pageSize" [(ngModel)]="paginateSortService.pageSize">
+                <option [ngValue]="2">2 items per page</option>
+                <option [ngValue]="4">4 items per page</option>
+                <option [ngValue]="6">6 items per page</option>
+            </select>
+        </div>
+
+    </c-card-body>
+</c-card>

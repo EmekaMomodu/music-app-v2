@@ -1,48 +1,34 @@
 <!--<c-header class="mb-4 d-print-none" position="sticky">-->
 <ng-container>
     <c-container [fluid]="true">
-        <c-header-nav class="d-none d-lg-flex me-auto">
-            <c-nav-item>
-                <div class="container-fluid">
-                    <a class="navbar-brand " routerLink="/">
-                        <img src="/assets/img/brand/coreui-signet.svg" alt="" width="44" height="48" class="d-inline-block">
-                        <b>PAC</b>
-                    </a>
-                </div>
-            </c-nav-item>
-        </c-header-nav>
-
-        <c-header-nav class="d-none d-lg-flex">
-            <c-nav-item>
-                <a cNavLink routerLink="/tracks" routerLinkActive="active">
-                    TRACKS
+        <c-nav class="flex-column flex-sm-row justify-content-start" role="navigation">
+            <div class="container-fluid">
+                <a class="navbar-brand " routerLink="/">
+                    <img src="/assets/img/brand/coreui-signet.svg" alt="" width="44" height="48" class="d-inline-block">
+                    <b>PAC</b>
                 </a>
-            </c-nav-item>
-            <c-nav-item>
-                <a cNavLink routerLink="/playlists" routerLinkActive="active">
-                    PLAYLISTS
-                </a>
-            </c-nav-item>
-            <c-nav-item *ngIf="!isLoggedIn">
-                <a cNavLink routerLink="/my-playlists" routerLinkActive="active">
-                    MY PLAYLISTS
-                </a>
-            </c-nav-item>
-            <c-nav-item *ngIf="isAdmin">
-                <a cNavLink routerLink="/users" routerLinkActive="active">
-                    USERS
-                </a>
-            </c-nav-item>
-            <c-nav-item *ngIf="!isLoggedIn">
-                <a cNavLink routerLink="/welcome/login" routerLinkActive="active">
-                    LOGIN
-                </a>
-            </c-nav-item>
-        </c-header-nav>
-        <c-header-nav class="ms-3" *ngIf="!isLoggedIn">
-            <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
-        </c-header-nav>
-
+            </div>
+        </c-nav>
+        <c-nav class="flex-column flex-sm-row justify-content-end" role="navigation" variant="pills">
+            <a cNavLink routerLink="/tracks" routerLinkActive="active">
+                TRACKS
+            </a>
+            <a cNavLink routerLink="/playlists" routerLinkActive="active">
+                PLAYLISTS
+            </a>
+            <a *ngIf="!isLoggedIn" cNavLink routerLink="/my-playlists" routerLinkActive="active" >
+                MY PLAYLISTS
+            </a>
+            <a *ngIf="isAdmin" cNavLink routerLink="/users" routerLinkActive="active">
+                USERS
+            </a>
+            <a *ngIf="!isLoggedIn" cNavLink routerLink="/welcome/login" routerLinkActive="active">
+                LOGIN
+            </a>
+            <c-header-nav class="ms-3" *ngIf="!isLoggedIn">
+                <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
+            </c-header-nav>
+        </c-nav>
     </c-container>
     <c-header-divider></c-header-divider>
     <c-container [fluid]="true">
@@ -59,7 +45,7 @@
                 cDropdownToggle
                 class="py-0"
                 color="" >
-            <fa-icon [icon]="faUser" size="xl"></fa-icon>
+            <fa-icon [icon]="faUser" size="2xl"></fa-icon>
         </button>
         <ul cDropdownMenu class="pt-0 pr-5 w-auto">
             <li>
