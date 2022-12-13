@@ -18,7 +18,8 @@ const MESSAGES = {
     USER_DOES_NOT_EXIST: 'User does not exist, kindly sign up',
     ATTEMPT_A_DIFFERENT_LOGIN_MECHANISM: 'Invalid credentials, attempt a different login mechanism',
     ACCOUNT_DEACTIVATED: 'Account deactivated, kindly contact admin',
-    ACCESS_TOKEN_REQUIRED: 'Access token required'
+    ACCESS_TOKEN_REQUIRED: 'Access token required',
+    ONLY_ADMINS_ARE_ALLOWED: 'Only ADMINS are allowed to perform this action'
 }
 
 const PLAYLIST_VISIBILITY = {

@@ -15,10 +15,7 @@ const userSchema = new Schema(
         salt: {
             type: String
         },
-        firstname: {
-            type: String
-        },
-        lastname: {
+        name: {
             type: String
         },
         role: {

@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const {USER_ROLE, USER_STATUS} = require("../constant");
 
 const schemas = {
     USER_CREATE: Joi.object().keys({
@@ -13,13 +14,7 @@ const schemas = {
             .min(3)
             .max(30)
             .required(),
-        firstname: Joi.string()
-            .min(1)
-            .max(30)
-            .trim()
-            .uppercase()
-            .required(),
-        lastname: Joi.string()
+        name: Joi.string()
             .min(1)
             .max(30)
             .trim()
@@ -38,7 +33,19 @@ const schemas = {
             .min(3)
             .max(30)
             .required()
-    })
+    }),
+    USER_UPDATE_ROLE_STATUS: Joi.object().keys({
+        id: Joi.string()
+            .min(1)
+            .max(50)
+            .required(),
+        role: Joi.string()
+            .valid(USER_ROLE.USER, USER_ROLE.ADMIN)
+            .optional(),
+        status: Joi.string()
+            .valid(USER_STATUS.ACTIVE, USER_STATUS.DEACTIVATED)
+            .optional()
+    }).min(2),
 };
 
 module.exports = schemas;
