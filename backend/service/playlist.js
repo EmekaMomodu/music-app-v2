@@ -1,7 +1,6 @@
-const {MESSAGES} = require('../util/constant');
+const {MESSAGES, PLAYLIST_VISIBILITY} = require('../util/constant');
 const Playlist = require('../model/playlist');
 const Track = require('../model/track');
-const TrackDto = require("../dto/track");
 const PlaylistDto = require('../dto/playlist');
 const userService = require("./user");
 
@@ -24,7 +23,7 @@ exports.createPlaylist = async (playlist, userId) => {
             error.statusCode = 400;
             throw error;
         }
-        tracks.push(existingTrack);
+        tracks.push(existingTrack);``
     }
     playlist.tracks = tracks;
     // get user creating the playlist and set as playlist creator
@@ -98,61 +97,50 @@ exports.updatePlaylist = async (playlist, userId) => {
     return new PlaylistDto(updatedPlaylist);
 };
 
-exports.getPlaylistById = async (id) => {
-    const playlist = await Playlist.findById(id).exec();
-
+exports.getPlaylistById = async (playlistId, userId) => {
+    // find playlist with provided ID that matches userId as the creator
+    const playlist = await Playlist.findOne({_id: playlistId, 'creator.id': userId}).exec();
+    // throw exception if no playlist found
     if (!playlist) {
         const error = new Error(MESSAGES.NO_DATA_FOUND);
         error.statusCode = 404;
         throw error;
     }
-
-    const tracksDto = playlist.tracks.map((track) => {
-        return new TrackDto(
-            track.track_id || null,
-            track.album_id || null,
-            track.album_title || null,
-            track.artist_id || null,
-            track.artist_name || null,
-            track.tags || null,
-            track.track_date_created || null,
-            track.track_date_recorded || null,
-            track.track_duration || null,
-            track.track_genres || null,
-            track.track_number || null,
-            track.track_title || null
-        );
-    });
-
-    return new PlaylistDto(playlist._id, playlist.name, tracksDto);
-
+    // return found playlist
+    return new PlaylistDto(playlist);
 };
 
-exports.deletePlaylistById = async (id) => {
-    // find if id does not exist and throw error if yes
-    const existingPlaylist = await Playlist.findById(id).exec();
-
-    if (!existingPlaylist) {
+exports.deletePlaylistById = async (playlistId, userId) => {
+    // find if playlistId does not exist and throw error if yes
+    const playlistToDelete = await Playlist.findById(playlistId).exec();
+    if (!playlistToDelete) {
         const error = new Error(MESSAGES.PLAYLIST_DOES_NOT_EXIST);
         error.statusCode = 404;
         throw error;
     }
-
-    await Playlist.deleteOne({_id: id}).exec();
+    // ensure user is owner of the playlist
+    if (playlistToDelete.creator.id !== userId) {
+        const error = new Error(MESSAGES.UNAUTHORIZED_ONLY_PLAYLIST_CREATOR_CAN_PERFORM_THIS_ACTION);
+        error.statusCode = 401;
+        throw error;
+    }
+    await Playlist.deleteOne({_id: playlistToDelete.id}).exec();
 };
 
-exports.getAllPlaylistInfo = async () => {
-
-    const playlists = await Playlist.find().exec();
-
-    console.log("playlists ::: " + playlists);
-
+exports.getAllPlaylistInfo = async (userId, visibility) => {
+    // initialise playlists
+    let playlists;
+    // check visibility to determine query
+    // if private, find all playlists created by currently logged-in user
+    if (visibility === PLAYLIST_VISIBILITY.PRIVATE)  playlists = await Playlist.find({'creator.id': userId}).exec();
+    // else if visibility is public
+    else if (visibility === PLAYLIST_VISIBILITY.PUBLIC) playlists = await Playlist.find({visibility: PLAYLIST_VISIBILITY.PUBLIC}).exec();
+    // throw exception if no playlist was found
     if (!playlists || !playlists.length) {
         const error = new Error(MESSAGES.NO_DATA_FOUND);
         error.statusCode = 404;
         throw error;
     }
-
     // traverse playlist
     // create object with name, tracks length, traverse tracks and calculate total play time
     const result = [];
@@ -160,6 +148,7 @@ exports.getAllPlaylistInfo = async () => {
         const item = {};
         item.id = playlist._id;
         item.name = playlist.name;
+        item.description = playlist.description || null;
         item.numberOfTracks = playlist.tracks.length;
         let totalPlayTime = 0;
         let trackDurationList;
@@ -172,14 +161,14 @@ exports.getAllPlaylistInfo = async () => {
         }
         let totalMinutes = Math.floor(totalPlayTime / 60);
         let totalSeconds = totalPlayTime - (totalMinutes * 60);
-
+        // beautify minutes and seconds with zero padding to the left
         item.totalPlayTime = stringPadLeft(totalMinutes, '0', 2) + ':' + stringPadLeft(totalSeconds, '0', 2);
-
+        item.visibility = playlist.visibility;
+        item.creator = playlist.creator;
+        item.lastModifiedAt = playlist.last_modified_at;
         result.push(item);
     }
-
     return result;
-
 };
 
 const stringPadLeft = (string, pad, length) => {

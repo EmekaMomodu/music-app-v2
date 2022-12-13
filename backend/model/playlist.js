@@ -93,7 +93,8 @@ const playlistSchema = new Schema(
         }],
         creator: {
             id: {
-                type: String
+                type: String,
+                index: true
             },
             email: {
                 type: String

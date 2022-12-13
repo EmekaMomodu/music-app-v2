@@ -4,7 +4,6 @@ const schemas = require("../util/validator/schema");
 const userController = require("../controller/user");
 
 const router = express.Router();
-
 const body = 'body';
 
 /** user routes */
