@@ -30,6 +30,7 @@ export class LoginComponent {
                     // console.log("response::: " + JSON.stringify(response));
                     if (response.success && response.data) {
                         this.spinnerService.hide();
+                        this.toastService.showSuccess(response.message);
                         this.router.navigate(['welcome'])
                             .then(() => {
                                 window.location.reload();

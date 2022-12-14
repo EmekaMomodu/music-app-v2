@@ -44,6 +44,10 @@ export class PlaylistModalComponent implements OnInit, OnDestroy {
             if (response.action === 'updatePlaylist') {
                 this.playlist = response.data;
             }
+            if (response.action === 'updatePlaylistAndCollapse') {
+                this.playlist = response.data;
+                this.collapses[1] = false;
+            }
         });
 
     }
