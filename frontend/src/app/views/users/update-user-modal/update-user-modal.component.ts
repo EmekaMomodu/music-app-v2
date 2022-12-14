@@ -5,34 +5,41 @@ import {SpinnerService} from "../../../util/spinner/spinner.service";
 import {ToastService} from "../../../util/toast/toast.service";
 import {PlaylistService} from "../../../service/playlist.service";
 import {SharedDataService} from "../../../service/shared-data.service";
+import {UserService} from "../../../service/user.service";
 
 @Component({
     selector: 'app-update-user-modal',
-    templateUrl: './delete-playlist-modal.component.html',
-    styleUrls: ['./delete-playlist-modal.component.scss']
+    templateUrl: './update-user-modal.component.html',
+    styleUrls: ['./update-user-modal.component.scss']
 })
-export class DeletePlaylistModalComponent implements OnInit {
+export class UpdateUserModalComponent implements OnInit {
 
-    @Input() playlist: Playlist = {};
+    @Input() user: any = {};
+    userRole: any;
 
     constructor(public activeModal: NgbActiveModal,
                 private spinnerService: SpinnerService,
                 private toastService: ToastService,
-                private playlistService: PlaylistService,
+                private userService: UserService,
                 private sharedDataService: SharedDataService) {
     }
 
     ngOnInit(): void {
+        this.userRole = this.user.role;
     }
 
-    deletePlaylist(id: any) {
+    updateUserRole(id: any) {
         this.spinnerService.show();
-        this.playlistService.deletePlaylistById(
-            id
+        const updatedUser = {
+            id: this.user.id,
+            role: this.userRole
+        }
+        this.userService.updateUserRoleOrStatus(
+            updatedUser
         ).subscribe({
                 next: (response) => {
                     if (response.success) {
-                        this.sharedDataService.invokeExternalMethod('getAllPlaylistInfo', undefined);
+                        this.sharedDataService.invokeExternalMethod('getAllUsers', undefined);
                         this.activeModal.close();
                         this.spinnerService.hide();
                         this.toastService.showSuccess(response.message);

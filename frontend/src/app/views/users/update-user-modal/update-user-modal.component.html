@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-primary-title">Update User Role</h4>
+    <button
+            (click)="activeModal.dismiss('Cross click')" aria-label="Close" class="btn-close" type="button">
+    </button>
+</div>
+<div class="modal-body centered">
+
+    <p>Choose role for user: "{{user.name}}"</p>
+
+    <div class="mb-3">
+        <select aria-label="select example" cSelect required [(ngModel)]="userRole">
+            <option value="" selected disabled>Select role</option>
+            <option value="ADMIN">ADMIN</option>
+            <option value="USER">USER</option>
+        </select>
+        <c-form-feedback [valid]="false">Example invalid select feedback</c-form-feedback>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button
+            (click)="activeModal.close('Close click')"
+            [color]="'secondary'"
+            cButton
+            type="button"
+    >
+        Close
+    </button>
+    <div>
+        <button
+                [color]="'info'"
+                cButton
+                (click)="updateUserRole(user.id)"
+                type="button">
+            Submit
+        </button>
+    </div>
+</div>
+

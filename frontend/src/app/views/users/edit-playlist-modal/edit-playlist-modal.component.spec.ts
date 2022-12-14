@@ -1,20 +1,20 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {UserModalComponent} from './user-modal.component';
+import {EditPlaylistModalComponent} from './edit-playlist-modal.component';
 
-describe('UserModalComponent', () => {
-    let component: UserModalComponent;
-    let fixture: ComponentFixture<UserModalComponent>;
+describe('CreatePlaylistModalComponent', () => {
+    let component: EditPlaylistModalComponent;
+    let fixture: ComponentFixture<EditPlaylistModalComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [UserModalComponent]
+            declarations: [EditPlaylistModalComponent]
         })
             .compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(UserModalComponent);
+        fixture = TestBed.createComponent(EditPlaylistModalComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

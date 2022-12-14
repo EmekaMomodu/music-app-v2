@@ -1,33 +1,20 @@
 <c-card class="mb-4">
     <c-card-header ngPreserveWhitespaces>
-        <strong>User(s)</strong>
+        <strong>User Management</strong>
     </c-card-header>
     <c-card-body>
         <p class="text-medium-emphasis small">
-            Enter a search value below to search for track(s) by
-            <code>&lt;Title&gt;</code> or <code>&lt;Album&gt;</code> or <code>&lt;Artist&gt;</code> or <code>&lt;Genre(s)&gt;</code>
+            Admins can update user role or deactivate user
         </p>
-        <form cForm class="row row-cols-lg-auto g-3 align-items-center">
-            <c-col xs="12">
-                <label cLabel class="visually-hidden" for="searchText">
-                    searchText
-                </label>
-                <c-input-group>
-                    <span cInputGroupText><fa-icon [icon]="faMagnifyingGlass"></fa-icon></span>
-                    <input [(ngModel)]="searchText" autocomplete="off" cFormControl id="searchText"
-                           name="searchText" placeholder="Search value"/>
-                </c-input-group>
-            </c-col>
-            <c-col xs="12">
-                <button (click)="searchTracks()"
-                        [color]="'info'"
-                        [disabled]="!searchText.trim()" cButton type="button">Search
+        <form cForm class="row row-cols-lg-auto g-3 align-items-lg-stretch">
+            <c-col xs="6">
+                <button (click)="refresh()" cButton color="secondary" type="button" variant="outline" title="refresh">
+                    <fa-icon [icon]="faArrowsRotate"></fa-icon>
                 </button>
             </c-col>
-            <c-col xs="12">
-                <button (click)="reset()" cButton color="secondary" type="button">Reset</button>
-            </c-col>
         </form>
+
+
         <span *ngIf="paginateSortService.loading$ | async" class="col col-form-label mt-3"> <c-spinner
                 size="sm"></c-spinner> Loading...</span>
 
@@ -36,47 +23,38 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th (sort)="onSort($event)" scope="col" sortable="title">
-                        <span class="px-1"><fa-icon [icon]="faSort"></fa-icon></span>Title
-                    </th>
-                    <th (sort)="onSort($event)" scope="col" sortable="artistName">
-                        <span class="px-1"><fa-icon [icon]="faSort"></fa-icon></span>Artist
-                    </th>
-                    <th (sort)="onSort($event)" scope="col" sortable="albumTitle">
-                        <span class="px-1"><fa-icon [icon]="faSort"></fa-icon></span>Album
-                    </th>
-                    <th scope="col">Genre(s)</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let track of trackList$ | async; let index = index;">
+                <tr *ngFor="let user of user$ | async; let index = index;">
                     <th scope="row">{{ (index + 1) + ((paginateSortService.page - 1) * paginateSortService.pageSize) }}</th>
-                    <td>
-                        <ngb-highlight [result]="track.title" [term]="paginateSortService.searchTerm"></ngb-highlight>
-                    </td>
-                    <td>
-                        <ngb-highlight [result]="track.artistName"
-                                       [term]="paginateSortService.searchTerm"></ngb-highlight>
-                    </td>
-                    <td>
-                        <ngb-highlight [result]="track.albumTitle "
-                                       [term]="paginateSortService.searchTerm"></ngb-highlight>
-                    </td>
-                    <td>
-                        <ngb-highlight [result]="track.genres | join:', '"
-                                       [term]="paginateSortService.searchTerm"></ngb-highlight>
-                    </td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.role}}</td>
+                    <td>{{user.status}}</td>
                     <td>
                         <button
-                                (click)="openTrackModal(track)"
+                                (click)="openUpdateUserModal(user)"
                                 [active]="false"
-                                [color]="'info'"
+                                [color]="'warning'"
                                 cButton
                                 class="me-1"
-                                variant="outline"
+                                title="update role"
                         >
-                            View
+                            <fa-icon [icon]="faPen"></fa-icon>
+                        </button>
+                        <button
+                                (click)="openUpdateUserModal(user)"
+                                [active]=""
+                                [color]="user.status === 'ACTIVE'? 'danger' : 'success'"
+                                cButton
+                                class="me-1"
+                                [title] = "user.status === 'ACTIVE'? 'Deactivate' : 'Activate'"
+                        >
+                            <fa-icon [icon]="user.status === 'ACTIVE'? faX : faCheck"></fa-icon>
                         </button>
                     </td>
                 </tr>
@@ -84,7 +62,7 @@
             </table>
         </div>
 
-        <p *ngIf="!trackList || !trackList.length" class="mt-2 center bg-light py-2">No data</p>
+        <p *ngIf="!users || !users.length" class="mt-2 center bg-light py-2">No data</p>
 
         <div class="flex-column flex-sm-row d-flex justify-content-between p-2">
             <ngb-pagination
@@ -101,8 +79,10 @@
                 <option [ngValue]="5">5 items per page</option>
                 <option [ngValue]="10">10 items per page</option>
                 <option [ngValue]="15">15 items per page</option>
+                <option [ngValue]="20">20 items per page</option>
             </select>
         </div>
+
 
     </c-card-body>
 </c-card>

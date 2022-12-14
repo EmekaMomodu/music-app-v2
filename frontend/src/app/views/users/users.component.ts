@@ -1,72 +1,107 @@
-import {Component, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
-import {faMagnifyingGlass, faSort} from '@fortawesome/free-solid-svg-icons';
-import {Observable} from "rxjs";
-import {NgbdSortableHeader, SortEvent} from "../../util/sortable.directive";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Observable, Subscription} from "rxjs";
 import {PaginateSortService} from "../../util/paginate-sort.service";
 import {DecimalPipe} from "@angular/common";
-import {TrackService} from "../../service/track.service";
-import {Track} from "../../model/track.model";
 import {SpinnerService} from "../../util/spinner/spinner.service";
 import {ToastService} from "../../util/toast/toast.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {UserModalComponent} from "./user-modal/user-modal.component";
+import {AuthService} from "../../service/auth.service";
+import {Playlist} from "../../model/playlist.model";
+import {PlaylistService} from "../../service/playlist.service";
+import {PlaylistModalComponent} from "../playlists/playlist-modal/playlist-modal.component";
+import {faArrowsRotate, faEye, faPen, faTrashCan, faBan, faCheck, faX} from '@fortawesome/free-solid-svg-icons';
+import {SharedDataService} from "../../service/shared-data.service";
+import {ViewPlaylistModalComponent} from "./view-playlist-modal/view-playlist-modal.component";
+import {EditPlaylistModalComponent} from "./edit-playlist-modal/edit-playlist-modal.component";
+import {UpdateUserModalComponent} from "./update-user-modal/update-user-modal.component";
+import {UserService} from "../../service/user.service";
 
 @Component({
-    selector: 'app-users',
+    selector: 'app-my-playlists',
     templateUrl: 'users.component.html',
     styleUrls: ['users.component.scss'],
     providers: [DecimalPipe, PaginateSortService]
 })
 export class UsersComponent implements OnInit, OnDestroy {
-    faMagnifyingGlass: any = faMagnifyingGlass;
-    faSort: any = faSort;
 
-    trackList$: Observable<Track[]>;
+    user$: Observable<any[]>;
     total$: Observable<number>;
 
-    @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader> | undefined;
+    users: any[] = [];
+    user: any = {};
 
-    searchText: string = '';
+    isError: boolean = false;
+    loggedInUser: any;
 
-    trackList: Track[] = [];
+    faArrowsRotate: any = faArrowsRotate;
+    faEye: any = faEye;
+    faPen: any = faPen;
+    faTrashCan: any = faTrashCan;
+    faBan: any = faBan;
+
+    faCheck: any = faCheck;
+    faX:any = faX;
+
+    sdsInvokedMethodSubscription: Subscription | undefined;
 
     constructor(public paginateSortService: PaginateSortService,
-                private trackService: TrackService,
+                private playlistService: PlaylistService,
                 private spinnerService: SpinnerService,
                 private toastService: ToastService,
-                private modalService: NgbModal) {
-        this.trackList$ = paginateSortService.data$;
+                private modalService: NgbModal,
+                private authService: AuthService,
+                private sharedDataService: SharedDataService,
+                private userService: UserService) {
+        this.getAllUsers(true, false);
+        this.user$ = paginateSortService.data$;
         this.total$ = paginateSortService.total$;
+        this.loggedInUser = this.authService.user.value;
+
+        this.sdsInvokedMethodSubscription = this.sharedDataService.invokedMethod.subscribe(response => {
+            if (response.action === 'getAllUsers') {
+                this.getAllUsers(false, false);
+            }
+        });
+
     }
 
     ngOnInit(): void {
     }
 
-    onSort({column, direction}: SortEvent) {
-        // resetting other headers
-        this.headers?.forEach((header) => {
-            if (header.sortable !== column) {
-                header.direction = '';
-            }
-        });
-
-        this.paginateSortService.sortColumn = column;
-        this.paginateSortService.sortDirection = direction;
-    }
-
-    searchTracks() {
-        this.spinnerService.show();
-        const trimmedSearchText = this.searchText.trim();
-        this.trackService.searchTracks(trimmedSearchText).subscribe({
+    getAllUsers(showSpinner: boolean, showSuccessToast: boolean) {
+        if (showSpinner) this.spinnerService.show();
+        this.userService.getAllUsers().subscribe({
                 next: (response) => {
                     // console.log("response::: " + JSON.stringify(response));
                     if (response.success && response.data && response.data.length) {
-                        this.trackList = <Track[]>response.data;
-                        this.paginateSortService.data = this.trackList;
-                        this.paginateSortService.searchTerm = trimmedSearchText;
-                        this.spinnerService.hide();
-                        this.toastService.showSuccess(response.message);
+                        this.users = response.data;
+                        this.paginateSortService.data = this.users;
+                        if (showSpinner) this.spinnerService.hide();
+                        if (showSuccessToast) this.toastService.showSuccess(response.message);
                     } else {
+                        if (showSpinner) this.spinnerService.hide();
+                        this.toastService.showError(response.message);
+                    }
+                },
+                error: (error) => {
+                    if (showSpinner) this.spinnerService.hide();
+                    console.error("error::: " + JSON.stringify(error));
+                    this.toastService.showError(error.error?.message || error.message);
+                }
+            }
+        );
+    }
+
+    openPlaylistModal(playlistId: any, action: any) {
+        this.spinnerService.show();
+        this.playlistService.getPlaylistById(playlistId).subscribe({
+                next: (response) => {
+                    // console.log("response::: " + JSON.stringify(response));
+                    if (response.success && response.data) {
+                        this.user = <Playlist>response.data;
+                        this.spinnerService.hide();
+                    } else {
+                        this.isError = true;
                         this.spinnerService.hide();
                         this.toastService.showError(response.message);
                     }
@@ -75,24 +110,34 @@ export class UsersComponent implements OnInit, OnDestroy {
                     this.spinnerService.hide();
                     console.error("error::: " + JSON.stringify(error));
                     this.toastService.showError(error.error?.message || error.message);
+                },
+                complete: () => {
+                    if(!this.isError) {
+                        if(action === 'VIEW') {
+                            const modalRef = this.modalService.open(ViewPlaylistModalComponent, {centered: true,});
+                            modalRef.componentInstance.playlist = this.user;
+                        } else if(action === 'EDIT') {
+                            const modalRef = this.modalService.open(EditPlaylistModalComponent, {centered: true,});
+                            modalRef.componentInstance.playlist = this.user;
+                        }
+                    }
+                    this.isError = false;
                 }
             }
         );
     }
 
-    openTrackModal(track: any) {
-        const modalRef = this.modalService.open(UserModalComponent, {centered: true});
-        modalRef.componentInstance.track = track;
+    refresh() {
+        this.getAllUsers(true, true);
     }
 
-    reset() {
-        this.searchText = '';
-        this.trackList = [];
-        this.paginateSortService.data = [];
-        this.paginateSortService.searchTerm = '';
+    openUpdateUserModal(user: any) {
+        const modalRef = this.modalService.open(UpdateUserModalComponent, {centered: true});
+        modalRef.componentInstance.user = user;
     }
 
     ngOnDestroy(): void {
+        if (this.sdsInvokedMethodSubscription !== undefined) this.sdsInvokedMethodSubscription.unsubscribe();
     }
 
 }

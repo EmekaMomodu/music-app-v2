@@ -6,7 +6,7 @@ import {
     AvatarModule,
     ButtonGroupModule,
     ButtonModule,
-    CardModule,
+    CardModule, CollapseModule,
     FormModule,
     GridModule,
     ListGroupModule,
@@ -26,7 +26,11 @@ import {DocsComponentsModule} from "../../../components";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {NgbPaginationModule, NgbTypeaheadModule} from "@ng-bootstrap/ng-bootstrap";
 import {UtilModule} from "../../util/util.module";
-import {UserModalComponent} from "./user-modal/user-modal.component";
+import {AutocompleteLibModule} from "angular-ng-autocomplete";
+import {ViewPlaylistModalComponent} from "./view-playlist-modal/view-playlist-modal.component";
+import {EditPlaylistModalComponent} from "./edit-playlist-modal/edit-playlist-modal.component";
+import {UpdateUserModalComponent} from "./update-user-modal/update-user-modal.component";
+
 
 @NgModule({
     imports: [
@@ -53,10 +57,11 @@ import {UserModalComponent} from "./user-modal/user-modal.component";
         FormsModule,
         SpinnerModule,
         UtilModule,
-        ListGroupModule
+        ListGroupModule,
+        CollapseModule,
+        AutocompleteLibModule
     ],
-    declarations: [UsersComponent, UserModalComponent],
-    exports: [UserModalComponent]
+    declarations: [UsersComponent, ViewPlaylistModalComponent, EditPlaylistModalComponent, UpdateUserModalComponent]
 })
 export class UsersModule {
 }

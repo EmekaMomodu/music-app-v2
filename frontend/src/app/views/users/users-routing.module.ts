@@ -2,15 +2,15 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
 import {UsersComponent} from './users.component';
-import {AuthGuardAdminService} from "../../service/auth-guard-admin.service";
+import {AuthGuardService} from "../../service/auth-guard.service";
 
 const routes: Routes = [
     {
         path: '',
         component: UsersComponent,
-        canActivate: [AuthGuardAdminService],
+        canActivate: [AuthGuardService],
         data: {
-            title: 'Users'
+            title: 'My Playlists'
         }
     }
 ];
