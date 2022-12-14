@@ -11,11 +11,11 @@ import {faArrowsRotate, faEye, faPen, faTrashCan} from '@fortawesome/free-solid-
 import {TrackService} from "../../../service/track.service";
 
 @Component({
-    selector: 'app-create-playlist-modal',
-    templateUrl: './create-playlist-modal.component.html',
-    styleUrls: ['./create-playlist-modal.component.scss']
+    selector: 'app-edit-playlist-modal',
+    templateUrl: './edit-playlist-modal.component.html',
+    styleUrls: ['./edit-playlist-modal.component.scss']
 })
-export class CreatePlaylistModalComponent implements OnInit {
+export class EditPlaylistModalComponent implements OnInit {
 
     @Input() playlist: Playlist = {};
 
@@ -33,7 +33,7 @@ export class CreatePlaylistModalComponent implements OnInit {
 
     keyword = 'title';
 
-    selectedTracks: Track[] = [];
+    selectedTracks: Track[] | undefined = [];
 
     tracks: Track[] = [];
 
@@ -45,11 +45,11 @@ export class CreatePlaylistModalComponent implements OnInit {
     selectEvent(item: any) {
         // do something with selected item
         let duplicate = false
-        this.selectedTracks.forEach((track) => {
+        this.selectedTracks?.forEach((track) => {
             if(item.id === track.id) duplicate = true;
         })
         if(!duplicate){
-            this.selectedTracks.push(item);
+            this.selectedTracks?.push(item);
         }
         this.auto.clear();
     }
@@ -65,7 +65,7 @@ export class CreatePlaylistModalComponent implements OnInit {
     }
 
     removeSelectedTrack(index: number){
-        this.selectedTracks.splice(index, 1);
+        this.selectedTracks?.splice(index, 1);
     }
 
     customFilter = (items: any) => items
@@ -93,25 +93,27 @@ export class CreatePlaylistModalComponent implements OnInit {
 
 
     ngOnInit(): void {
+        this.selectedTracks = this.playlist.tracks;
     }
 
-    createPlaylist(ngForm: NgForm) {
+    updatePlaylist(ngForm: NgForm) {
         console.log(JSON.stringify(ngForm.value));
         if (ngForm.invalid) {
             this.isInvalid = true;
             return;
         }
-        if(!this.selectedTracks.length){
+        if(!this.selectedTracks?.length){
             this.toastService.showError("Please select a track");
             return;
         }
-        const newPlaylist = ngForm.value;
-        newPlaylist.trackIds = this.selectedTracks.map((track) => {
+        const updatedPlaylist = ngForm.value;
+        updatedPlaylist.trackIds = this.selectedTracks.map((track) => {
             return Number(track.id);
         });
+        updatedPlaylist.id = this.playlist.id;
         this.spinnerService.show();
-        this.playlistService.createPlaylist(
-            newPlaylist
+        this.playlistService.updatePlaylist(
+            updatedPlaylist
         ).subscribe({
                 next: (response) => {
                     if (response.success && response.data) {
@@ -131,9 +133,6 @@ export class CreatePlaylistModalComponent implements OnInit {
                 }
             }
         );
-    }
-
-    ngOnDestroy(): void {
     }
 
 }

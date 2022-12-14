@@ -13,6 +13,7 @@ import {faArrowsRotate, faEye, faPen, faTrashCan} from '@fortawesome/free-solid-
 import {CreatePlaylistModalComponent} from "./create-playlist-modal/create-playlist-modal.component";
 import {SharedDataService} from "../../service/shared-data.service";
 import {ViewPlaylistModalComponent} from "./view-playlist-modal/view-playlist-modal.component";
+import {EditPlaylistModalComponent} from "./edit-playlist-modal/edit-playlist-modal.component";
 
 @Component({
     selector: 'app-my-playlists',
@@ -86,18 +87,7 @@ export class MyPlaylistsComponent implements OnInit, OnDestroy {
         );
     }
 
-    openPlaylistModal(playlistId: any) {
-    }
-
-    refresh() {
-        this.getAllPlaylistInfo(true, true);
-    }
-
-    openCreatePlaylistModal() {
-        this.modalService.open(CreatePlaylistModalComponent, {centered: true,});
-    }
-
-    openViewPlaylistModal(playlistId: any) {
+    openPlaylistModal(playlistId: any, action: any) {
         this.spinnerService.show();
         this.playlistService.getPlaylistById(playlistId).subscribe({
                 next: (response) => {
@@ -118,11 +108,13 @@ export class MyPlaylistsComponent implements OnInit, OnDestroy {
                 },
                 complete: () => {
                     if(!this.isError) {
-                        const modalRef = this.modalService.open(ViewPlaylistModalComponent, {centered: true,
-                            // size: 'xl',
-                            // scrollable: true
-                        });
-                        modalRef.componentInstance.playlist = this.playlist;
+                        if(action === 'VIEW') {
+                            const modalRef = this.modalService.open(ViewPlaylistModalComponent, {centered: true,});
+                            modalRef.componentInstance.playlist = this.playlist;
+                        } else if(action === 'EDIT') {
+                            const modalRef = this.modalService.open(EditPlaylistModalComponent, {centered: true,});
+                            modalRef.componentInstance.playlist = this.playlist;
+                        }
                     }
                     this.isError = false;
                 }
@@ -130,9 +122,12 @@ export class MyPlaylistsComponent implements OnInit, OnDestroy {
         );
     }
 
-    openModifyPlaylistModal(playlistId: any) {
+    refresh() {
+        this.getAllPlaylistInfo(true, true);
+    }
 
-
+    openCreatePlaylistModal() {
+        this.modalService.open(CreatePlaylistModalComponent, {centered: true,});
     }
 
     openDeletePlaylistModal(playlist: any) {

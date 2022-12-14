@@ -46,7 +46,7 @@
                     <td>{{playlist.visibility}}</td>
                     <td>
                         <button
-                                (click)="openViewPlaylistModal(playlist.id)"
+                                (click)="openPlaylistModal(playlist.id, 'VIEW')"
                                 [active]="false"
                                 [color]="'info'"
                                 cButton
@@ -57,7 +57,7 @@
                             <fa-icon [icon]="faEye"></fa-icon>
                         </button>
                         <button
-                                (click)="openModifyPlaylistModal(playlist.id)"
+                                (click)="openPlaylistModal(playlist.id, 'EDIT')"
                                 [active]="false"
                                 [color]="'warning'"
                                 cButton

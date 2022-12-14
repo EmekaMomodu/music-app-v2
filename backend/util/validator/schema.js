@@ -77,7 +77,7 @@ const schemas = {
             .uppercase()
             .required(),
         description: Joi.string()
-            .min(1)
+            .min(0)
             .max(100)
             .trim()
             .optional(),

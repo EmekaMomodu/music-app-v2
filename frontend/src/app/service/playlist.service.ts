@@ -61,4 +61,11 @@ export class PlaylistService {
         return this.httpClient.get<Response>(URLS.SECURE_PLAYLISTS + '/' + id);
     }
 
+    updatePlaylist(playlist: any) : Observable<Response> {
+        return  this.httpClient.put<Response> (
+            URLS.SECURE_PLAYLISTS,
+            playlist
+        );
+    }
+
 }
