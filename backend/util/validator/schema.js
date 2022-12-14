@@ -159,7 +159,23 @@ const schemas = {
         hiddenFlag: Joi.string()
             .valid(BINARY_FLAG.NO, BINARY_FLAG.YES)
             .required(),
-    })
+    }),
+
+    USER_UPDATE_PASSWORD: Joi.object().keys({
+        id: Joi.string()
+            .min(1)
+            .max(1000000)
+            .trim()
+            .required(),
+        oldPassword: Joi.string()
+            .min(3)
+            .max(30)
+            .required(),
+        newPassword: Joi.string()
+            .min(3)
+            .max(30)
+            .required()
+    }),
 };
 
 module.exports = schemas;

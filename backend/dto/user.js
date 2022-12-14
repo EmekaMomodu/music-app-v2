@@ -5,7 +5,8 @@ class User {
         this.name = user.name;
         this.role = user.role;
         this.status = user.status;
-        this.emailVerifiedFlag = user.email_verified_flag
+        this.emailVerifiedFlag = user.email_verified_flag;
+        this.type = user.type;
     }
 }
 
