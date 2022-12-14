@@ -185,7 +185,7 @@ exports.getAllPlaylistInfo = async (userId, visibility) => {
         playlist.reviews.forEach((review) => {
             totalRating += review.rating;
         });
-        item.averageRating = totalRating / playlist.reviews.length || 0;
+        item.averageRating = Math.round(totalRating / playlist.reviews.length) || 0;
         item.visibility = playlist.visibility;
         item.creator = playlist.creator;
         item.lastModifiedAt = playlist.last_modified_at;
