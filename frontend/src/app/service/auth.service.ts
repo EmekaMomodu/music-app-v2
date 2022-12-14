@@ -58,7 +58,8 @@ export class AuthService {
             userData.status,
             userData.emailVerifiedFlag,
             userData._token,
-            new Date(userData._tokenExpirationDate)
+            new Date(userData._tokenExpirationDate),
+            userData.type
         );
 
         if (loadedUser.token) {
@@ -100,7 +101,8 @@ export class AuthService {
             authData.status,
             authData.emailVerifiedFlag,
             authData.token,
-            tokenExpirationDate
+            tokenExpirationDate,
+            authData.type
         );
         this.user.next(user);
         this.autoLogout(TOKEN_VALIDITY_PERIOD_IN_SECONDS * 1000);

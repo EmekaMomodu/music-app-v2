@@ -31,6 +31,7 @@ import {AutocompleteLibModule} from "angular-ng-autocomplete";
 import {ViewPlaylistModalComponent} from "./view-playlist-modal/view-playlist-modal.component";
 import {EditPlaylistModalComponent} from "./edit-playlist-modal/edit-playlist-modal.component";
 import {DeletePlaylistModalComponent} from "./delete-playlist-modal/delete-playlist-modal.component";
+import {UpdatePasswordModalComponent} from "./update-password-modal/update-password-modal.component";
 
 
 @NgModule({
@@ -62,7 +63,9 @@ import {DeletePlaylistModalComponent} from "./delete-playlist-modal/delete-playl
         CollapseModule,
         AutocompleteLibModule
     ],
-    declarations: [MyPlaylistsComponent, CreatePlaylistModalComponent, ViewPlaylistModalComponent, EditPlaylistModalComponent, DeletePlaylistModalComponent]
+    declarations: [MyPlaylistsComponent, CreatePlaylistModalComponent,
+        ViewPlaylistModalComponent, EditPlaylistModalComponent, DeletePlaylistModalComponent,
+        UpdatePasswordModalComponent]
 })
 export class MyPlaylistsModule {
 }

@@ -44,6 +44,8 @@ export class AddReviewModalComponent implements OnInit, OnDestroy {
                 next: (response) => {
                     if (response.success && response.data) {
                         this.sharedDataService.invokeExternalMethod('updatePlaylistAndCollapse', response.data);
+                        // getAllPublicPlaylistInfo
+                        this.sharedDataService.invokeExternalMethod('getAllPublicPlaylistInfo', undefined);
                         this.spinnerService.hide();
                         this.activeModal.close();
                         this.toastService.showSuccess(response.message);

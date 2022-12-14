@@ -7,7 +7,8 @@ export class User {
         public status: string,
         public emailVerifiedFlag: string,
         private _token: string,
-        private _tokenExpirationDate: Date
+        private _tokenExpirationDate: Date,
+        private type: string
     ) {
     }
 

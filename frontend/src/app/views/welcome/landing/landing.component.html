@@ -2,6 +2,9 @@
     <c-container class="mt-5">
         <c-row class="justify-content-center">
             <c-col md="6">
+                <c-alert  dismissible color="success" fade *ngIf="isLoggedIn$ | async">
+                    <strong>Hi ! {{loggedInUser.name}}</strong> you're now logged in, start experiencing more.
+                </c-alert>
                 <div class="clearfix">
                     <h1 class="float-start display-3 me-4">PAC</h1>
                     <h4 class="pt-3">Welcome to the PAC Music Application.</h4>

@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ButtonModule, CardModule, FormModule, GridModule} from '@coreui/angular';
+import {AlertModule, ButtonModule, CardModule, FormModule, GridModule} from '@coreui/angular';
 import {IconModule} from '@coreui/icons-angular';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {WelcomeRoutingModule} from "./welcome-routing.module";
@@ -25,7 +25,8 @@ import {FormsModule} from "@angular/forms";
         IconModule,
         FormModule,
         FontAwesomeModule,
-        FormsModule
+        FormsModule,
+        AlertModule
     ]
 })
 export class WelcomeModule {

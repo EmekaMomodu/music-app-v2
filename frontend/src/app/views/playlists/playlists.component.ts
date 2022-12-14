@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {faArrowsRotate} from '@fortawesome/free-solid-svg-icons';
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {PaginateSortService} from "../../util/paginate-sort.service";
 import {DecimalPipe} from "@angular/common";
 import {SpinnerService} from "../../util/spinner/spinner.service";
@@ -10,6 +10,7 @@ import {Playlist} from "../../model/playlist.model";
 import {PlaylistService} from "../../service/playlist.service";
 import {PlaylistModalComponent} from "./playlist-modal/playlist-modal.component";
 import {AuthService} from "../../service/auth.service";
+import {SharedDataService} from "../../service/shared-data.service";
 
 @Component({
     selector: 'app-playlists',
@@ -30,16 +31,24 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
     isError: boolean = false;
     loggedInUser: any;
 
+    sdsInvokedMethodSubscription: Subscription | undefined;
+
     constructor(public paginateSortService: PaginateSortService,
                 private playlistService: PlaylistService,
                 private spinnerService: SpinnerService,
                 private toastService: ToastService,
                 private modalService: NgbModal,
-                private authService: AuthService) {
+                private authService: AuthService,
+                private sharedDataService: SharedDataService) {
         this.getAllPublicPlaylistInfo(true, false);
         this.playlists$ = paginateSortService.data$;
         this.total$ = paginateSortService.total$;
         this.loggedInUser = this.authService.user.value;
+        this.sdsInvokedMethodSubscription = this.sharedDataService.invokedMethod.subscribe(response => {
+            if (response.action === 'getAllPublicPlaylistInfo') {
+                this.getAllPublicPlaylistInfo(false, false);
+            }
+        });
     }
 
     ngOnInit(): void {
@@ -140,6 +149,7 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        if (this.sdsInvokedMethodSubscription !== undefined) this.sdsInvokedMethodSubscription.unsubscribe();
     }
 
 }

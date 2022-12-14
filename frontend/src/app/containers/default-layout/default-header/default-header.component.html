@@ -49,11 +49,26 @@
         </button>
         <ul cDropdownMenu class="pt-0 pr-5 w-auto">
             <li>
-                <h6 cDropdownHeader class="bg-light fw-semibold py-2">Hi {{loggedInUser?.name | capitalize}}</h6>
+                <h5 cDropdownHeader class="bg-light fw-semibold py-2">Hi {{loggedInUser?.name | capitalize}}</h5>
+            </li>
+<!--            <li>-->
+<!--                <a cDropdownItem (click)="logout()" class="pointer">-->
+<!--                    <fa-icon [icon]="faRightFromBracket" class="m-2"></fa-icon>-->
+<!--                    Logout-->
+<!--                </a>-->
+<!--            </li>-->
+            <li *ngIf="loggedInUser.type === 'LOCAL'" >
+                <a (click)="openUpdatePasswordModal()" cDropdownItem>
+                    <svg cIcon class="me-2" name="cilLockLocked"></svg>
+                    Update Password
+                </a>
             </li>
             <li>
-                <a cDropdownItem (click)="logout()" class="pointer">
-                    <fa-icon [icon]="faRightFromBracket"></fa-icon>
+                <hr cDropdownDivider/>
+            </li>
+            <li>
+                <a (click)="logout()" cDropdownItem>
+                    <svg cIcon class="me-2" name="cilUser"></svg>
                     Logout
                 </a>
             </li>

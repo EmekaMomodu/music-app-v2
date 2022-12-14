@@ -6,4 +6,5 @@ export interface AuthResponseData {
     status: string;
     emailVerifiedFlag: string;
     token: string;
+    type: string;
 }

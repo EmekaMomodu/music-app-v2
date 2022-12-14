@@ -13,9 +13,11 @@ export class LandingComponent {
     isLoggedIn$: Observable<boolean> = of(false);
     faRightToBracket = faRightToBracket;
     isLoggedIn: boolean = false;
+    loggedInUser: any;
 
     constructor(private authService: AuthService) {
         this.isLoggedIn$ = this.authService.isLoggedIn;
+        this.loggedInUser = this.authService.user.value;
     }
 
 }

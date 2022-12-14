@@ -22,4 +22,11 @@ export class UserService {
             user
             );
     }
+
+    updateUserPassword(user: any): Observable<Response> {
+        return this.httpClient.put<Response>(
+            URLS.SECURE_USERS,
+            user
+        );
+    }
 }
