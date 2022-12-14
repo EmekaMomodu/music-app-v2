@@ -1,0 +1,33 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-primary-title">{{(user.status === 'ACTIVE'? ' Deactivate ' : ' Activate ') + 'User'}}</h4>
+    <button
+            (click)="activeModal.dismiss('Cross click')" aria-label="Close" class="btn-close" type="button">
+    </button>
+</div>
+<div class="modal-body centered">
+
+    <p>Are you sure you want to
+        {{user.status === 'ACTIVE'? ' Deactivate ' : ' Activate '}}
+        this user: "{{user.name}}"</p>
+
+</div>
+<div class="modal-footer">
+    <button
+            (click)="activeModal.close('Close click')"
+            [color]="'secondary'"
+            cButton
+            type="button"
+    >
+        Close
+    </button>
+    <div>
+        <button
+                [color]="user.status === 'ACTIVE'? 'danger' : 'success'"
+                cButton
+                (click)="updateUserRole(user.id)"
+                type="button">
+            {{user.status === 'ACTIVE'? ' Deactivate ' : ' Activate '}}
+        </button>
+    </div>
+</div>
+

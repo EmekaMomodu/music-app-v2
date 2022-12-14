@@ -11,7 +11,7 @@ import {faArrowsRotate, faEye, faPen, faTrashCan} from '@fortawesome/free-solid-
 import {TrackService} from "../../../service/track.service";
 
 @Component({
-    selector: 'app-edit-playlist-modal',
+    selector: 'app-deactivate-user-modal',
     templateUrl: './edit-playlist-modal.component.html',
     styleUrls: ['./edit-playlist-modal.component.scss']
 })

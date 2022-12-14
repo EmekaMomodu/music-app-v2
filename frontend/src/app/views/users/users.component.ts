@@ -11,10 +11,9 @@ import {PlaylistService} from "../../service/playlist.service";
 import {PlaylistModalComponent} from "../playlists/playlist-modal/playlist-modal.component";
 import {faArrowsRotate, faEye, faPen, faTrashCan, faBan, faCheck, faX} from '@fortawesome/free-solid-svg-icons';
 import {SharedDataService} from "../../service/shared-data.service";
-import {ViewPlaylistModalComponent} from "./view-playlist-modal/view-playlist-modal.component";
-import {EditPlaylistModalComponent} from "./edit-playlist-modal/edit-playlist-modal.component";
 import {UpdateUserModalComponent} from "./update-user-modal/update-user-modal.component";
 import {UserService} from "../../service/user.service";
+import {DeactivateUserModalComponent} from "./deactivate-user-modal/deactivate-user-modal.component";
 
 @Component({
     selector: 'app-my-playlists',
@@ -92,47 +91,17 @@ export class UsersComponent implements OnInit, OnDestroy {
         );
     }
 
-    openPlaylistModal(playlistId: any, action: any) {
-        this.spinnerService.show();
-        this.playlistService.getPlaylistById(playlistId).subscribe({
-                next: (response) => {
-                    // console.log("response::: " + JSON.stringify(response));
-                    if (response.success && response.data) {
-                        this.user = <Playlist>response.data;
-                        this.spinnerService.hide();
-                    } else {
-                        this.isError = true;
-                        this.spinnerService.hide();
-                        this.toastService.showError(response.message);
-                    }
-                },
-                error: (error) => {
-                    this.spinnerService.hide();
-                    console.error("error::: " + JSON.stringify(error));
-                    this.toastService.showError(error.error?.message || error.message);
-                },
-                complete: () => {
-                    if(!this.isError) {
-                        if(action === 'VIEW') {
-                            const modalRef = this.modalService.open(ViewPlaylistModalComponent, {centered: true,});
-                            modalRef.componentInstance.playlist = this.user;
-                        } else if(action === 'EDIT') {
-                            const modalRef = this.modalService.open(EditPlaylistModalComponent, {centered: true,});
-                            modalRef.componentInstance.playlist = this.user;
-                        }
-                    }
-                    this.isError = false;
-                }
-            }
-        );
-    }
-
     refresh() {
         this.getAllUsers(true, true);
     }
 
     openUpdateUserModal(user: any) {
         const modalRef = this.modalService.open(UpdateUserModalComponent, {centered: true});
+        modalRef.componentInstance.user = user;
+    }
+
+    openDeactivateUserModal(user: any) {
+        const modalRef = this.modalService.open(DeactivateUserModalComponent, {centered: true});
         modalRef.componentInstance.user = user;
     }
 

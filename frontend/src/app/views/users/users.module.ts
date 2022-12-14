@@ -27,9 +27,8 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {NgbPaginationModule, NgbTypeaheadModule} from "@ng-bootstrap/ng-bootstrap";
 import {UtilModule} from "../../util/util.module";
 import {AutocompleteLibModule} from "angular-ng-autocomplete";
-import {ViewPlaylistModalComponent} from "./view-playlist-modal/view-playlist-modal.component";
-import {EditPlaylistModalComponent} from "./edit-playlist-modal/edit-playlist-modal.component";
 import {UpdateUserModalComponent} from "./update-user-modal/update-user-modal.component";
+import {DeactivateUserModalComponent} from "./deactivate-user-modal/deactivate-user-modal.component";
 
 
 @NgModule({
@@ -61,7 +60,7 @@ import {UpdateUserModalComponent} from "./update-user-modal/update-user-modal.co
         CollapseModule,
         AutocompleteLibModule
     ],
-    declarations: [UsersComponent, ViewPlaylistModalComponent, EditPlaylistModalComponent, UpdateUserModalComponent]
+    declarations: [UsersComponent, DeactivateUserModalComponent, UpdateUserModalComponent]
 })
 export class UsersModule {
 }
