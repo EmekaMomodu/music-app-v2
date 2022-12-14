@@ -5,7 +5,7 @@ import {faSquareArrowUpRight} from '@fortawesome/free-solid-svg-icons';
 import {faYoutube} from '@fortawesome/free-brands-svg-icons';
 
 @Component({
-    selector: 'app-my-playlist-modal',
+    selector: 'app-create-playlist-modal',
     templateUrl: './track-modal.component.html',
     styleUrls: ['./track-modal.component.scss']
 })

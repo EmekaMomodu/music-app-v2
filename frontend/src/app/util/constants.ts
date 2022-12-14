@@ -7,7 +7,8 @@ export const URLS = {
     OPEN_PLAYLISTS: environment.BASE_URL.concat('/api/open/playlists'),
     ADMIN_PLAYLISTS: environment.BASE_URL.concat('/api/admin/playlists'),
     ADMIN_PLAYLISTS_REVIEWS: environment.BASE_URL.concat('/api/admin/playlists/reviews'),
-    SECURE_PLAYLISTS_REVIEWS: environment.BASE_URL.concat('/api/secure/playlists/reviews')
+    SECURE_PLAYLISTS_REVIEWS: environment.BASE_URL.concat('/api/secure/playlists/reviews'),
+    SECURE_PLAYLISTS: environment.BASE_URL.concat('/api/secure/playlists'),
 };
 
 export const MAX_NO_OF_RECORDS = 50;

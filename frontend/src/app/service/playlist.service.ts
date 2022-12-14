@@ -46,4 +46,19 @@ export class PlaylistService {
         );
     }
 
+    getAllPlaylistInfo(): Observable<Response> {
+        return this.httpClient.get<Response>(URLS.SECURE_PLAYLISTS);
+    }
+
+    createPlaylist(playlist: any) : Observable<Response> {
+        return  this.httpClient.post<Response> (
+            URLS.SECURE_PLAYLISTS,
+            playlist
+        );
+    }
+
+    getPlaylistById(id: string): Observable<Response> {
+        return this.httpClient.get<Response>(URLS.SECURE_PLAYLISTS + '/' + id);
+    }
+
 }

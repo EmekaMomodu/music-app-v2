@@ -1,20 +1,20 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {MyPlaylistModalComponent} from './my-playlist-modal.component';
+import {CreatePlaylistModalComponent} from './create-playlist-modal.component';
 
-describe('MyPlaylistModalComponent', () => {
-    let component: MyPlaylistModalComponent;
-    let fixture: ComponentFixture<MyPlaylistModalComponent>;
+describe('CreatePlaylistModalComponent', () => {
+    let component: CreatePlaylistModalComponent;
+    let fixture: ComponentFixture<CreatePlaylistModalComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [MyPlaylistModalComponent]
+            declarations: [CreatePlaylistModalComponent]
         })
             .compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(MyPlaylistModalComponent);
+        fixture = TestBed.createComponent(CreatePlaylistModalComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

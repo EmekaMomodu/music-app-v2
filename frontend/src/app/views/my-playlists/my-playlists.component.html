@@ -1,110 +1,110 @@
-<!--<c-card class="mb-4">-->
-<!--    <c-card-header ngPreserveWhitespaces>-->
-<!--        <strong>Search for Track(s)</strong>-->
-<!--    </c-card-header>-->
-<!--    <c-card-body>-->
-<!--        <p class="text-medium-emphasis small">-->
-<!--            Enter a search value below to search for track(s) by-->
-<!--            <code>&lt;Title&gt;</code> or <code>&lt;Album&gt;</code> or <code>&lt;Artist&gt;</code> or <code>&lt;Genre(s)&gt;</code>-->
-<!--        </p>-->
-<!--        <form cForm class="row row-cols-lg-auto g-3 align-items-center">-->
-<!--            <c-col xs="12">-->
-<!--                <label cLabel class="visually-hidden" for="searchText">-->
-<!--                    searchText-->
-<!--                </label>-->
-<!--                <c-input-group>-->
-<!--                    <span cInputGroupText><fa-icon [icon]="faMagnifyingGlass"></fa-icon></span>-->
-<!--                    <input [(ngModel)]="searchText" autocomplete="off" cFormControl id="searchText"-->
-<!--                           name="searchText" placeholder="Search value"/>-->
-<!--                </c-input-group>-->
-<!--            </c-col>-->
-<!--            <c-col xs="12">-->
-<!--                <button (click)="searchTracks()"-->
-<!--                        [color]="'info'"-->
-<!--                        [disabled]="!searchText.trim()" cButton type="button">Search-->
-<!--                </button>-->
-<!--            </c-col>-->
-<!--            <c-col xs="12">-->
-<!--                <button (click)="reset()" cButton color="secondary" type="button">Reset</button>-->
-<!--            </c-col>-->
-<!--        </form>-->
-<!--        <span *ngIf="paginateSortService.loading$ | async" class="col col-form-label mt-3"> <c-spinner-->
-<!--                size="sm"></c-spinner> Loading...</span>-->
+<c-card class="mb-4">
+    <c-card-header ngPreserveWhitespaces>
+        <strong>Hello {{loggedInUser?.name === null ? '___': loggedInUser.name}} ! these are your playlists</strong>
+    </c-card-header>
+    <c-card-body>
+        <p class="text-medium-emphasis small">
+            You can create, modify, and delete your playlists here, get started !
+        </p>
+        <form cForm class="row row-cols-lg-auto g-3 align-items-lg-stretch">
+            <c-col xs="6">
+                <button (click)="refresh()" cButton color="secondary" type="button" variant="outline" title="refresh">
+                    <fa-icon [icon]="faArrowsRotate"></fa-icon>
+                </button>
+            </c-col>
+            <c-col xs="6">
+                <button (click)="openCreatePlaylistModal()"
+                        [color]="'success'"
+                        variant="outline"
+                        cButton type="button">Create Playlist
+                </button>
+            </c-col>
+        </form>
 
-<!--        <div class="table-responsive">-->
-<!--            <table class="table table-striped mt-3">-->
-<!--                <thead>-->
-<!--                <tr>-->
-<!--                    <th scope="col">#</th>-->
-<!--                    <th (sort)="onSort($event)" scope="col" sortable="title">-->
-<!--                        <span class="px-1"><fa-icon [icon]="faSort"></fa-icon></span>Title-->
-<!--                    </th>-->
-<!--                    <th (sort)="onSort($event)" scope="col" sortable="artistName">-->
-<!--                        <span class="px-1"><fa-icon [icon]="faSort"></fa-icon></span>Artist-->
-<!--                    </th>-->
-<!--                    <th (sort)="onSort($event)" scope="col" sortable="albumTitle">-->
-<!--                        <span class="px-1"><fa-icon [icon]="faSort"></fa-icon></span>Album-->
-<!--                    </th>-->
-<!--                    <th scope="col">Genre(s)</th>-->
-<!--                    <th scope="col">Action</th>-->
-<!--                </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                <tr *ngFor="let track of trackList$ | async; let index = index;">-->
-<!--                    <th scope="row">{{ (index + 1) + ((paginateSortService.page - 1) * paginateSortService.pageSize) }}</th>-->
-<!--                    <td>-->
-<!--                        <ngb-highlight [result]="track.title" [term]="paginateSortService.searchTerm"></ngb-highlight>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <ngb-highlight [result]="track.artistName"-->
-<!--                                       [term]="paginateSortService.searchTerm"></ngb-highlight>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <ngb-highlight [result]="track.albumTitle "-->
-<!--                                       [term]="paginateSortService.searchTerm"></ngb-highlight>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <ngb-highlight [result]="track.genres | join:', '"-->
-<!--                                       [term]="paginateSortService.searchTerm"></ngb-highlight>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <button-->
-<!--                                (click)="openTrackModal(track)"-->
-<!--                                [active]="false"-->
-<!--                                [color]="'info'"-->
-<!--                                cButton-->
-<!--                                class="me-1"-->
-<!--                                variant="outline"-->
-<!--                        >-->
-<!--                            View-->
-<!--                        </button>-->
-<!--                    </td>-->
-<!--                </tr>-->
-<!--                </tbody>-->
-<!--            </table>-->
-<!--        </div>-->
 
-<!--        <p *ngIf="!trackList || !trackList.length" class="mt-2 center bg-light py-2">No data</p>-->
+        <span *ngIf="paginateSortService.loading$ | async" class="col col-form-label mt-3"> <c-spinner
+                size="sm"></c-spinner> Loading...</span>
 
-<!--        <div class="flex-column flex-sm-row d-flex justify-content-between p-2">-->
-<!--            <ngb-pagination-->
-<!--                    [(page)]="paginateSortService.page"-->
-<!--                    [boundaryLinks]="true"-->
-<!--                    [collectionSize]="(total$ | async)!"-->
-<!--                    [ellipses]="false"-->
-<!--                    [maxSize]="4"-->
-<!--                    [pageSize]="paginateSortService.pageSize"-->
-<!--                    [rotate]="true"-->
-<!--            ></ngb-pagination>-->
+        <div class="table-responsive">
+            <table class="table table-striped mt-3">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Playlist Name</th>
+                    <th scope="col">Total Playtime</th>
+                    <th scope="col">Number of tracks</th>
+                    <th scope="col">Visibility</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let playlist of playlists$ | async; let index = index;">
+                    <th scope="row">{{ (index + 1) + ((paginateSortService.page - 1) * paginateSortService.pageSize) }}</th>
+                    <td>{{playlist?.name | capitalize}}</td>
+                    <td>{{playlist.totalPlayTime}}</td>
+                    <td>{{playlist.numberOfTracks}}</td>
+                    <td>{{playlist.visibility}}</td>
+                    <td>
+                        <button
+                                (click)="openViewPlaylistModal(playlist.id)"
+                                [active]="false"
+                                [color]="'info'"
+                                cButton
+                                class="me-1"
+                                variant="outline"
+                                title="view"
+                        >
+                            <fa-icon [icon]="faEye"></fa-icon>
+                        </button>
+                        <button
+                                (click)="openModifyPlaylistModal(playlist.id)"
+                                [active]="false"
+                                [color]="'warning'"
+                                cButton
+                                class="me-1"
+                                variant="outline"
+                                title="modify"
+                        >
+                            <fa-icon [icon]="faPen"></fa-icon>
+                        </button>
+                        <button
+                                (click)="openDeletePlaylistModal(playlist)"
+                                [active]="false"
+                                [color]="'danger'"
+                                cButton
+                                class="me-1"
+                                variant="outline"
+                                title="delete"
+                        >
+                            <fa-icon [icon]="faTrashCan"></fa-icon>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-<!--            <select [(ngModel)]="paginateSortService.pageSize" class="form-select" name="pageSize" style="width: auto">-->
-<!--                <option [ngValue]="5">5 items per page</option>-->
-<!--                <option [ngValue]="10">10 items per page</option>-->
-<!--                <option [ngValue]="15">15 items per page</option>-->
-<!--            </select>-->
-<!--        </div>-->
+        <p *ngIf="!playlists || !playlists.length" class="mt-2 center bg-light py-2">No data</p>
 
-<!--    </c-card-body>-->
-<!--</c-card>-->
+        <div class="flex-column flex-sm-row d-flex justify-content-between p-2">
+            <ngb-pagination
+                    [(page)]="paginateSortService.page"
+                    [boundaryLinks]="true"
+                    [collectionSize]="(total$ | async)!"
+                    [ellipses]="false"
+                    [maxSize]="4"
+                    [pageSize]="paginateSortService.pageSize"
+                    [rotate]="true"
+            ></ngb-pagination>
 
-<h1>Welcome, {{(loggedInUser?.name === null ? 'Not logged in': loggedInUser.name) | capitalize}}</h1>
+            <select [(ngModel)]="paginateSortService.pageSize" class="form-select" name="pageSize" style="width: auto">
+                <option [ngValue]="5">5 items per page</option>
+                <option [ngValue]="10">10 items per page</option>
+                <option [ngValue]="15">15 items per page</option>
+                <option [ngValue]="20">20 items per page</option>
+            </select>
+        </div>
+
+
+    </c-card-body>
+</c-card>

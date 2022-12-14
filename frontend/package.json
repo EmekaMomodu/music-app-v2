@@ -37,6 +37,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@ng-bootstrap/ng-bootstrap": "^13.1.1",
     "@popperjs/core": "^2.10.2",
+    "angular-ng-autocomplete": "^2.0.12",
     "bootstrap": "^5.2.0",
     "chart.js": "^3.9.1",
     "ngx-perfect-scrollbar": "^10.1.1",

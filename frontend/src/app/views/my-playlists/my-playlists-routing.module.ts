@@ -8,7 +8,7 @@ const routes: Routes = [
     {
         path: '',
         component: MyPlaylistsComponent,
-        canActivate: [AuthGuardService],
+        // canActivate: [AuthGuardService],
         data: {
             title: 'My Playlists'
         }

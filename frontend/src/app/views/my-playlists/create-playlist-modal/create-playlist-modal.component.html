@@ -1,0 +1,128 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-primary-title">Create Playlist</h4>
+    <button
+            (click)="activeModal.dismiss('Cross click')" aria-label="Close" class="btn-close" type="button">
+    </button>
+</div>
+<form [validated]="isInvalid" #ngForm="ngForm" cForm (ngSubmit)="createPlaylist(ngForm)">
+    <div class="modal-body centered">
+
+        <div class="mb-3">
+            <label cLabel class="form-label" for="name">
+                Name:
+            </label>
+            <input ngModel
+                      cFormControl
+                      id="name"
+                      placeholder="Enter name"
+                      name="name"
+                      required
+                   type="text"
+                   autocomplete="off"
+            >
+            <c-form-feedback [valid]="false">Please enter a name</c-form-feedback>
+        </div>
+
+        <div class="mb-3">
+            <label cLabel class="form-label" for="description">
+                Description:
+            </label>
+            <textarea ngModel
+                      cFormControl
+                      id="description"
+                      placeholder="Enter description"
+                      name="description"
+                      type="text"
+            ></textarea>
+        </div>
+
+        <div class="mb-3 col-6">
+            <label cLabel class="form-label" for="visibility">
+                Visibility:
+            </label>
+            <select aria-label="select example" cSelect required id="visibility" name="visibility"
+                    [(ngModel)]="visibility"
+                    ngModel type="text">
+                <option value="" disabled selected class="text-muted">Select a visibility</option>
+                <option [ngValue]="'PRIVATE'">PRIVATE</option>
+                <option [ngValue]="'PUBLIC'">PUBLIC</option>
+            </select>
+            <c-form-feedback [valid]="false">Please select a visibility</c-form-feedback>
+        </div>
+
+
+        <div class="ng-autocomplete mb-3">
+            <label cLabel class="form-label">
+                Tracks:
+            </label>
+            <ng-autocomplete #auto
+                    [data]="tracks"
+                    [searchKeyword]="keyword"
+                    [customFilter]="customFilter"
+                    placeholder="Start typing track/album/artist/genre"
+                    (selected)='selectEvent($event)'
+                    (inputChanged)='onChangeSearch($event)'
+                    (inputFocused)='onFocused($event)'
+                    [itemTemplate]="itemTemplate"
+                    [isLoading]="isLoading"
+                    [notFoundTemplate]="notFoundTemplate">
+            </ng-autocomplete>
+
+            <ng-template #itemTemplate let-item>
+                <a [innerHTML]="item?.title + ' - ' +item?.artistName"></a>
+            </ng-template>
+
+            <ng-template #notFoundTemplate let-notFound>
+                <div [innerHTML]="notFound"></div>
+            </ng-template>
+
+        </div>
+        <div class="table-responsive h-25">
+            <table class="table table-striped mt-1 mb-3">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Track Title</th>
+                    <th scope="col">Artist</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let track of selectedTracks; let index = index;">
+                    <th scope="row">{{index + 1}}</th>
+                    <td>{{track.title}}</td>
+                    <td>{{track.artistName}}</td>
+                    <td>
+                        <button
+                                (click)="removeSelectedTrack(index)"
+                                [active]="false"
+                                [color]="'danger'"
+                                cButton
+                                class="me-1"
+                                variant="outline"
+                                title="delete"
+                        >
+                            <fa-icon [icon]="faTrashCan"></fa-icon>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button
+                (click)="activeModal.close('Close click')"
+                [color]="'secondary'"
+                cButton
+                type="button"
+        >
+            Close
+        </button>
+        <button cButton color="primary" type="submit">
+            Submit
+        </button>
+    </div>
+</form>
+
