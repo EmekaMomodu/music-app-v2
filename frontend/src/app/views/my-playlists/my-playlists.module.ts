@@ -28,6 +28,7 @@ import {NgbPaginationModule, NgbTypeaheadModule} from "@ng-bootstrap/ng-bootstra
 import {UtilModule} from "../../util/util.module";
 import {CreatePlaylistModalComponent} from "./create-playlist-modal/create-playlist-modal.component";
 import {AutocompleteLibModule} from "angular-ng-autocomplete";
+import {ViewPlaylistModalComponent} from "./view-playlist-modal/view-playlist-modal.component";
 
 
 @NgModule({
@@ -59,7 +60,7 @@ import {AutocompleteLibModule} from "angular-ng-autocomplete";
         CollapseModule,
         AutocompleteLibModule
     ],
-    declarations: [MyPlaylistsComponent, CreatePlaylistModalComponent]
+    declarations: [MyPlaylistsComponent, CreatePlaylistModalComponent, ViewPlaylistModalComponent]
 })
 export class MyPlaylistsModule {
 }

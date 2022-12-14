@@ -12,6 +12,7 @@ import {PlaylistModalComponent} from "../playlists/playlist-modal/playlist-modal
 import {faArrowsRotate, faEye, faPen, faTrashCan} from '@fortawesome/free-solid-svg-icons';
 import {CreatePlaylistModalComponent} from "./create-playlist-modal/create-playlist-modal.component";
 import {SharedDataService} from "../../service/shared-data.service";
+import {ViewPlaylistModalComponent} from "./view-playlist-modal/view-playlist-modal.component";
 
 @Component({
     selector: 'app-my-playlists',
@@ -86,68 +87,6 @@ export class MyPlaylistsComponent implements OnInit, OnDestroy {
     }
 
     openPlaylistModal(playlistId: any) {
-        this.spinnerService.show();
-        if(this.loggedInUser && this.loggedInUser?.role === 'ADMIN'){
-            this.playlistService.getPublicPlaylistByIdForAdmin(playlistId).subscribe({
-                    next: (response) => {
-                        // console.log("response::: " + JSON.stringify(response));
-                        if (response.success && response.data) {
-                            this.playlist = <Playlist>response.data;
-                            this.spinnerService.hide();
-                        } else {
-                            this.isError = true;
-                            this.spinnerService.hide();
-                            this.toastService.showError(response.message);
-                        }
-                    },
-                    error: (error) => {
-                        this.spinnerService.hide();
-                        console.error("error::: " + JSON.stringify(error));
-                        this.toastService.showError(error.error?.message || error.message);
-                    },
-                    complete: () => {
-                        if(!this.isError) {
-                            const modalRef = this.modalService.open(PlaylistModalComponent, {centered: true,
-                                size: 'xl',
-                                // scrollable: true
-                            });
-                            modalRef.componentInstance.playlist = this.playlist;
-                        }
-                        this.isError = false;
-                    }
-                }
-            );
-        } else {
-            this.playlistService.getPublicPlaylistById(playlistId).subscribe({
-                    next: (response) => {
-                        // console.log("response::: " + JSON.stringify(response));
-                        if (response.success && response.data) {
-                            this.playlist = <Playlist>response.data;
-                            this.spinnerService.hide();
-                        } else {
-                            this.isError = true;
-                            this.spinnerService.hide();
-                            this.toastService.showError(response.message);
-                        }
-                    },
-                    error: (error) => {
-                        this.spinnerService.hide();
-                        console.error("error::: " + JSON.stringify(error));
-                        this.toastService.showError(error.error?.message || error.message);
-                    },
-                    complete: () => {
-                        if(!this.isError) {
-                            const modalRef = this.modalService.open(PlaylistModalComponent, {centered: true,
-                                size: 'xl',
-                                // scrollable: true
-                            });
-                            modalRef.componentInstance.playlist = this.playlist;
-                        }
-                        this.isError = false;
-                    }
-                }
-            );
-        }
     }
 
     refresh() {
@@ -155,16 +94,44 @@ export class MyPlaylistsComponent implements OnInit, OnDestroy {
     }
 
     openCreatePlaylistModal() {
-        const modalRef = this.modalService.open(CreatePlaylistModalComponent, {centered: true,
-            // size: 'lg',
-        });
+        this.modalService.open(CreatePlaylistModalComponent, {centered: true,});
     }
 
     openViewPlaylistModal(playlistId: any) {
-
+        this.spinnerService.show();
+        this.playlistService.getPlaylistById(playlistId).subscribe({
+                next: (response) => {
+                    // console.log("response::: " + JSON.stringify(response));
+                    if (response.success && response.data) {
+                        this.playlist = <Playlist>response.data;
+                        this.spinnerService.hide();
+                    } else {
+                        this.isError = true;
+                        this.spinnerService.hide();
+                        this.toastService.showError(response.message);
+                    }
+                },
+                error: (error) => {
+                    this.spinnerService.hide();
+                    console.error("error::: " + JSON.stringify(error));
+                    this.toastService.showError(error.error?.message || error.message);
+                },
+                complete: () => {
+                    if(!this.isError) {
+                        const modalRef = this.modalService.open(ViewPlaylistModalComponent, {centered: true,
+                            // size: 'xl',
+                            // scrollable: true
+                        });
+                        modalRef.componentInstance.playlist = this.playlist;
+                    }
+                    this.isError = false;
+                }
+            }
+        );
     }
 
     openModifyPlaylistModal(playlistId: any) {
+
 
     }
 
