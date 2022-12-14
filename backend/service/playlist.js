@@ -246,6 +246,10 @@ exports.createReviewForPublicPlaylist = async (requestBody, userId) => {
         error.statusCode = 500;
         throw error;
     }
+    // sort playlist reviews by created date desc
+    updatedPlaylist.reviews = updatedPlaylist.reviews.sort((a, b) => {
+        return b.created_at - a.created_at;
+    });
     // return updatedPlaylist
     return new PlaylistDto(updatedPlaylist);
 };
@@ -277,6 +281,10 @@ exports.updatePlaylistReviewHiddenFlag = async (requestBody) => {
     }
     // save playlist
     const updatedPlaylist = await playlist.save();
+    // sort playlist reviews by created date desc
+    updatedPlaylist.reviews = updatedPlaylist.reviews.sort((a, b) => {
+        return b.created_at - a.created_at;
+    });
     // return playlist
     return new PlaylistDto(updatedPlaylist);
 };
