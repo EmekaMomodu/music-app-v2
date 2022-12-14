@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-primary-title">{{review.hiddenFlag === 'N' ? 'HIDE' : 'REVEAL'}} Review</h4>
+    <button
+            (click)="activeModal.dismiss('Cross click')" aria-label="Close" class="btn-close" type="button">
+    </button>
+</div>
+<div class="modal-body centered">
+    <p>Are you sure you want to
+        <span [class]="review.hiddenFlag === 'N' ? 'bg-danger' : 'bg-success'">
+            {{review.hiddenFlag === 'N' ? 'HIDE' : 'REVEAL'}}</span>
+        this review</p>
+</div>
+<div class="modal-footer">
+    <button
+            (click)="activeModal.close('Close click')"
+            [color]="'secondary'"
+            cButton
+            type="button"
+    >
+        Close
+    </button>
+    <div>
+        <button
+                [color]="review.hiddenFlag === 'N'? 'danger' : 'success'"
+                cButton
+                (click)="updatePlaylistReviewHiddenFlag()"
+                type="button">
+            {{review.hiddenFlag === 'N' ? 'HIDE' : 'REVEAL'}}
+        </button>
+    </div>
+</div>
+

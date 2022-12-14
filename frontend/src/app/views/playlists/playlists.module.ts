@@ -27,6 +27,7 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {NgbPaginationModule, NgbTypeaheadModule} from "@ng-bootstrap/ng-bootstrap";
 import {UtilModule} from "../../util/util.module";
 import {PlaylistModalComponent} from "./playlist-modal/playlist-modal.component";
+import {HideReviewModalComponent} from "./hide-review-modal/hide-review-modal.component";
 
 @NgModule({
     imports: [
@@ -57,7 +58,7 @@ import {PlaylistModalComponent} from "./playlist-modal/playlist-modal.component"
         CollapseModule,
         BadgeModule
     ],
-    declarations: [PlaylistsComponent, PlaylistModalComponent]
+    declarations: [PlaylistsComponent, PlaylistModalComponent, HideReviewModalComponent]
 })
 export class PlaylistsModule {
 }

@@ -93,7 +93,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.toastService.clear();
     }
 
 }

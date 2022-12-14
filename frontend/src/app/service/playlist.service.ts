@@ -24,4 +24,15 @@ export class PlaylistService {
         return this.httpClient.get<Response>(URLS.ADMIN_PLAYLISTS + '/' + id);
     }
 
+    updatePlaylistReviewHiddenFlag(playlistId: any, reviewId: any, hiddenFlag: any) : Observable<Response> {
+        return  this.httpClient.put<Response> (
+            URLS.ADMIN_PLAYLISTS_REVIEWS,
+            {
+                playlistId: playlistId,
+                reviewId: reviewId,
+                hiddenFlag: hiddenFlag
+            }
+        );
+    }
+
 }

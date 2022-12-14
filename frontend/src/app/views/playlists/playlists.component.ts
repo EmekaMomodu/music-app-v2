@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {faArrowsRotate, faAngleDown, faAngleUp} from '@fortawesome/free-solid-svg-icons';
-import {Observable, throwError} from "rxjs";
+import {faArrowsRotate} from '@fortawesome/free-solid-svg-icons';
+import {Observable} from "rxjs";
 import {PaginateSortService} from "../../util/paginate-sort.service";
 import {DecimalPipe} from "@angular/common";
 import {SpinnerService} from "../../util/spinner/spinner.service";
@@ -140,7 +140,6 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.toastService.clear();
     }
 
 }

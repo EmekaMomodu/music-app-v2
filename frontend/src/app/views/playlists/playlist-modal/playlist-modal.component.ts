@@ -4,7 +4,9 @@ import {faAngleUp, faSquareArrowUpRight, faAngleDown} from '@fortawesome/free-so
 import {Playlist} from "../../../model/playlist.model";
 import {TrackModalComponent} from "../../tracks/track-modal/track-modal.component";
 import {AuthService} from "../../../service/auth.service";
-import {Observable, of} from "rxjs";
+import {Observable, of, Subscription} from "rxjs";
+import {HideReviewModalComponent} from "../hide-review-modal/hide-review-modal.component";
+import {SharedDataService} from "../../../service/shared-data.service";
 
 @Component({
     selector: 'app-playlist-modal',
@@ -25,15 +27,24 @@ export class PlaylistModalComponent implements OnInit {
     isAdmin$: Observable<boolean> = of(false);
     loggedInUser: any;
 
+    sdsInvokedMethodSubscription: Subscription | undefined;
 
     collapses = [false, false];
 
     constructor(public activeModal: NgbActiveModal,
                 private modalService: NgbModal,
-                private authService: AuthService) {
+                private authService: AuthService,
+                private sharedDataService: SharedDataService) {
         this.isLoggedIn$ = this.authService.isLoggedIn;
         this.isAdmin$ = this.authService.isAdmin;
         this.loggedInUser = this.authService.user.value;
+
+        this.sdsInvokedMethodSubscription = this.sharedDataService.invokedMethod.subscribe(response => {
+            if (response.action === 'updatePlaylist') {
+                this.playlist = response.data;
+            }
+        });
+
     }
 
     ngOnInit(): void {
@@ -56,6 +67,16 @@ export class PlaylistModalComponent implements OnInit {
     openTrackModal(track: any) {
         const modalRef = this.modalService.open(TrackModalComponent, {centered: true});
         modalRef.componentInstance.track = track;
+    }
+
+    openHideReviewModal(playlist: any, review: any) {
+        const modalRef = this.modalService.open(HideReviewModalComponent, {centered: true, size: 'sm'});
+        modalRef.componentInstance.playlist = playlist;
+        modalRef.componentInstance.review = review;
+    }
+
+    ngOnDestroy(): void {
+        if (this.sdsInvokedMethodSubscription !== undefined) this.sdsInvokedMethodSubscription.unsubscribe();
     }
 
 }

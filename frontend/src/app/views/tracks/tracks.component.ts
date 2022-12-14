@@ -93,7 +93,6 @@ export class TracksComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.toastService.clear();
     }
 
 }

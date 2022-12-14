@@ -81,6 +81,7 @@
                                     [color]="review.hiddenFlag === 'N'? 'danger' : 'success'"
                                     cButton
                                     type="button"
+                                    (click)="openHideReviewModal(playlist, review)"
                             >
                                 {{review.hiddenFlag === 'N'? 'Hide' : 'Reveal'}}
                             </button>
