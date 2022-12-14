@@ -68,4 +68,8 @@ export class PlaylistService {
         );
     }
 
+    deletePlaylistById(id: string): Observable<Response> {
+        return this.httpClient.delete<Response>(URLS.SECURE_PLAYLISTS + '/' + id);
+    }
+
 }

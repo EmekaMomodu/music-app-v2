@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-primary-title">Delete Playlist</h4>
+    <button
+            (click)="activeModal.dismiss('Cross click')" aria-label="Close" class="btn-close" type="button">
+    </button>
+</div>
+<div class="modal-body centered">
+    <p>Are you sure you want to <span> DELETE </span> this playlist : "{{playlist.name}}"</p>
+</div>
+<div class="modal-footer">
+    <button
+            (click)="activeModal.close('Close click')"
+            [color]="'secondary'"
+            cButton
+            type="button"
+    >
+        Close
+    </button>
+    <div>
+        <button
+                [color]="'danger'"
+                cButton
+                (click)="deletePlaylist(playlist.id)"
+                type="button">
+            Delete
+        </button>
+    </div>
+</div>
+

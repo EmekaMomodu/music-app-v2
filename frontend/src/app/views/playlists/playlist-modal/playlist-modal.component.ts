@@ -75,7 +75,7 @@ export class PlaylistModalComponent implements OnInit, OnDestroy {
     }
 
     openHideReviewModal(playlist: any, review: any) {
-        const modalRef = this.modalService.open(HideReviewModalComponent, {centered: true, size: 'sm'});
+        const modalRef = this.modalService.open(HideReviewModalComponent, {centered: true});
         modalRef.componentInstance.playlist = playlist;
         modalRef.componentInstance.review = review;
     }

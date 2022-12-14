@@ -14,6 +14,7 @@ import {CreatePlaylistModalComponent} from "./create-playlist-modal/create-playl
 import {SharedDataService} from "../../service/shared-data.service";
 import {ViewPlaylistModalComponent} from "./view-playlist-modal/view-playlist-modal.component";
 import {EditPlaylistModalComponent} from "./edit-playlist-modal/edit-playlist-modal.component";
+import {DeletePlaylistModalComponent} from "./delete-playlist-modal/delete-playlist-modal.component";
 
 @Component({
     selector: 'app-my-playlists',
@@ -131,7 +132,8 @@ export class MyPlaylistsComponent implements OnInit, OnDestroy {
     }
 
     openDeletePlaylistModal(playlist: any) {
-
+        const modalRef = this.modalService.open(DeletePlaylistModalComponent, {centered: true});
+        modalRef.componentInstance.playlist = playlist;
     }
 
     ngOnDestroy(): void {
