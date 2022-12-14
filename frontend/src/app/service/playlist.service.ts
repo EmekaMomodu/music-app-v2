@@ -35,4 +35,15 @@ export class PlaylistService {
         );
     }
 
+    createReviewForPublicPlaylist(playlistId: any, rating: number, comment: string) : Observable<Response> {
+        return  this.httpClient.post<Response> (
+            URLS.SECURE_PLAYLISTS_REVIEWS,
+            {
+                playlistId: playlistId,
+                rating: rating,
+                comment: comment
+            }
+        );
+    }
+
 }

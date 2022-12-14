@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {faAngleUp, faSquareArrowUpRight, faAngleDown} from '@fortawesome/free-solid-svg-icons';
 import {Playlist} from "../../../model/playlist.model";
@@ -7,13 +7,14 @@ import {AuthService} from "../../../service/auth.service";
 import {Observable, of, Subscription} from "rxjs";
 import {HideReviewModalComponent} from "../hide-review-modal/hide-review-modal.component";
 import {SharedDataService} from "../../../service/shared-data.service";
+import {AddReviewModalComponent} from "../add-review-modal/add-review-modal.component";
 
 @Component({
     selector: 'app-playlist-modal',
     templateUrl: './playlist-modal.component.html',
     styleUrls: ['./playlist-modal.component.scss']
 })
-export class PlaylistModalComponent implements OnInit {
+export class PlaylistModalComponent implements OnInit, OnDestroy {
 
     @Input() playlist: Playlist = {};
     
@@ -75,10 +76,14 @@ export class PlaylistModalComponent implements OnInit {
         modalRef.componentInstance.review = review;
     }
 
+    openAddReviewModal() {
+        const modalRef = this.modalService.open(AddReviewModalComponent, {centered: true});
+        modalRef.componentInstance.playlist = this.playlist;
+    }
+
     ngOnDestroy(): void {
         if (this.sdsInvokedMethodSubscription !== undefined) this.sdsInvokedMethodSubscription.unsubscribe();
     }
-
 }
 
 

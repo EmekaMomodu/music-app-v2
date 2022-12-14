@@ -6,16 +6,16 @@ import {PlaylistService} from "../../../service/playlist.service";
 import {SpinnerService} from "../../../util/spinner/spinner.service";
 import {ToastService} from "../../../util/toast/toast.service";
 import {SharedDataService} from "../../../service/shared-data.service";
+import {NgForm} from "@angular/forms";
 
 @Component({
-    selector: 'app-hide-review-modal',
-    templateUrl: './hide-review-modal.component.html',
-    styleUrls: ['./hide-review-modal.component.scss']
+    selector: 'app-add-review-modal',
+    templateUrl: './add-review-modal.component.html',
+    styleUrls: ['./add-review-modal.component.scss']
 })
-export class HideReviewModalComponent implements OnInit, OnDestroy {
+export class AddReviewModalComponent implements OnInit, OnDestroy {
 
     @Input() playlist: Playlist = {};
-    @Input() review: Review = {};
 
     constructor(public activeModal: NgbActiveModal,
                 private playlistService: PlaylistService,
@@ -24,16 +24,22 @@ export class HideReviewModalComponent implements OnInit, OnDestroy {
                 private sharedDataService: SharedDataService) {
     }
 
+    isInvalid = false;
+
     ngOnInit(): void {
     }
 
-    updatePlaylistReviewHiddenFlag() {
+    createReviewForPublicPlaylist(ngForm: NgForm) {
+        console.log(JSON.stringify(ngForm.value));
+        if (ngForm.invalid) {
+            this.isInvalid = true;
+            return;
+        }
         this.spinnerService.show();
-        const hiddenFlag = this.review.hiddenFlag === 'N' ? 'Y' : 'N';
-        this.playlistService.updatePlaylistReviewHiddenFlag(
+        this.playlistService.createReviewForPublicPlaylist(
             this.playlist.id,
-            this.review.id,
-            hiddenFlag
+            ngForm.value.rating,
+            ngForm.value.comment,
             ).subscribe({
                 next: (response) => {
                     if (response.success && response.data) {

@@ -28,6 +28,7 @@ import {NgbPaginationModule, NgbTypeaheadModule} from "@ng-bootstrap/ng-bootstra
 import {UtilModule} from "../../util/util.module";
 import {PlaylistModalComponent} from "./playlist-modal/playlist-modal.component";
 import {HideReviewModalComponent} from "./hide-review-modal/hide-review-modal.component";
+import {AddReviewModalComponent} from "./add-review-modal/add-review-modal.component";
 
 @NgModule({
     imports: [
@@ -58,7 +59,7 @@ import {HideReviewModalComponent} from "./hide-review-modal/hide-review-modal.co
         CollapseModule,
         BadgeModule
     ],
-    declarations: [PlaylistsComponent, PlaylistModalComponent, HideReviewModalComponent]
+    declarations: [PlaylistsComponent, PlaylistModalComponent, HideReviewModalComponent, AddReviewModalComponent]
 })
 export class PlaylistsModule {
 }
