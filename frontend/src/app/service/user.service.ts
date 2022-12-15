@@ -36,4 +36,9 @@ export class UserService {
             user
         );
     }
+
+    updateUserEmailVerification(): Observable<Response> {
+        return this.httpClient.get<Response>(URLS.SECURE_USERS_EMAIL);
+    }
+
 }

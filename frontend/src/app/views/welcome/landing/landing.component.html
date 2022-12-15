@@ -5,6 +5,10 @@
                 <c-alert  dismissible color="success" fade *ngIf="isLoggedIn$ | async">
                     <strong>Hi ! {{loggedInUser.name}}</strong> you're now logged in, start experiencing more.
                 </c-alert>
+                <c-alert  color="danger" fade *ngIf="(isLoggedIn$ | async) && !(isEmailVerified$ | async)">
+                    Your EMAIL isn't verified yet ! Please click on the this <a cAlertLink
+                (click)="verifyEmail()">link</a> to verify
+                </c-alert>
                 <div class="clearfix">
                     <h1 class="float-start display-3 me-4">PAC</h1>
                     <h4 class="pt-3">Welcome to the PAC Music Application.</h4>

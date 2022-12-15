@@ -8,13 +8,17 @@ import {LandingComponent} from "./landing/landing.component";
 import {LoginComponent} from "./login/login.component";
 import {RegisterComponent} from "./register/register.component";
 import {FormsModule} from "@angular/forms";
+import {
+    EmailVerificationSuccessModalComponent
+} from "./email-verification-success-modal/email-verification-success-modal.component";
 
 
 @NgModule({
     declarations: [
         LandingComponent,
         LoginComponent,
-        RegisterComponent
+        RegisterComponent,
+        EmailVerificationSuccessModalComponent
     ],
     imports: [
         CommonModule,

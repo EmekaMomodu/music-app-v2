@@ -16,6 +16,8 @@ exports.getTrackById = async (trackId) => {
 };
 
 exports.searchTracks = async (searchText, maxNoOfRecords) => {
+    //remove all white spaces
+    searchText = searchText.replace(/\s+/g, '');
     // find track by title or album or artist or genre and limit record to maxNoOfRecords
     const tracks = await Track.find({
         $or: [

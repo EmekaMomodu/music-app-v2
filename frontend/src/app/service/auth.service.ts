@@ -17,6 +17,9 @@ export class AuthService {
     user = new BehaviorSubject<any>(null);
     loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     admin: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+    emailVerified: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
     private tokenExpirationTimer: any;
 
     constructor(private httpClient: HttpClient,
@@ -29,6 +32,10 @@ export class AuthService {
 
     get isAdmin() {
         return this.admin.asObservable();
+    }
+
+    get isEmailVerified() {
+        return this.emailVerified.asObservable();
     }
 
     login(authRequest: AuthRequest): Observable<Response> {
@@ -66,6 +73,7 @@ export class AuthService {
             this.user.next(loadedUser);
             this.loggedIn.next(true);
             if(loadedUser.role === 'ADMIN') this.admin.next(true);
+            if(loadedUser.emailVerifiedFlag === 'Y') this.emailVerified.next(true);
             const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
             this.autoLogout(expirationDuration);
         }
@@ -75,6 +83,7 @@ export class AuthService {
         this.user.next(null);
         this.loggedIn.next(false);
         this.admin.next(false);
+        this.emailVerified.next(false);
         this.router.navigate(['/welcome']);
         localStorage.removeItem('userData');
         if (this.tokenExpirationTimer) {
@@ -105,6 +114,9 @@ export class AuthService {
             authData.type
         );
         this.user.next(user);
+        this.loggedIn.next(true);
+        if(authData.role === 'ADMIN') this.admin.next(true);
+        if(authData.emailVerifiedFlag === 'Y') this.emailVerified.next(true);
         this.autoLogout(TOKEN_VALIDITY_PERIOD_IN_SECONDS * 1000);
         const userData: string = JSON.stringify(user);
         localStorage.setItem('userData', userData);

@@ -18,5 +18,6 @@ router.post('/playlists/reviews', validator(schemas.REVIEW_CREATE, body), playli
 
 /** user routes */
 router.put('/users', validator(schemas.USER_UPDATE_PASSWORD, body), userController.updateUserPassword);
+router.get('/users/email', userController.updateUserEmailVerification);
 
 module.exports = router;

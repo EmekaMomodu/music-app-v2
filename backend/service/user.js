@@ -1,4 +1,4 @@
-const {MESSAGES, USER_TYPE, USER_STATUS} = require('../util/constant');
+const {MESSAGES, USER_TYPE, USER_STATUS, BINARY_FLAG} = require('../util/constant');
 const User = require('../model/user');
 const UserDto = require("../dto/user");
 const bcrypt = require('bcrypt');
@@ -120,4 +120,20 @@ exports.updateUserPassword = async (userToUpdate, userId) => {
     const savedUser = await existingUser.save();
     // return user object dto
     return new UserDto(savedUser);
+};
+
+exports.updateUserEmailVerification = async (userId) => {
+    // find user by id
+    const existingUser = await User.findById(userId).exec();
+    // throw an exception if user does not exist
+    if (!existingUser) {
+        const error = new Error(MESSAGES.NO_DATA_FOUND);
+        error.statusCode = 404;
+        throw error;
+    }
+    existingUser.email_verified_flag = BINARY_FLAG.YES;
+    // update existingUser on database
+    const updatedUser = await existingUser.save();
+    // return user object dto
+    return new UserDto(updatedUser);
 };

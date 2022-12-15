@@ -38,7 +38,7 @@ export class RegisterComponent {
                 next: (response) => {
                     if (response.success && response.data) {
                         // this.spinnerService.hide();
-                        this.toastService.showSuccess("Account Creation Successful");
+                        // this.toastService.showSuccess("Account Creation Successful");
                     } else {
                         this.isError = true;
                         this.spinnerService.hide();

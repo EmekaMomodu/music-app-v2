@@ -42,6 +42,7 @@ export class UpdatePasswordModalComponent implements OnInit {
         }
         const updatedUser = ngForm.value;
         updatedUser.id = this.user.id;
+        console.log(JSON.stringify(updatedUser));
         this.spinnerService.show();
         this.userService.updateUserPassword(
             updatedUser
