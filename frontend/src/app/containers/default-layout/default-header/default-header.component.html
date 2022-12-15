@@ -22,6 +22,9 @@
             <a *ngIf="isAdmin$ | async" cNavLink routerLink="/users" routerLinkActive="active">
                 USERS
             </a>
+            <a *ngIf="isAdmin$ | async" cNavLink routerLink="/policies" routerLinkActive="active">
+                POLICIES
+            </a>
             <a *ngIf="!(isLoggedIn$ | async)"  cNavLink routerLink="/welcome/login" routerLinkActive="active">
                 LOGIN
             </a>

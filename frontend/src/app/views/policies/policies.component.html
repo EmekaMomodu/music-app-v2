@@ -1,0 +1,56 @@
+<c-card class="mb-4">
+    <c-card-header ngPreserveWhitespaces>
+        <strong>Policies</strong>
+    </c-card-header>
+    <c-card-body>
+        <p class="text-medium-emphasis small ">
+            Admins can upload the various policies here, such as
+            <code>Security & Privacy Policy, </code>
+            <code>Acceptable Use Policy, </code>
+            <code>DMCA Notice and Takedown Policy</code>
+        </p>
+        <label cLabel for="privacy" >Security & Privacy Policy</label>
+        <c-row class="mb-3">
+            <c-col xs>
+                <input placeholder="Enter url"
+                        class="col-8" cFormControl id="privacy" type="text" [(ngModel)] = "securityPolicyUrl"/>
+            </c-col>
+            <c-col xs>
+                <button (click)="uploadSecurityPolicy()"
+                        class="col-4" cButton color="secondary" type="button" title="upload">
+                    Upload
+                </button>
+            </c-col>
+        </c-row>
+
+
+        <label cLabel for="aup">Acceptable Use Policy</label>
+        <c-row class="mb-3">
+            <c-col xs>
+                <input placeholder="Enter url" cFormControl id="aup" type="text" [(ngModel)] = "aupUrl"/>
+            </c-col>
+            <c-col xs>
+                <button (click)="uploadAup()"
+                        class="col-4" cButton color="secondary" type="button" title="upload">
+                    Upload
+                </button>
+            </c-col>
+        </c-row>
+
+
+        <label cLabel for="dmca">DMCA Notice and Takedown Policy</label>
+        <c-row class="mb-3">
+            <c-col xs>
+                <input placeholder="Enter url" cFormControl id="dmca" type="text" [(ngModel)] = "dmcaUrl"/>
+            </c-col>
+            <c-col xs>
+                <button (click)="uploadDmca()"
+                        class="col-4" cButton color="secondary" type="button" title="upload">
+                    Upload
+                </button>
+            </c-col>
+        </c-row>
+
+
+    </c-card-body>
+</c-card>

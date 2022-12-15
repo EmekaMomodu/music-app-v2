@@ -13,6 +13,11 @@ export const URLS = {
     SECURE_USERS: environment.BASE_URL.concat('/api/secure/users'),
     OPEN_USERS: environment.BASE_URL.concat('/api/open/users'),
     SECURE_USERS_EMAIL: environment.BASE_URL.concat('/api/secure/users/email'),
+
+    ADMIN_POLICY_SECURITY: environment.BASE_URL.concat('/api/admin/security'),
+    ADMIN_POLICY_AUP: environment.BASE_URL.concat('/api/admin/aup'),
+    ADMIN_POLICY_DMCA: environment.BASE_URL.concat('/api/admin/dmca'),
+
 };
 
 export const MAX_NO_OF_RECORDS = 50;

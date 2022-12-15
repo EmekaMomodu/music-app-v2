@@ -6,18 +6,15 @@
 </c-nav>
 <c-nav class="flex-column flex-sm-row justify-content-end" role="navigation" variant="pills">
     <div class="row">
-        <a class="col-12" routerLink="/" target="_blank">
+        <a class="col-12" [href]="securityPolicyUrl" target="_blank">
             Security & Privacy Policy
         </a>
-        <a class="col-12" routerLink="/" target="_blank">
+        <a class="col-12" [href]="aupUrl" target="_blank">
             Acceptable Use Policy
         </a>
     </div>
     <div class="row">
-        <a class="col-12" routerLink="/" target="_blank">
-            Acceptable Use Policy
-        </a>
-        <a class="col-12" routerLink="/" target="_blank">
+        <a class="col-12" [href]="dmcaUrl" target="_blank">
             DMCA Notice & Take-down Policy
         </a>
     </div>

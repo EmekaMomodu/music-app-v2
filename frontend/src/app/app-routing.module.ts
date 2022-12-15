@@ -40,6 +40,16 @@ const routes: Routes = [
                 loadChildren: () =>
                     import('./views/users/users.module').then((m) => m.UsersModule)
             },
+            {
+                path: 'policies',
+                loadChildren: () =>
+                    import('./views/policies/policies.module').then((m) => m.PoliciesModule)
+            },
+            {
+                path: 'security-policy',
+                loadChildren: () =>
+                    import('./views/policies-public/security-policy/security-policy.module').then((m) => m.SecurityPolicyModule)
+            },
 
 
 
