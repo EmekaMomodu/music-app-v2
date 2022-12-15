@@ -109,6 +109,7 @@ export class CreatePlaylistModalComponent implements OnInit {
         newPlaylist.trackIds = this.selectedTracks.map((track) => {
             return Number(track.id);
         });
+        console.log("newPlaylist: ", JSON.stringify(newPlaylist.value));
         this.spinnerService.show();
         this.playlistService.createPlaylist(
             newPlaylist

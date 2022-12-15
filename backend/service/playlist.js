@@ -5,6 +5,7 @@ const PlaylistDto = require('../dto/playlist');
 const userService = require("./user");
 
 exports.createPlaylist = async (playlist, userId) => {
+    console.log("playlist::: ", JSON.stringify(playlist));
     // find if name already exists throw error if yes
     const existingPlaylist = await Playlist.findOne({name: {$regex: '^' + playlist.name + '$', $options: 'i'}}).exec();
     // throw exception if playlist exists
@@ -26,6 +27,7 @@ exports.createPlaylist = async (playlist, userId) => {
         tracks.push(existingTrack);
     }
     playlist.tracks = tracks;
+    console.log("tracks::: ", JSON.stringify(tracks));
     // get user creating the playlist and set as playlist creator
     playlist.creator = await userService.getUserById(userId);
     // save playlist to database

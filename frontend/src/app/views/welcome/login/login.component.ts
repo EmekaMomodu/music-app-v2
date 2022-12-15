@@ -4,6 +4,7 @@ import {SpinnerService} from "../../../util/spinner/spinner.service";
 import {ToastService} from "../../../util/toast/toast.service";
 import {AuthService} from "../../../service/auth.service";
 import {Router} from "@angular/router";
+import {NgForm} from "@angular/forms";
 
 @Component({
     selector: 'app-login',
@@ -12,10 +13,7 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent {
 
-    authRequest: AuthRequest = {
-        email: '',
-        password: ''
-    }
+    isInvalid = false;
 
     constructor(private spinnerService: SpinnerService,
                 private toastService: ToastService,
@@ -23,14 +21,23 @@ export class LoginComponent {
                 private router: Router,) {
     }
 
-    login() {
+    login(ngForm: NgForm) {
+        console.log(JSON.stringify(ngForm.value));
+        if (ngForm.invalid) {
+            this.isInvalid = true;
+            return;
+        }
+        const authRequest: AuthRequest = {
+            email: ngForm.value.email,
+            password: ngForm.value.password
+        }
         this.spinnerService.show();
-        this.authService.login(this.authRequest).subscribe({
+        this.authService.login(authRequest).subscribe({
                 next: (response) => {
                     // console.log("response::: " + JSON.stringify(response));
                     if (response.success && response.data) {
                         this.spinnerService.hide();
-                        this.toastService.showSuccess(response.message);
+                        // this.toastService.showSuccess(response.message);
                         this.router.navigate(['welcome'])
                             .then(() => {
                                 window.location.reload();

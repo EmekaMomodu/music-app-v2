@@ -29,4 +29,11 @@ export class UserService {
             user
         );
     }
+
+    createUser(user: any): Observable<Response> {
+        return this.httpClient.post<Response>(
+            URLS.OPEN_USERS,
+            user
+        );
+    }
 }

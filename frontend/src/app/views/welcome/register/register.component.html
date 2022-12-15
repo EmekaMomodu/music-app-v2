@@ -4,34 +4,67 @@
             <c-col lg="7" md="9" xl="6">
                 <c-card class="mx-4">
                     <c-card-body class="p-4">
-                        <form cForm>
+                        <form cForm [validated]="isInvalid"
+                              #ngForm="ngForm" (ngSubmit)="createUser(ngForm)"
+                        >
                             <h1>Register</h1>
                             <p class="text-medium-emphasis">Create your account</p>
+                            <label cLabel class="form-label" for="name">
+                                Username:
+                            </label>
                             <c-input-group class="mb-3">
-                <span cInputGroupText>
-                  <svg cIcon name="cilUser"></svg>
-                </span>
-                                <input autoComplete="name" cFormControl placeholder="Username"/>
+                                <span cInputGroupText>
+                                  <svg cIcon name="cilUser"></svg>
+                                </span>
+                                <input autoComplete="off"
+                                       cFormControl
+                                       ngModel
+                                       name="name"
+                                       id="name"
+                                       required
+                                       placeholder="Enter Username"/>
+                                <c-form-feedback [valid]="false">Please enter a valid username</c-form-feedback>
                             </c-input-group>
+                            <label cLabel class="form-label" for="email">
+                                Email:
+                            </label>
                             <c-input-group class="mb-3">
                                 <span cInputGroupText>@</span>
-                                <input autoComplete="email" cFormControl placeholder="Email"/>
+                                <input autoComplete="off"
+                                       id="email"
+                                       cFormControl
+                                       required
+                                       ngModel
+                                       name="email"
+                                       min="3"
+                                       type="email"
+                                       placeholder="Enter Email"/>
+                                <c-form-feedback [valid]="false">Please enter a valid email</c-form-feedback>
                             </c-input-group>
+                            <label cLabel class="form-label" for="password">
+                                Password:
+                            </label>
                             <c-input-group class="mb-3">
-                <span cInputGroupText>
-                  <svg cIcon name="cilLockLocked"></svg>
-                </span>
-                                <input autoComplete="new-password" cFormControl placeholder="Password" type="password"/>
-                            </c-input-group>
-                            <c-input-group class="mb-4">
-                <span cInputGroupText>
-                  <svg cIcon name="cilLockLocked"></svg>
-                </span>
-                                <input autoComplete="new-password" cFormControl placeholder="Repeat password"
+                                <span cInputGroupText>
+                                  <svg cIcon name="cilLockLocked"></svg>
+                                </span>
+                                <input autoComplete="off"
+                                       id="password"
+                                       cFormControl
+                                       required
+                                       min="3"
+                                       ngModel
+                                       name="password"
+                                       placeholder="Enter Password"
                                        type="password"/>
+                                <c-form-feedback [valid]="false">Please enter a valid password</c-form-feedback>
                             </c-input-group>
-                            <div class="d-grid">
-                                <button cButton color="success">Create Account</button>
+                            <div class="d-grid mt-3">
+                                <button cButton
+                                        type="submit"
+                                        color="success">
+                                    Create Account
+                                </button>
                             </div>
                         </form>
                     </c-card-body>

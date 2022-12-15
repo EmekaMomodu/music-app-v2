@@ -5,40 +5,47 @@
                 <c-card-group>
                     <c-card class="p-4">
                         <c-card-body>
-                            <form cForm>
+                            <form cForm [validated]="isInvalid"
+                                  #ngForm="ngForm" (ngSubmit)="login(ngForm)">
                                 <h1>Login</h1>
                                 <p class="text-medium-emphasis">Sign In to your account</p>
                                 <c-input-group class="mb-3">
                                       <span cInputGroupText>
                                         <svg cIcon name="cilUser"></svg>
                                       </span>
-                                    <input [(ngModel)]="authRequest.email"
-                                           autoComplete="email"
+                                    <input
+                                            id="email"
+                                            ngModel
+                                            required
+                                            name="email"
+                                           autoComplete="off"
                                            cFormControl
                                            type="email"
-                                           name="email"
                                            placeholder="email"/>
+                                    <c-form-feedback [valid]="false">Please enter a valid email</c-form-feedback>
                                 </c-input-group>
                                 <c-input-group class="mb-4">
                                       <span cInputGroupText>
                                         <svg cIcon name="cilLockLocked"></svg>
                                       </span>
                                     <input
-                                            autoComplete="current-password"
+                                            ngModel
+                                            autoComplete="off"
                                             cFormControl
                                             placeholder="Password"
                                             type="password"
                                             name="password"
-                                            [(ngModel)]="authRequest.password"
+                                            id="password"
+                                            required
                                     />
+                                    <c-form-feedback [valid]="false">Please enter a valid password</c-form-feedback>
                                 </c-input-group>
                                 <c-row>
                                     <c-col xs="6">
                                         <button
                                                 cButton
                                                 class="px-4"
-                                                type="button"
-                                                (click)="login()"
+                                                type="submit"
                                                 color="primary">
                                             Login
                                         </button>
