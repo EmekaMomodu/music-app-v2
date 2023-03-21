@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "dist/coreui-free-angular-admin-template",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
